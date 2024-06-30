@@ -1,0 +1,210 @@
+/* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    * {
+        margin: 0;
+        padding: 0
+    }
+
+    body {
+        background-color: #e52713
+    }
+
+    .card {
+        width: 350px;
+        background-color: #efefef;
+        border: none;
+        cursor: pointer;
+        transition: all 0.5s;
+    }
+
+    .image img {
+        transition: all 0.5s
+    }
+
+    .card:hover .image img {
+        transform: scale(1.2)
+    }
+
+    .btn {
+        height: 140px;
+        width: 140px;
+        border-radius: 50%
+    }
+
+    .name {
+        font-size: 22px;
+        font-weight: bold
+    }
+
+    .idd {
+        font-size: 14px;
+        font-weight: 600
+    }
+
+    .idd1 {
+        font-size: 12px
+    }
+
+    .number {
+        font-size: 22px;
+        font-weight: bold
+    }
+
+    .follow {
+        font-size: 12px;
+        font-weight: 500;
+        color: #444444
+    }
+
+    .btn1 {
+        height: 40px;
+        width: 150px;
+        border: none;
+        background-color: #75bf91;
+        color: #FFFFFF;
+        font-size: 15px
+    }
+    .btn1:hover {
+        height: 40px;
+        width: 150px;
+        border: none;
+        background-color: #d1e7d2;
+        color: #75bf91;
+        font-size: 15px
+    }
+    .btn2 {
+        height: 40px;
+        width: 150px;
+        border: none;
+        background-color: #e52713;
+        color: #FFFFFF;
+        font-size: 15px
+    }
+    .btn2:hover {
+        height: 40px;
+        width: 150px;
+        border: none;
+        background-color: #f08262;
+        color: #ffffff;
+        font-size: 15px
+    }
+    .btn3 {
+        height: 40px;
+        width: 150px;
+        border: none;
+        background-color: #008492;
+        color: #ffffff;
+        font-size: 15px
+    }
+    .btn3:hover {
+        height: 40px;
+        width: 150px;
+        border: none;
+        background-color: #5fc4e1;
+        color: #ffffff;
+        font-size: 15px
+    }
+
+    .btn4 {
+        height: 40px;
+        width: 150px;
+        border: none;
+        background-color: #3b4395;
+        color: #ffffff;
+        font-size: 15px
+    }
+    .btn4:hover {
+        height: 40px;
+        width: 150px;
+        border: none;
+        background-color: #8da6d6;
+        color: #ffffff;
+        font-size: 15px
+    }
+
+    .text span {
+        font-size: 13px;
+        color: #545454;
+        font-weight: 500
+    }
+
+    .icons i {
+        font-size: 19px
+    }
+
+    hr .new1 {
+        border: 1px solid
+    }
+
+    .join {
+        font-size: 14px;
+        color: #a0a0a0;
+        font-weight: bold
+    }
+
+    .date {
+        background-color: #ccc
+    }
+
+    select {
+        margin: 20px 0;
+    }
+
+    #result {
+        margin-top: 20px;
+        padding: 10px;
+        background: #f0f0f0;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    #videoContainer {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        margin: auto;
+        overflow: hidden;
+    }
+
+    #videoContainer::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.0); /* Assombrissement */
+        z-index: 1;
+    }
+
+    #scanArea {
+        position: absolute;
+        top: 12.5%; /* Centre la zone de scan */
+        left: 12.5%;
+        width: 75%; /* Taille de la zone de scan */
+        height: 75%;
+        border: 2px dashed #e52713;
+        box-shadow: 0 0 0 10000px rgba(0, 0, 0, 0.7); /* Assombrissement autour de #scanArea */
+        z-index: 2;
+    }
+
+    #video {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0; /* S'assure que la vidéo est sous l'effet d'assombrissement */
+    }
