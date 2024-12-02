@@ -58,9 +58,13 @@ def check_filter(data, marketFilter):
             check_odd(data['teamB']['odd'], marketFilter['oddA']['min'], marketFilter['oddA']['max'])
     )
 
+    condition3 = (
+            check_odd(data['draw']['odd'], marketFilter['coteDraw']['min'], marketFilter['coteDraw']['max'])
+    )
+
     date_condition = check_date(data['date'], marketFilter['fromDate'], marketFilter['toDate'])
 
-    return date_condition and (condition1 or condition2)
+    return date_condition and (condition1 or condition2) and condition3
 
 defaultFilter ={
             'oddA': {
@@ -100,7 +104,7 @@ def scrape_html(marketFilter=defaultFilter, url='https://www.betclic.fr/football
     handle_cookies(driver)
 
     def scroll_to_end(driver):
-        SCROLL_PAUSE_TIME = 1
+        SCROLL_PAUSE_TIME = 5
         last_height = driver.execute_script("return document.body.scrollHeight")
 
         while True:
@@ -133,7 +137,7 @@ def scrape_html(marketFilter=defaultFilter, url='https://www.betclic.fr/football
             competition = clean_text(
                 event.select_one('.breadcrumb_item.is-ellipsis').find('span', class_='breadcrumb_itemLabel').text)
             market = event.select_one('.market_odds').find('div', class_='btnWrapper').find_all('button')
-            if len(market) != 3:
+            if len(market) != 3 and  len(market) != 2:
                 break
             teams_and_odds = []
             for button in market:
@@ -141,24 +145,47 @@ def scrape_html(marketFilter=defaultFilter, url='https://www.betclic.fr/football
                 team_name = ''.join(clean_text(span.text) for span in spans)
                 odds = float(clean_text(button.find_all('span', class_='btn_label')[1].text))
                 teams_and_odds.append((team_name, odds))
-            data = {
-                'competition': competition,
-                'link': link,
-                'date': eventDay,
-                'time': eventTime,
-                'teamA': {
-                    'name': teams_and_odds[0][0],
-                    'odd': teams_and_odds[0][1]
-                },
-                'teamB': {
-                    'name': teams_and_odds[2][0],
-                    'odd': teams_and_odds[2][1]
-                },
-                'draw': {
-                    'name': teams_and_odds[1][0],
-                    'odd': teams_and_odds[1][1]
+            if len(market) == 3 :
+                data = {
+                    'competition': competition,
+                    'link': link,
+                    'date': eventDay,
+                    'time': eventTime,
+                    'teamA': {
+                        'name': teams_and_odds[0][0],
+                        'odd': teams_and_odds[0][1]
+                    },
+                    'teamB': {
+                        'name': teams_and_odds[2][0],
+                        'odd': teams_and_odds[2][1]
+                    },
+                    'draw': {
+                        'name': teams_and_odds[1][0],
+                        'odd': teams_and_odds[1][1]
+                    }
                 }
-            }
+            if len(market) == 2 :
+                marketFilter['coteDraw']['min'] = None
+                marketFilter['coteDraw']['max'] = None
+                print(marketFilter)
+                data = {
+                    'competition': competition,
+                    'link': link,
+                    'date': eventDay,
+                    'time': eventTime,
+                    'teamA': {
+                        'name': teams_and_odds[0][0],
+                        'odd': teams_and_odds[0][1]
+                    },
+                    'teamB': {
+                        'name': teams_and_odds[1][0],
+                        'odd': teams_and_odds[1][1]
+                    },
+                    'draw': {
+                        'name': 'NA',
+                        'odd': 'NA'
+                    }
+                }
             if check_filter(data, marketFilter):
                 events.append(data)
     return events

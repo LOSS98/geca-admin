@@ -9,19 +9,19 @@ import googleapiclient.discovery
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from classes.GoogleAPIConnector import GoogleAPIConnector
-import classes.Expense, classes.Income
+import classes.Expense, classes.Income, classes.AskMoney
 import logging
-'''logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s',
-                    handlers=[
-                        logging.FileHandler("app.log"),  # Log to a file named 'app.log'
-                        logging.StreamHandler()  # Also log to console
-                    ])'''
+# logging.basicConfig(level=logging.DEBUG,
+#                     format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s',
+#                     handlers=[
+#                         logging.FileHandler("app.log"),  # Log to a file named 'app.log'
+#                         logging.StreamHandler()  # Also log to console
+#                     ])
 
 
 
 load_dotenv()
-allowed_people = ['achillemortier@hotmail.com', 'brieuc.sapin@gmail.com', 'enzodelpy@hotmail.fr', 'hachemigabrielle974@gmail.com', 'isrope04@gmail.com', 'jeannemoulis28@gmail.com', 'breuillerjulian@gmail.com', 'ganej712@gmail.com ', 'khalil.mzoughikm@gmail.com', 'leosentes31@gmail.com', 'lilianmellinger@gmail.com', 'lilou.montain@gmail.com', 'delassault.lucas@gmail.com', 'ludovigouroux@icloud.com', 'Ralitemac@gmail.com ', 'm.dalmon@orange.fr', 'famathilde12@gmail.com', 'mathis.morel1803@gmail.com', 'maximecav02@gmail.com', 'mia.perrouin@gmail.com', 'bouzier.noa1406@gmail.com', 'garel.noemie@gmail.com', 'paul.ferre316481@gmail.com', 'pierre.vilcocq14@gmail.com', 'robin.chausson66@gmail.com', 'sachadarly564@gmail.com', 'lison.spielmann@gmail.com', 'thibautbredel76390@gmail.com', 'timotheecroclyonnet@gmail.com', 'tompardo978@gmail.com', 'nowak.ugo31@gmail.com', 'valentine.sandrin15@gmail.com', 'zachary.barre0809@gmail.com', 'eglantine.fonrose@gmail.com', 'amandine.rolland39@gmail.com']
+allowed_people = ['achillemortier@gmail.com','brieuc.sapin@gmail.com','enzodelpy7@gmail.com','hachemigabrielle974@gmail.com','isrope04@gmail.com','jeannemoulis28@gmail.com','breuillerjulian@gmail.com','ganej712@gmail.com','khalil.mzoughikm@gmail.com','leosentes31@gmail.com','lilianmellinger@gmail.com','lilou.montain@gmail.com','delassault.lucas@gmail.com','ludo.vig04@gmail.com','ralitemac@gmail.com','m.dalmon@orange.fr','famathilde12@gmail.com','mathis.morel1803@gmail.com','maximecav02@gmail.com','mia.perrouin@gmail.com','bouzier.noa1406@gmail.com','garel.noemie@gmail.com','paul.ferre316481@gmail.com','pierre.vilcocq14@gmail.com','robin.chausson66@gmail.com','sachadarly564@gmail.com','lison.spielmann@gmail.com','thibautbredel76390@gmail.com','timotheecroclyonnet@gmail.com','tompardo978@gmail.com','nowak.ugo31@gmail.com','valentine.sandrin15@gmail.com','zachary.barre0809@gmail.com','eglantine.fonrose@gmail.com','amandine.rolland39@gmail.com','gorelgwladys@gmail.com','glathlouise@gmail.com','celia.ap.insa@gmail.com','hugoroze72@gmail.com','boniloann29@gmail.com','tom.philibert2004@gmail.com','lilian.monfort1@gmail.com','annateixido66@gmail.com','nils.peteil@gmail.com','lorickdesert2003@gmail.com','pierre.deblaise35@gmail.com','cluka042@gmail.com','teggyrosier@gmail.com']
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '0'
 
 app = Flask(__name__, static_folder='static')
@@ -232,6 +232,46 @@ def addingInternalTransfer():
             return redirect(url_for('addInternalTransfer', error="Veuillez remplir tous les champs"))
         return redirect(url_for('addInternalTransfer', error="Transfert Interne ajouté avec succès"))
 
+@app.route('/askForMoney')
+def askForMoney():
+    if 'credentials' not in session or not is_credentials_valid(session['credentials']):
+        return redirect(url_for('login'))
+    error_message = None
+    if 'error' in request.args:
+        error_message = request.args.get('error')
+    session_credentials = session['credentials']
+    connector = GoogleAPIConnector(credentials_path)
+    connector.authenticate(session_credentials)
+    return render_template('askForMoney.html', error = error_message, user_info=session['user_info'], members = connector.get_members())
+
+@app.route('/askingForMoney', methods=['GET', 'POST'])
+def askingForMoney():
+    if 'credentials' not in session or not is_credentials_valid(session['credentials']):
+        return redirect(url_for('login'))
+    if request.method == 'POST':
+        if request.form['toBeGivenBy'] and request.form['beneficiary'] and request.form['reason'] and request.form['amount'] and request.form['description']:
+
+            session_credentials = session['credentials']
+            connector = GoogleAPIConnector(credentials_path)
+            connector.authenticate(session_credentials)
+            members = connector.get_members()
+            moneyask = classes.AskMoney.AskMoney({   'toBeGivenBy': request.form['toBeGivenBy'],
+                                               'beneficiary': request.form['beneficiary'],
+                                               'reason': request.form['reason'],
+                                               'amount': request.form['amount'],
+                                               'description': request.form['description'],
+                                               'askedBy': session['user_info']['email'],
+                                               'members': members})
+            is_valid, Error = moneyask.validate_data()
+            print(Error)
+            if is_valid:
+                moneyask.askForMoney(connector)
+            else:
+                return redirect(url_for('askForMoney', error=Error))
+        else:
+            return redirect(url_for('askForMoney', error="Veuillez remplir tous les champs"))
+        return redirect(url_for('askForMoney', error="Demande ajoutée avec succès"))
+
 @app.route('/searchOdds')
 def searchOdds():
     if 'credentials' not in session or not is_credentials_valid(session['credentials']):
@@ -250,8 +290,19 @@ def viewOdds():
         error_message = request.args.get('error')
     links = {
             'football' : 'https://www.betclic.fr/football-s1',
-            'RugbyXIII' : 'https://www.betclic.fr/rugby-a-xiii-s52',
-            'RugbyXV' : 'https://www.betclic.fr/rugby-a-xv-s5'
+            'rugbyxiii' : 'https://www.betclic.fr/rugby-a-xiii-s52',
+            'rugbyxv' : 'https://www.betclic.fr/rugby-a-xv-s5',
+            'tennis' : 'https://www.betclic.fr/tennis-s2',
+            'badminton' : 'https://www.betclic.fr/badminton-s27',
+            'baseball' : 'https://www.betclic.fr/baseball-s20',
+            'basketball' : 'https://www.betclic.fr/basketball-s4',
+            'beachvolley' : 'https://www.betclic.fr/beach-volley-s49',
+            'boxe' : 'https://www.betclic.fr/boxe-s16',
+            'footamericain' : 'https://www.betclic.fr/football-americain-s14',
+            'golf' : 'https://www.betclic.fr/golf-s7',
+            'handball' : 'https://www.betclic.fr/handball-s9',
+            'hockeysurglace' : 'https://www.betclic.fr/hockey-sur-glace-s13',
+            'mma' : 'https://www.betclic.fr/mma-s23'
         }
     if request.method == 'POST' and request.form['sport'].lower() in links.keys():
         marketFilter = {
@@ -274,6 +325,37 @@ def viewOdds():
         data = betclic.scrape_html(marketFilter, links[request.form['sport'].lower()])
         return render_template('viewOdds.html', error = error_message, user_info=session['user_info'], data=data, marketFilter = marketFilter)
     return redirect(url_for('searchOdds', error="Une erreur est survenue"))
+
+
+
+#User management
+@app.route('/singleUser')
+def singleUser():
+    if 'credentials' not in session or not is_credentials_valid(session['credentials']):
+        return redirect(url_for('login'))
+    error_message = None
+    if 'error' in request.args:
+        error_message = request.args.get('error')
+    return render_template('singleUser.html', error = error_message, user_info=session['user_info'])
+
+@app.route('/users')
+def users():
+    if 'credentials' not in session or not is_credentials_valid(session['credentials']):
+        return redirect(url_for('login'))
+    error_message = None
+    if 'error' in request.args:
+        error_message = request.args.get('error')
+    return render_template('users.html', error = error_message, user_info=session['user_info'])
+
+@app.route('/createUser')
+def createUser():
+    if 'credentials' not in session or not is_credentials_valid(session['credentials']):
+        return redirect(url_for('login'))
+    error_message = None
+    if 'error' in request.args:
+        error_message = request.args.get('error')
+    return render_template('users.html', error = error_message, user_info=session['user_info'])
+
 
 def credentials_to_dict(credentials):
     return {'token': credentials.token,

@@ -1,0 +1,169 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="page-header min-height-200 border-radius-xl mt-4"
+             style="background-image: url('{{ url_for('static', filename='/assets/img/bg-user.jpg') }}'); background-position-y: 50%;">
+        </div>
+        <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
+            <div class="row gx-4">
+                <div class="col-auto my-auto">
+                    <div class="h-100">
+                        <h5 class="mb-1">
+                            Khalil MZOUGHI
+                        </h5>
+                        <p class="mb-0 font-weight-bold text-sm">
+                            Bonjour me amor
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid py-4">
+    <div class="row">
+            <div class="col-12 col-xl-12">
+                <div class="card h-100">
+                    <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-6 col-xl-6">
+                                    <div class="mb-3">
+                                        <form role="form">
+                                            <input type="hidden" name="id" value="id">
+                                        <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Envoyer un SMS</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-xl-6">
+                                    <div class="mb-3">
+                                        <form role="form"></form>
+                                            <input type="hidden" name="id" value="id">
+                                        <button type="submit" class="btn bg-gradient-primary w-100 mt-4 mb-0">Révoquer l'accès</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12 col-xl-6">
+                <div class="card h-100">
+                    <div class="card-header pb-0 p-3">
+                        <h6 class="mb-0">Informations générales</h6>
+                    </div>
+                    <div class="card-body p-3">
+                        <form role="form">
+                            <label>ID</label>
+                            <div class="mb-3">
+                                <input type="text" name="id" value="jd5g8r-fjt5h98r" class="form-control"
+                                       placeholder="Titre"
+                                       aria-label="id"
+                                       aria-describedby="email-addon" disabled>
+                            </div>
+                            <label>Nom</label>
+                            <div class="mb-3">
+                                <input type="text" name="lname" class="form-control" placeholder="E-mail"
+                                       aria-label="nom"
+                                       aria-describedby="email-addon">
+                            </div>
+                            <label>Prénom</label>
+                            <div class="mb-3">
+                                <input type="text" name="fname" class="form-control" placeholder="Prénom"
+                                       aria-label="Prénom"
+                                       aria-describedby="email-addon">
+                            </div>
+                            <label>E-mail</label>
+                            <div class="mb-3">
+                                <input type="email" name="email" class="form-control" placeholder="E-mail"
+                                       aria-label="Email"
+                                       aria-describedby="email-addon">
+                            </div>
+                            <label>Téléphone</label>
+                            <div class="mb-3">
+                                <input type="tel" name="tel" class="form-control" placeholder="Téléphone"
+                                       aria-label="Téléphone"
+                                       aria-describedby="email-addon">
+                            </div>
+                            <label>RIB</label>
+                            <div class="mb-3">
+                                <input type="RIB" name="rib" class="form-control" placeholder="RIB"
+                                       aria-label="Password"
+                                       aria-describedby="password-addon">
+                            </div>
+                            <label>Lydia</label>
+                            <div class="mb-3">
+                                <p class="text-sm">
+                                    Cette personne a-t-elle un compte Lydia ?
+                                </p>
+                                <select class="form-select" name="lydia" id="type">
+                                    <option disabled selected>Sélectionnez une valeur</option>
+                                    <option value="1">Oui</option>
+                                    <option value="0">Non</option>
+                                </select>
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn bg-gradient-primary w-100 mt-4 mb-0">Modifier</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-xl-6">
+                <div class="card h-100">
+                    <div class="card-header pb-0 p-3">
+                        <h6 class="mb-0">Rôles</h6>
+                    </div>
+                    <div class="card-body p-3">
+                        <form role="form">
+                            <label>Administrateur</label>
+                            <div class="mb-3">
+                                <select class="form-select" name="admin" id="type">
+                                    <option disabled selected>Sélectionnez une valeur</option>
+                                    <option value="1">Oui</option>
+                                    <option value="0">Nom</option>
+                                </select>
+                            </div>
+                            <label>Trésorerie</label>
+                            <div class="mb-3">
+                                <select class="form-select" name="admin" id="type">
+                                    <option disabled selected>Sélectionnez une valeur</option>
+                                    <option value="1">Oui</option>
+                                    <option value="0">Nom</option>
+                                </select>
+                            </div>
+                            <label>Standard</label>
+                            <div class="mb-3">
+                                <select class="form-select" name="admin" id="type">
+                                    <option disabled selected>Sélectionnez une valeur</option>
+                                    <option value="1">Oui</option>
+                                    <option value="0">Nom</option>
+                                </select>
+                            </div>
+                            <label>Transactions</label>
+                            <div class="mb-3">
+                                <select class="form-select" name="admin" id="type">
+                                    <option disabled selected>Sélectionnez une valeur</option>
+                                    <option value="1">Oui</option>
+                                    <option value="0">Nom</option>
+                                </select>
+                            </div>
+                            <label>Membre</label>
+                            <div class="mb-3">
+                                <select class="form-select" name="admin" id="type">
+                                    <option disabled selected>Sélectionnez une valeur</option>
+                                    <option value="1">Oui</option>
+                                    <option value="0">Nom</option>
+                                </select>
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn bg-gradient-primary w-100 mt-4 mb-0">Mettre à jour</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

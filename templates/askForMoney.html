@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="page-header min-height-200 border-radius-xl mt-4" style="background-image: url('/static//assets/img/money.png'); background-position-y: 50%;">
+        </div>
+        <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
+            <div class="row gx-4">
+                <div class="col-auto my-auto">
+                    <div class="h-100">
+                        <h5 class="mb-1">
+                            Attendez la fin de l'ajout !
+                        </h5>
+                        <p class="mb-0 font-weight-bold text-danger text-sm">
+                            {% if error %}
+                                {{ error }}
+                            {%else%}
+                                Ne pas rafraîchir une fois le formulaire soumis !
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12 col-xl-12">
+                <div class="card h-100">
+                    <div class="card-header pb-0 p-3">
+                        <h6 class="mb-0">Demander de l'argent</h6>
+                    </div>
+                    <div class="card-body p-3">
+                        <form role="form" id="form" method="post" action="./askingForMoney">
+                            <div class="row">
+                                <div class="col-12 col-xl-6">
+                                    <label>Bénéficiaire (Membre du GECA)</label>
+                                    <div class="mb-3">
+                                        <select class="form-select" name="beneficiary" required>
+                                            {% for member in members %}
+                                            <option value="{{ member }}">{{ member }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-xl-6">
+                                    <label>De la part de</label>
+                                    <div class="mb-3">
+                                        <select class="form-select" name="toBeGivenBy" required>
+                                            <option value="Peu Importe">Peu Importe</option>
+                                            {% for member in members %}
+                                            <option value="{{ member }}">{{ member }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-xl-6">
+                                    <label>Raison</label>
+                                    <div class="mb-3">
+                                        <input type="text" name="reason" class="form-control" placeholder="Raison" required>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-xl-6">
+                                    <label>Montant en €</label>
+                                    <div class="mb-3">
+                                        <input type="number" step="0.01" min="0.01" name="amount" class="form-control" placeholder="Montant" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-xl-12">
+                                    <label>Description</label>
+                                    <div class="mb-3">
+                                        <textarea name="description" class="form-control" placeholder="Description" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" id="addBtn" class="btn bg-gradient-primary w-100 mt-4 mb-0">Demander</button>
+                            </div>
+                            <script>
+                                document.getElementById('form').addEventListener('submit', function(event) {
+                                    var submitButton = document.getElementById('addBtn');
+                                    submitButton.disabled = true;
+                                    submitButton.textContent = 'Ajout en cours ...';
+                                });
+                            </script>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

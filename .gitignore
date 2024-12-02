@@ -1,0 +1,6 @@
+credentials.json
+venv/
+flask_session/
+.log
+geca.sock
+.idea
