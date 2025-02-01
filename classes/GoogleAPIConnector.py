@@ -33,10 +33,6 @@ class GoogleAPIConnector:
         self.service_oauth2 = googleapiclient.discovery.build('oauth2', 'v2', credentials=self.credentials)
         print("Authentication successful")
 
-    def get_user_info(self):
-        user_info = self.service_oauth2.userinfo().get().execute()
-        return user_info
-
     def run_script(self, script_id: str, function_name: str, parameters: list):
         request = {
             "function": function_name,

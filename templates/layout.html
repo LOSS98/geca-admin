@@ -13,6 +13,7 @@
 
     <link href="{{ url_for('static', filename='/assets/css/style-icons.css')}}" rel="stylesheet"/>
     <link href="{{ url_for('static', filename='/assets/css/style-svg.css')}}" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='/assets/css/timeline.css')}}" rel="stylesheet"/>
 
     <script src="https://kit.fontawesome.com/3111edf2f1.js" crossorigin="anonymous"></script>
     <link href="{{ url_for('static', filename='/assets/css/style-svg.css')}}" rel="stylesheet"/>
@@ -31,6 +32,46 @@
     });
   });
 </script>
+        <script>
+        window.onload = function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+
+                        console.log(`Latitude: ${latitude}`);
+                        console.log(`Longitude: ${longitude}`);
+
+                        fetch('/save-location', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                latitude: latitude,
+                                longitude: longitude
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data.message);
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                    },
+                    function (error) {
+                        console.error("Geolocation error:", error.message);
+                    }
+                );
+            } else {
+                console.error("Geolocation is not supported by this browser.");
+            }
+        };
+    </script>
+    {% block head %}
+{% endblock %}
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
@@ -111,6 +152,14 @@
                         <i class="fa fa-address-card text-lg opacity-10" aria-hidden="true" style="color: red;"></i>
                     </div>
                     <span class="nav-link-text ms-1">Gestion des membres</span>
+                </a>
+            </li>
+            <li class="nav-item"></li>
+                <a id="navbar" class="nav-link" href="./">
+                    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fa fa-piggy-bank text-lg opacity-10" aria-hidden="true" style="color: red;"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Trésorerie</span>
                 </a>
             </li>
         </ul>
