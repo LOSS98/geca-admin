@@ -1740,3 +1740,655 @@
 2024-12-18 19:14:01,531 INFO werkzeug Thread-55 (process_request_thread) : 127.0.0.1 - - [18/Dec/2024 19:14:01] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
 2024-12-18 19:14:01,533 INFO werkzeug Thread-54 (process_request_thread) : 127.0.0.1 - - [18/Dec/2024 19:14:01] "GET /static/assets/img/logos/insa.png HTTP/1.1" 200 -
 2024-12-18 19:14:01,642 INFO werkzeug Thread-56 (process_request_thread) : 127.0.0.1 - - [18/Dec/2024 19:14:01] "GET /static/assets/img/logos/favicon.png HTTP/1.1" 200 -
+2025-02-01 21:04:16,702 INFO werkzeug MainThread : [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.181:5000
+2025-02-01 21:04:16,703 INFO werkzeug MainThread : [33mPress CTRL+C to quit[0m
+2025-02-01 21:04:16,704 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-01 21:04:18,282 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-01 21:04:18,284 INFO werkzeug MainThread :  * Debugger PIN: 767-532-568
+2025-02-01 21:04:21,637 INFO werkzeug Thread-2 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:21] "[32mGET / HTTP/1.1[0m" 302 -
+2025-02-01 21:04:21,689 INFO werkzeug Thread-3 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:21] "GET /login HTTP/1.1" 200 -
+2025-02-01 21:04:21,936 INFO werkzeug Thread-4 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:21] "[32mGET /static//assets/css/style-icons.css HTTP/1.1[0m" 308 -
+2025-02-01 21:04:21,939 INFO werkzeug Thread-5 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:21] "[33mGET /assets/js/core/popper.min.js HTTP/1.1[0m" 404 -
+2025-02-01 21:04:21,940 INFO werkzeug Thread-6 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:21] "[33mGET /assets/js/core/bootstrap.min.js HTTP/1.1[0m" 404 -
+2025-02-01 21:04:21,942 INFO werkzeug Thread-7 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:21] "[32mGET /static//assets/css/style-svg.css HTTP/1.1[0m" 308 -
+2025-02-01 21:04:21,943 INFO werkzeug Thread-8 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:21] "[32mGET /static//assets/css/style-general.css HTTP/1.1[0m" 308 -
+2025-02-01 21:04:21,948 INFO werkzeug Thread-9 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:21] "[33mGET /assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 404 -
+2025-02-01 21:04:21,949 INFO werkzeug Thread-10 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:21] "[33mGET /assets/js/plugins/smooth-scrollbar.min.js HTTP/1.1[0m" 404 -
+2025-02-01 21:04:21,951 INFO werkzeug Thread-11 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:21] "[33mGET /assets/js/js-general.min.js?v=1.0.7 HTTP/1.1[0m" 404 -
+2025-02-01 21:04:21,956 INFO werkzeug Thread-12 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:21] "[32mGET /static//assets/js/core/bootstrap.min.js HTTP/1.1[0m" 308 -
+2025-02-01 21:04:21,958 INFO werkzeug Thread-13 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:21] "[32mGET /static//assets/js/core/popper.min.js HTTP/1.1[0m" 308 -
+2025-02-01 21:04:21,962 INFO werkzeug Thread-14 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:21] "[32mGET /static//assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 308 -
+2025-02-01 21:04:21,964 INFO werkzeug Thread-15 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:21] "[32mGET /static//assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 308 -
+2025-02-01 21:04:21,966 INFO werkzeug Thread-16 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:21] "[32mGET /static//assets/js/js-general.min.js HTTP/1.1[0m" 308 -
+2025-02-01 21:04:22,152 INFO werkzeug Thread-18 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:22] "GET /static/assets/css/style-svg.css HTTP/1.1" 200 -
+2025-02-01 21:04:22,157 INFO werkzeug Thread-23 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:22] "GET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1" 200 -
+2025-02-01 21:04:22,158 INFO werkzeug Thread-17 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:22] "GET /static/assets/css/style-icons.css HTTP/1.1" 200 -
+2025-02-01 21:04:22,164 INFO werkzeug Thread-24 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:22] "GET /static/assets/js/plugins/chartjs.min.js HTTP/1.1" 200 -
+2025-02-01 21:04:22,166 INFO werkzeug Thread-22 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:22] "GET /static/assets/js/core/bootstrap.min.js HTTP/1.1" 200 -
+2025-02-01 21:04:22,167 INFO werkzeug Thread-19 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:22] "GET /static/assets/css/style-general.css HTTP/1.1" 200 -
+2025-02-01 21:04:22,167 INFO werkzeug Thread-20 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:22] "GET /static/assets/js/js-general.min.js HTTP/1.1" 200 -
+2025-02-01 21:04:22,169 INFO werkzeug Thread-21 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:22] "GET /static/assets/js/core/popper.min.js HTTP/1.1" 200 -
+2025-02-01 21:04:22,205 INFO werkzeug Thread-25 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:22] "[33mGET /assets/js/core/popper.min.js HTTP/1.1[0m" 404 -
+2025-02-01 21:04:22,238 INFO werkzeug Thread-27 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:22] "[33mGET /assets/js/core/bootstrap.min.js HTTP/1.1[0m" 404 -
+2025-02-01 21:04:22,239 INFO werkzeug Thread-26 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:22] "[32mGET /static//assets/img/insahdf.webp HTTP/1.1[0m" 308 -
+2025-02-01 21:04:22,251 INFO werkzeug Thread-28 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:22] "[33mGET /assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 404 -
+2025-02-01 21:04:22,262 INFO werkzeug Thread-29 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:22] "GET /static/assets/img/insahdf.webp HTTP/1.1" 200 -
+2025-02-01 21:04:22,263 INFO werkzeug Thread-30 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:22] "[33mGET /assets/js/plugins/smooth-scrollbar.min.js HTTP/1.1[0m" 404 -
+2025-02-01 21:04:22,283 INFO werkzeug Thread-31 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:22] "[33mGET /assets/js/js-general.min.js?v=1.0.7 HTTP/1.1[0m" 404 -
+2025-02-01 21:04:22,315 INFO werkzeug Thread-32 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:22] "GET /static/assets/css/style-svg.css HTTP/1.1" 200 -
+2025-02-01 21:04:22,382 INFO werkzeug Thread-33 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:22] "[32mGET /static//assets/img/logos/favicon.png HTTP/1.1[0m" 308 -
+2025-02-01 21:04:23,599 DEBUG requests_oauthlib.oauth2_session Thread-35 (process_request_thread) : Generated new state lufEHSDN2kBF5LDrCVAdV6rbaRaXIu.
+2025-02-01 21:04:23,601 INFO werkzeug Thread-35 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:23] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-02-01 21:04:26,350 DEBUG requests_oauthlib.oauth2_session Thread-36 (process_request_thread) : Encoding `client_id` "981235864567-g4qf2f76vf7b6ivdtuivc8tictrtf4r3.apps.googleusercontent.com" with `client_secret` as Basic auth credentials.
+2025-02-01 21:04:26,350 DEBUG requests_oauthlib.oauth2_session Thread-36 (process_request_thread) : Requesting url https://oauth2.googleapis.com/token using method POST.
+2025-02-01 21:04:26,350 DEBUG requests_oauthlib.oauth2_session Thread-36 (process_request_thread) : Supplying headers {'Accept': 'application/json', 'Content-Type': 'application/x-www-form-urlencoded'} and data {'grant_type': 'authorization_code', 'code': '4/0ASVgi3LBSoUcYrCWAdIyUM_BYEmlGPZFpdfj3c9nXSDZfc68DkFnhg4f6s9IoCWEoq4Grw', 'redirect_uri': 'http://127.0.0.1:5000/callback'}
+2025-02-01 21:04:26,350 DEBUG requests_oauthlib.oauth2_session Thread-36 (process_request_thread) : Passing through key word arguments {'timeout': None, 'auth': <requests.auth.HTTPBasicAuth object at 0x000001AA9F590CB0>, 'verify': None, 'proxies': None, 'cert': None}.
+2025-02-01 21:04:26,351 DEBUG urllib3.connectionpool Thread-36 (process_request_thread) : Starting new HTTPS connection (1): oauth2.googleapis.com:443
+2025-02-01 21:04:26,438 DEBUG urllib3.connectionpool Thread-36 (process_request_thread) : https://oauth2.googleapis.com:443 "POST /token HTTP/11" 200 None
+2025-02-01 21:04:26,438 DEBUG requests_oauthlib.oauth2_session Thread-36 (process_request_thread) : Request to fetch token completed with status 200.
+2025-02-01 21:04:26,439 DEBUG requests_oauthlib.oauth2_session Thread-36 (process_request_thread) : Request url was https://oauth2.googleapis.com/token
+2025-02-01 21:04:26,439 DEBUG requests_oauthlib.oauth2_session Thread-36 (process_request_thread) : Request headers were {'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': 'application/json', 'Connection': 'keep-alive', 'Content-Type': 'application/x-www-form-urlencoded', 'Content-Length': '164', 'Authorization': 'Basic OTgxMjM1ODY0NTY3LWc0cWYyZjc2dmY3YjZpdmR0dWl2Yzh0aWN0cnRmNHIzLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tOkdPQ1NQWC1HV2tkT214em9Ta0xpcHh2akpkeDZxOTNGckRz'}
+2025-02-01 21:04:26,439 DEBUG requests_oauthlib.oauth2_session Thread-36 (process_request_thread) : Request body was grant_type=authorization_code&code=4%2F0ASVgi3LBSoUcYrCWAdIyUM_BYEmlGPZFpdfj3c9nXSDZfc68DkFnhg4f6s9IoCWEoq4Grw&redirect_uri=http%3A%2F%2F127.0.0.1%3A5000%2Fcallback
+2025-02-01 21:04:26,439 DEBUG requests_oauthlib.oauth2_session Thread-36 (process_request_thread) : Response headers were {'Date': 'Sat, 01 Feb 2025 20:04:28 GMT', 'Expires': 'Mon, 01 Jan 1990 00:00:00 GMT', 'Pragma': 'no-cache', 'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate', 'Content-Type': 'application/json; charset=utf-8', 'Vary': 'Origin, X-Origin, Referer', 'Content-Encoding': 'gzip', 'Server': 'scaffolding on HTTPServer2', 'X-XSS-Protection': '0', 'X-Frame-Options': 'SAMEORIGIN', 'X-Content-Type-Options': 'nosniff', 'Alt-Svc': 'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000', 'Transfer-Encoding': 'chunked'} and content {
+  "access_token": "ya29.a0AXeO80QQvDNTGAw5PZZB3vaXOLznz_Kt1U7eL-KdG-DPXnttD9lV8X-wIWBXOrdLjooOV4DvNz535ZDKdsS9RcMWXaA3PrfXNl2KdMdE5WENNZzGwr7p2vZmIQ7g1KORAl7XP6Sm6XRyCy6J0iuS2MjARq6IFMqyYHwiOh5ExEMaCgYKAe0SARISFQHGX2MiYmO1EYm63O4DAPFmlNnbaA0178",
+  "expires_in": 3599,
+  "scope": "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/script.external_request https://www.googleapis.com/auth/userinfo.email openid https://www.googleapis.com/auth/userinfo.profile",
+  "token_type": "Bearer",
+  "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZhMDcyZjc1Nzg0NjQyNjE1MDg3YzcxODJjMTAxMzQxZTE4ZjdhM2EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI5ODEyMzU4NjQ1NjctZzRxZjJmNzZ2ZjdiNml2ZHR1aXZjOHRpY3RydGY0cjMuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI5ODEyMzU4NjQ1NjctZzRxZjJmNzZ2ZjdiNml2ZHR1aXZjOHRpY3RydGY0cjMuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTM2NzczMTE1MjQ5NzAwOTQ0MzUiLCJlbWFpbCI6ImtoYWxpbC5tem91Z2hpa21AZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJUWjJYXzFOaHJ0eXdLVEtHQU9lN2tBIiwibmFtZSI6IktoYWxpbCBNem91Z2hpIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0xWeGJ0QmxVV2FSNnNrRmpKX05qNm55ZkxVTXpsenBJQUNzeERzXzN3WXFVZ1prSUhJUGc9czk2LWMiLCJnaXZlbl9uYW1lIjoiS2hhbGlsIiwiZmFtaWx5X25hbWUiOiJNem91Z2hpIiwiaWF0IjoxNzM4NDQwMjY4LCJleHAiOjE3Mzg0NDM4Njh9.c7qBMukBCzkZ6JnOnUbAzztbpLVT0gy45sOKF0iqrfhvBGVR_rLk1blruWZCs9t1V6_DNvXSI5ZE2wLfqai9eAcatqk3M97KcR5jZjAjfsOaVV_oJ6gcPV3yJusGCb5IoQKCVLTmBUswv_MAIAimICzEBEn_TziecxXW01sdYBnKpR_zQHErEBs2MH7z9Oen-nqxZUKKVLoxGuPHCuO9U7py4v0QU-MzGFkvPyt3EZISk4f_ptGNwU4B9m_wuTL2scurvcVE8TCwXLD_4DTuxT_U-SVJUxvXuk-yIwVn3jFA1P-WWKRSNyZInhBHeXbubq0wiCtDnSX923RJ-P9OeQ"
+}.
+2025-02-01 21:04:26,439 DEBUG requests_oauthlib.oauth2_session Thread-36 (process_request_thread) : Invoking 0 token response hooks.
+2025-02-01 21:04:26,439 DEBUG requests_oauthlib.oauth2_session Thread-36 (process_request_thread) : Obtained token {'access_token': 'ya29.a0AXeO80QQvDNTGAw5PZZB3vaXOLznz_Kt1U7eL-KdG-DPXnttD9lV8X-wIWBXOrdLjooOV4DvNz535ZDKdsS9RcMWXaA3PrfXNl2KdMdE5WENNZzGwr7p2vZmIQ7g1KORAl7XP6Sm6XRyCy6J0iuS2MjARq6IFMqyYHwiOh5ExEMaCgYKAe0SARISFQHGX2MiYmO1EYm63O4DAPFmlNnbaA0178', 'expires_in': 3599, 'scope': ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/script.external_request', 'https://www.googleapis.com/auth/userinfo.email', 'openid', 'https://www.googleapis.com/auth/userinfo.profile'], 'token_type': 'Bearer', 'id_token': 'eyJhbGciOiJSUzI1NiIsImtpZCI6ImZhMDcyZjc1Nzg0NjQyNjE1MDg3YzcxODJjMTAxMzQxZTE4ZjdhM2EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI5ODEyMzU4NjQ1NjctZzRxZjJmNzZ2ZjdiNml2ZHR1aXZjOHRpY3RydGY0cjMuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI5ODEyMzU4NjQ1NjctZzRxZjJmNzZ2ZjdiNml2ZHR1aXZjOHRpY3RydGY0cjMuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTM2NzczMTE1MjQ5NzAwOTQ0MzUiLCJlbWFpbCI6ImtoYWxpbC5tem91Z2hpa21AZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJUWjJYXzFOaHJ0eXdLVEtHQU9lN2tBIiwibmFtZSI6IktoYWxpbCBNem91Z2hpIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0xWeGJ0QmxVV2FSNnNrRmpKX05qNm55ZkxVTXpsenBJQUNzeERzXzN3WXFVZ1prSUhJUGc9czk2LWMiLCJnaXZlbl9uYW1lIjoiS2hhbGlsIiwiZmFtaWx5X25hbWUiOiJNem91Z2hpIiwiaWF0IjoxNzM4NDQwMjY4LCJleHAiOjE3Mzg0NDM4Njh9.c7qBMukBCzkZ6JnOnUbAzztbpLVT0gy45sOKF0iqrfhvBGVR_rLk1blruWZCs9t1V6_DNvXSI5ZE2wLfqai9eAcatqk3M97KcR5jZjAjfsOaVV_oJ6gcPV3yJusGCb5IoQKCVLTmBUswv_MAIAimICzEBEn_TziecxXW01sdYBnKpR_zQHErEBs2MH7z9Oen-nqxZUKKVLoxGuPHCuO9U7py4v0QU-MzGFkvPyt3EZISk4f_ptGNwU4B9m_wuTL2scurvcVE8TCwXLD_4DTuxT_U-SVJUxvXuk-yIwVn3jFA1P-WWKRSNyZInhBHeXbubq0wiCtDnSX923RJ-P9OeQ', 'expires_at': 1738443865.4391456}.
+2025-02-01 21:04:26,444 INFO googleapiclient.discovery_cache Thread-36 (process_request_thread) : file_cache is only supported with oauth2client<4.0.0
+2025-02-01 21:04:26,446 INFO googleapiclient.discovery_cache Thread-36 (process_request_thread) : file_cache is only supported with oauth2client<4.0.0
+2025-02-01 21:04:26,447 DEBUG googleapiclient.discovery Thread-36 (process_request_thread) : URL being requested: GET https://www.googleapis.com/oauth2/v2/userinfo?alt=json
+2025-02-01 21:04:26,685 INFO werkzeug Thread-36 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:26] "[32mGET /callback?state=lufEHSDN2kBF5LDrCVAdV6rbaRaXIu&code=4/0ASVgi3LBSoUcYrCWAdIyUM_BYEmlGPZFpdfj3c9nXSDZfc68DkFnhg4f6s9IoCWEoq4Grw&scope=email+profile+https://www.googleapis.com/auth/userinfo.profile+openid+https://www.googleapis.com/auth/script.external_request+https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/spreadsheets&authuser=0&prompt=none HTTP/1.1[0m" 302 -
+2025-02-01 21:04:26,701 INFO werkzeug Thread-37 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:26] "GET / HTTP/1.1" 200 -
+2025-02-01 21:04:26,760 INFO werkzeug Thread-38 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:26] "[32mGET /static//assets/css/timeline.css HTTP/1.1[0m" 308 -
+2025-02-01 21:04:26,764 INFO werkzeug Thread-39 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:26] "[32mGET /static//assets/img/logos/insa.png HTTP/1.1[0m" 308 -
+2025-02-01 21:04:26,788 INFO werkzeug Thread-42 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:26] "GET /static/assets/css/style-general.css HTTP/1.1" 200 -
+2025-02-01 21:04:26,790 INFO werkzeug Thread-41 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:26] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:26,791 INFO werkzeug Thread-40 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:26] "GET /static/assets/css/style-icons.css HTTP/1.1" 200 -
+2025-02-01 21:04:26,791 INFO werkzeug Thread-43 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:26] "GET /static/assets/js/core/popper.min.js HTTP/1.1" 200 -
+2025-02-01 21:04:26,793 INFO werkzeug Thread-44 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:26] "GET /static/assets/js/core/bootstrap.min.js HTTP/1.1" 200 -
+2025-02-01 21:04:26,795 INFO werkzeug Thread-45 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:26] "GET /static/assets/css/timeline.css HTTP/1.1" 200 -
+2025-02-01 21:04:26,801 INFO werkzeug Thread-46 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:26] "GET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1" 200 -
+2025-02-01 21:04:26,802 INFO werkzeug Thread-48 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:26] "GET /static/assets/js/js-general.min.js HTTP/1.1" 200 -
+2025-02-01 21:04:26,803 INFO werkzeug Thread-47 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:26] "GET /static/assets/js/plugins/chartjs.min.js HTTP/1.1" 200 -
+2025-02-01 21:04:26,810 INFO werkzeug Thread-49 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:26] "GET /static/assets/img/logos/insa.png HTTP/1.1" 200 -
+2025-02-01 21:04:26,938 INFO werkzeug Thread-50 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:26] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:26,944 INFO werkzeug Thread-51 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:26] "GET /static/assets/img/insahdf.webp HTTP/1.1" 200 -
+2025-02-01 21:04:27,123 INFO werkzeug Thread-52 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:27] "GET /static/assets/img/logos/favicon.png HTTP/1.1" 200 -
+2025-02-01 21:04:31,851 INFO werkzeug Thread-53 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:31] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-02-01 21:04:32,935 INFO werkzeug Thread-54 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:32] "GET / HTTP/1.1" 200 -
+2025-02-01 21:04:33,011 INFO werkzeug Thread-60 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,011 INFO werkzeug Thread-56 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,012 INFO werkzeug Thread-55 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,012 INFO werkzeug Thread-58 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,013 INFO werkzeug Thread-59 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "GET /static/assets/css/timeline.css HTTP/1.1" 200 -
+2025-02-01 21:04:33,020 INFO werkzeug Thread-57 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,026 INFO werkzeug Thread-61 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,026 INFO werkzeug Thread-62 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,027 INFO werkzeug Thread-63 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,066 INFO werkzeug Thread-64 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,073 INFO werkzeug Thread-65 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "GET /static/assets/img/logos/insa.png HTTP/1.1" 200 -
+2025-02-01 21:04:33,080 INFO werkzeug Thread-66 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/img/insahdf.webp HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,740 INFO werkzeug Thread-67 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "GET / HTTP/1.1" 200 -
+2025-02-01 21:04:33,812 INFO werkzeug Thread-71 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,813 INFO werkzeug Thread-69 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,814 INFO werkzeug Thread-68 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,815 INFO werkzeug Thread-70 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,821 INFO werkzeug Thread-73 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,823 INFO werkzeug Thread-72 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,831 INFO werkzeug Thread-75 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,833 INFO werkzeug Thread-76 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,834 INFO werkzeug Thread-74 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,876 INFO werkzeug Thread-77 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,876 INFO werkzeug Thread-79 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/img/insahdf.webp HTTP/1.1[0m" 304 -
+2025-02-01 21:04:33,877 INFO werkzeug Thread-78 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:33] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:34,081 INFO werkzeug Thread-80 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:34] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-02-01 21:04:34,549 INFO werkzeug Thread-81 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:34] "GET /singleUser HTTP/1.1" 200 -
+2025-02-01 21:04:34,634 INFO werkzeug Thread-82 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:34] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:34,635 INFO werkzeug Thread-84 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:34] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:34,636 INFO werkzeug Thread-85 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:34] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:34,636 INFO werkzeug Thread-87 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:34] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:34,638 INFO werkzeug Thread-83 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:34] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:34,642 INFO werkzeug Thread-86 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:34] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:34,648 INFO werkzeug Thread-89 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:34] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:34,649 INFO werkzeug Thread-88 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:34] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:34,650 INFO werkzeug Thread-90 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:34] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:34,699 INFO werkzeug Thread-91 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:34] "[32mGET /static//assets/img/bg-user.jpg HTTP/1.1[0m" 308 -
+2025-02-01 21:04:34,699 INFO werkzeug Thread-93 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:34] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:34,700 INFO werkzeug Thread-92 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:34] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-01 21:04:34,726 INFO werkzeug Thread-94 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:34] "GET /static/assets/img/bg-user.jpg HTTP/1.1" 200 -
+2025-02-01 21:04:35,512 INFO werkzeug Thread-95 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:35] "GET /users HTTP/1.1" 200 -
+2025-02-01 21:04:35,588 INFO werkzeug Thread-96 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:35] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:35,589 INFO werkzeug Thread-97 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:35] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:35,590 INFO werkzeug Thread-98 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:35] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:35,594 INFO werkzeug Thread-100 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:35] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:35,594 INFO werkzeug Thread-99 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:35] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:35,600 INFO werkzeug Thread-101 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:35] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:35,602 INFO werkzeug Thread-103 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:35] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:35,603 INFO werkzeug Thread-104 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:35] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:35,603 INFO werkzeug Thread-102 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:35] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:35,639 INFO werkzeug Thread-105 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:35] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-01 21:04:35,642 INFO werkzeug Thread-106 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:35] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:36,396 INFO werkzeug Thread-107 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:36] "GET / HTTP/1.1" 200 -
+2025-02-01 21:04:36,475 INFO werkzeug Thread-110 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:36] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:36,475 INFO werkzeug Thread-109 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:36] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:36,476 INFO werkzeug Thread-111 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:36] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:36,476 INFO werkzeug Thread-108 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:36] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:36,480 INFO werkzeug Thread-112 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:36] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:36,491 INFO werkzeug Thread-114 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:36] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:36,492 INFO werkzeug Thread-115 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:36] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:36,493 INFO werkzeug Thread-113 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:36] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:36,495 INFO werkzeug Thread-116 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:36] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:36,533 INFO werkzeug Thread-117 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:36] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-01 21:04:36,533 INFO werkzeug Thread-119 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:36] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:36,534 INFO werkzeug Thread-118 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:36] "[36mGET /static/assets/img/insahdf.webp HTTP/1.1[0m" 304 -
+2025-02-01 21:04:36,922 INFO werkzeug Thread-120 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:36] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-02-01 21:04:37,101 INFO werkzeug Thread-121 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "GET /singleUser HTTP/1.1" 200 -
+2025-02-01 21:04:37,284 INFO werkzeug Thread-122 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,292 INFO werkzeug Thread-123 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,303 INFO werkzeug Thread-127 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,305 INFO werkzeug Thread-128 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,305 INFO werkzeug Thread-125 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,306 INFO werkzeug Thread-126 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,307 INFO werkzeug Thread-124 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,319 INFO werkzeug Thread-129 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,328 INFO werkzeug Thread-130 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,410 INFO werkzeug Thread-131 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,412 INFO werkzeug Thread-132 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,429 INFO werkzeug Thread-133 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "GET /static/assets/img/bg-user.jpg HTTP/1.1" 200 -
+2025-02-01 21:04:37,656 INFO werkzeug Thread-134 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "GET / HTTP/1.1" 200 -
+2025-02-01 21:04:37,734 INFO werkzeug Thread-135 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,735 INFO werkzeug Thread-137 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,736 INFO werkzeug Thread-138 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,737 INFO werkzeug Thread-136 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,738 INFO werkzeug Thread-139 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,742 INFO werkzeug Thread-140 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,750 INFO werkzeug Thread-141 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,750 INFO werkzeug Thread-142 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,751 INFO werkzeug Thread-143 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,785 INFO werkzeug Thread-145 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,787 INFO werkzeug Thread-144 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-01 21:04:37,793 INFO werkzeug Thread-146 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:37] "[36mGET /static/assets/img/insahdf.webp HTTP/1.1[0m" 304 -
+2025-02-01 21:04:38,362 INFO werkzeug Thread-147 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:38] "GET / HTTP/1.1" 200 -
+2025-02-01 21:04:38,436 INFO werkzeug Thread-149 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:38] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:38,437 INFO werkzeug Thread-153 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:38] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:38,437 INFO werkzeug Thread-150 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:38] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:38,439 INFO werkzeug Thread-148 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:38] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:38,442 INFO werkzeug Thread-152 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:38] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:38,446 INFO werkzeug Thread-151 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:38] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:38,446 INFO werkzeug Thread-156 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:38] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:38,448 INFO werkzeug Thread-155 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:38] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:38,448 INFO werkzeug Thread-154 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:38] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:04:38,486 INFO werkzeug Thread-157 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:38] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-01 21:04:38,491 INFO werkzeug Thread-158 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:38] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:04:38,515 INFO werkzeug Thread-159 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:38] "[36mGET /static/assets/img/insahdf.webp HTTP/1.1[0m" 304 -
+2025-02-01 21:04:39,345 INFO werkzeug Thread-160 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:04:39] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-02-01 21:05:15,387 INFO werkzeug Thread-162 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:15] "GET /timeline HTTP/1.1" 200 -
+2025-02-01 21:05:15,475 INFO werkzeug Thread-164 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:15] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:15,475 INFO werkzeug Thread-163 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:15] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:15,478 INFO werkzeug Thread-166 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:15] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:15,480 INFO werkzeug Thread-167 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:15] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:15,485 INFO werkzeug Thread-168 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:15] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:15,486 INFO werkzeug Thread-170 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:15] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:15,486 INFO werkzeug Thread-169 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:15] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:15,486 INFO werkzeug Thread-171 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:15] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:15,492 INFO werkzeug Thread-165 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:15] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:15,526 INFO werkzeug Thread-172 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:15] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:15,528 INFO werkzeug Thread-173 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:15] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-01 21:05:15,758 INFO werkzeug Thread-174 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:15] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-02-01 21:05:22,704 INFO werkzeug Thread-175 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:22] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-02-01 21:05:29,147 INFO werkzeug Thread-176 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:29] "GET / HTTP/1.1" 200 -
+2025-02-01 21:05:29,224 INFO werkzeug Thread-179 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:29] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:29,224 INFO werkzeug Thread-181 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:29] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:29,226 INFO werkzeug Thread-180 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:29] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:29,227 INFO werkzeug Thread-177 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:29] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:29,227 INFO werkzeug Thread-178 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:29] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:29,239 INFO werkzeug Thread-183 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:29] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:29,239 INFO werkzeug Thread-185 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:29] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:29,241 INFO werkzeug Thread-184 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:29] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:29,245 INFO werkzeug Thread-182 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:29] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:29,337 INFO werkzeug Thread-187 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:29] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:29,351 INFO werkzeug Thread-186 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:29] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-01 21:05:29,363 INFO werkzeug Thread-188 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:29] "[36mGET /static/assets/img/insahdf.webp HTTP/1.1[0m" 304 -
+2025-02-01 21:05:29,937 INFO werkzeug Thread-189 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:29] "GET / HTTP/1.1" 200 -
+2025-02-01 21:05:30,047 INFO werkzeug Thread-191 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,047 INFO werkzeug Thread-192 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,048 INFO werkzeug Thread-195 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,049 INFO werkzeug Thread-190 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,051 INFO werkzeug Thread-193 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,063 INFO werkzeug Thread-196 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,064 INFO werkzeug Thread-198 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,065 INFO werkzeug Thread-197 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,072 INFO werkzeug Thread-194 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,139 INFO werkzeug Thread-199 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,141 INFO werkzeug Thread-200 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,146 INFO werkzeug Thread-201 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/img/insahdf.webp HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,643 INFO werkzeug Thread-202 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "GET / HTTP/1.1" 200 -
+2025-02-01 21:05:30,722 INFO werkzeug Thread-203 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,723 INFO werkzeug Thread-205 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,724 INFO werkzeug Thread-206 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,725 INFO werkzeug Thread-207 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,728 INFO werkzeug Thread-208 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,729 INFO werkzeug Thread-204 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,740 INFO werkzeug Thread-209 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,741 INFO werkzeug Thread-210 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,741 INFO werkzeug Thread-211 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,791 INFO werkzeug Thread-212 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,792 INFO werkzeug Thread-213 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:30,799 INFO werkzeug Thread-214 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:30] "[36mGET /static/assets/img/insahdf.webp HTTP/1.1[0m" 304 -
+2025-02-01 21:05:31,246 INFO werkzeug Thread-215 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:31] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-02-01 21:05:31,278 INFO werkzeug Thread-216 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:31] "GET / HTTP/1.1" 200 -
+2025-02-01 21:05:31,344 INFO werkzeug Thread-219 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:31] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:31,345 INFO werkzeug Thread-222 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:31] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:31,345 INFO werkzeug Thread-217 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:31] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:31,346 INFO werkzeug Thread-221 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:31] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:31,347 INFO werkzeug Thread-218 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:31] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:31,347 INFO werkzeug Thread-220 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:31] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:31,361 INFO werkzeug Thread-224 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:31] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:31,361 INFO werkzeug Thread-225 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:31] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:31,362 INFO werkzeug Thread-223 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:31] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:31,398 INFO werkzeug Thread-226 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:31] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-01 21:05:31,399 INFO werkzeug Thread-227 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:31] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:31,428 INFO werkzeug Thread-228 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:31] "[36mGET /static/assets/img/insahdf.webp HTTP/1.1[0m" 304 -
+2025-02-01 21:05:31,993 INFO werkzeug Thread-229 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:31] "GET / HTTP/1.1" 200 -
+2025-02-01 21:05:32,061 INFO werkzeug Thread-230 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:32] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:32,062 INFO werkzeug Thread-235 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:32] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:32,062 INFO werkzeug Thread-233 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:32] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:32,062 INFO werkzeug Thread-232 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:32] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:32,064 INFO werkzeug Thread-231 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:32] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:32,073 INFO werkzeug Thread-234 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:32] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:32,078 INFO werkzeug Thread-236 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:32] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:32,078 INFO werkzeug Thread-238 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:32] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:32,079 INFO werkzeug Thread-237 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:32] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:32,125 INFO werkzeug Thread-240 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:32] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:32,126 INFO werkzeug Thread-239 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:32] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-01 21:05:32,158 INFO werkzeug Thread-241 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:32] "[36mGET /static/assets/img/insahdf.webp HTTP/1.1[0m" 304 -
+2025-02-01 21:05:34,817 INFO werkzeug Thread-242 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:34] "GET / HTTP/1.1" 200 -
+2025-02-01 21:05:34,878 INFO werkzeug Thread-243 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:34] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:34,879 INFO werkzeug Thread-245 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:34] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:34,880 INFO werkzeug Thread-244 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:34] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:34,888 INFO werkzeug Thread-247 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:34] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:34,889 INFO werkzeug Thread-248 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:34] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:34,891 INFO werkzeug Thread-246 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:34] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:34,894 INFO werkzeug Thread-250 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:34] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:34,896 INFO werkzeug Thread-249 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:34] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:34,898 INFO werkzeug Thread-251 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:34] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-01 21:05:34,930 INFO werkzeug Thread-253 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:34] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-01 21:05:34,931 INFO werkzeug Thread-252 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:34] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-01 21:05:34,931 INFO werkzeug Thread-254 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:34] "[36mGET /static/assets/img/insahdf.webp HTTP/1.1[0m" 304 -
+2025-02-01 21:05:36,686 INFO werkzeug Thread-255 (process_request_thread) : 127.0.0.1 - - [01/Feb/2025 21:05:36] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-02-01 21:29:10,955 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-01 21:29:11,299 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-01 21:29:13,159 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-01 21:29:13,161 INFO werkzeug MainThread :  * Debugger PIN: 767-532-568
+2025-02-01 21:29:47,533 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-01 21:29:47,768 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-01 21:29:49,128 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-01 21:29:49,130 INFO werkzeug MainThread :  * Debugger PIN: 767-532-568
+2025-02-01 21:30:07,922 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-01 21:30:08,118 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-01 21:30:09,377 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-01 21:30:09,380 INFO werkzeug MainThread :  * Debugger PIN: 767-532-568
+2025-02-01 21:31:30,522 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-01 21:31:30,757 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-01 21:31:32,316 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-01 21:31:32,319 INFO werkzeug MainThread :  * Debugger PIN: 767-532-568
+2025-02-01 21:32:19,035 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-01 21:32:19,225 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-01 21:32:20,543 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-01 21:32:20,545 INFO werkzeug MainThread :  * Debugger PIN: 767-532-568
+2025-02-01 21:32:34,130 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-01 21:32:34,377 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-01 21:32:35,714 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-01 21:32:35,716 INFO werkzeug MainThread :  * Debugger PIN: 767-532-568
+2025-02-01 21:32:58,597 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-01 21:32:58,806 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-01 21:33:00,104 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-01 21:33:00,107 INFO werkzeug MainThread :  * Debugger PIN: 767-532-568
+2025-02-01 21:33:31,329 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-01 21:33:31,536 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-01 21:33:32,838 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-01 21:33:32,840 INFO werkzeug MainThread :  * Debugger PIN: 767-532-568
+2025-02-01 21:36:09,791 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-01 21:36:10,219 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-01 21:36:14,695 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-01 21:36:14,698 INFO werkzeug MainThread :  * Debugger PIN: 767-532-568
+2025-02-01 21:36:24,106 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-01 21:36:24,354 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-01 21:36:25,670 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-01 21:36:25,673 INFO werkzeug MainThread :  * Debugger PIN: 767-532-568
+2025-02-02 11:47:08,778 INFO werkzeug MainThread : [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.181:5000
+2025-02-02 11:47:08,779 INFO werkzeug MainThread : [33mPress CTRL+C to quit[0m
+2025-02-02 11:47:08,784 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 11:47:16,774 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 11:47:16,780 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 11:47:16,871 INFO werkzeug Thread-2 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:16] "GET / HTTP/1.1" 200 -
+2025-02-02 11:47:17,073 INFO werkzeug Thread-3 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "[32mGET /static//assets/css/style-icons.css HTTP/1.1[0m" 308 -
+2025-02-02 11:47:17,074 INFO werkzeug Thread-4 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "[32mGET /static//assets/css/style-general.css HTTP/1.1[0m" 308 -
+2025-02-02 11:47:17,075 INFO werkzeug Thread-6 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "[32mGET /static//assets/css/style-svg.css HTTP/1.1[0m" 308 -
+2025-02-02 11:47:17,076 INFO werkzeug Thread-5 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "[32mGET /static//assets/css/timeline.css HTTP/1.1[0m" 308 -
+2025-02-02 11:47:17,266 INFO werkzeug Thread-7 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "[32mGET /static//assets/img/logos/insa.png HTTP/1.1[0m" 308 -
+2025-02-02 11:47:17,267 INFO werkzeug Thread-8 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "[32mGET /static//assets/js/core/popper.min.js HTTP/1.1[0m" 308 -
+2025-02-02 11:47:17,277 INFO werkzeug Thread-9 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "[32mGET /static//assets/js/core/bootstrap.min.js HTTP/1.1[0m" 308 -
+2025-02-02 11:47:17,279 INFO werkzeug Thread-12 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "[32mGET /static//assets/js/js-general.min.js HTTP/1.1[0m" 308 -
+2025-02-02 11:47:17,282 INFO werkzeug Thread-11 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "[32mGET /static//assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 308 -
+2025-02-02 11:47:17,283 INFO werkzeug Thread-10 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "[32mGET /static//assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 308 -
+2025-02-02 11:47:17,719 INFO werkzeug Thread-15 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "GET /static/assets/css/style-general.css HTTP/1.1" 200 -
+2025-02-02 11:47:17,743 INFO werkzeug Thread-14 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "GET /static/assets/css/style-svg.css HTTP/1.1" 200 -
+2025-02-02 11:47:17,764 INFO werkzeug Thread-16 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "GET /static/assets/css/timeline.css HTTP/1.1" 200 -
+2025-02-02 11:47:17,788 INFO werkzeug Thread-17 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "GET /static/assets/js/core/popper.min.js HTTP/1.1" 200 -
+2025-02-02 11:47:17,800 INFO werkzeug Thread-20 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "GET /static/assets/js/plugins/chartjs.min.js HTTP/1.1" 200 -
+2025-02-02 11:47:17,845 INFO werkzeug Thread-21 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "GET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1" 200 -
+2025-02-02 11:47:17,916 INFO werkzeug Thread-18 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "GET /static/assets/js/core/bootstrap.min.js HTTP/1.1" 200 -
+2025-02-02 11:47:17,931 INFO werkzeug Thread-19 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "GET /static/assets/js/js-general.min.js HTTP/1.1" 200 -
+2025-02-02 11:47:17,932 INFO werkzeug Thread-13 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "GET /static/assets/css/style-icons.css HTTP/1.1" 200 -
+2025-02-02 11:47:17,971 INFO werkzeug Thread-22 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:17] "GET /static/assets/img/logos/insa.png HTTP/1.1" 200 -
+2025-02-02 11:47:18,304 INFO werkzeug Thread-23 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:18] "[32mGET /static//assets/img/insahdf.webp HTTP/1.1[0m" 308 -
+2025-02-02 11:47:18,759 INFO werkzeug Thread-24 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:18] "GET /static/assets/css/style-svg.css HTTP/1.1" 200 -
+2025-02-02 11:47:18,762 INFO werkzeug Thread-25 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:18] "GET /static/assets/img/insahdf.webp HTTP/1.1" 200 -
+2025-02-02 11:47:19,068 INFO werkzeug Thread-26 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:19] "[32mGET /static//assets/img/logos/favicon.png HTTP/1.1[0m" 308 -
+2025-02-02 11:47:19,116 INFO werkzeug Thread-27 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:19] "GET /static/assets/img/logos/favicon.png HTTP/1.1" 200 -
+2025-02-02 11:47:22,578 INFO werkzeug Thread-28 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:47:22] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-02-02 11:48:04,441 INFO werkzeug Thread-30 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "[32mGET /timeline HTTP/1.1[0m" 302 -
+2025-02-02 11:48:04,480 INFO werkzeug Thread-31 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "GET /login HTTP/1.1" 200 -
+2025-02-02 11:48:04,534 INFO werkzeug Thread-32 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "[32mGET /static//assets/css/style-icons.css HTTP/1.1[0m" 308 -
+2025-02-02 11:48:04,535 INFO werkzeug Thread-35 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "[33mGET /assets/js/core/popper.min.js HTTP/1.1[0m" 404 -
+2025-02-02 11:48:04,535 INFO werkzeug Thread-36 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "[33mGET /assets/js/core/bootstrap.min.js HTTP/1.1[0m" 404 -
+2025-02-02 11:48:04,536 INFO werkzeug Thread-37 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "[33mGET /assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 404 -
+2025-02-02 11:48:04,537 INFO werkzeug Thread-33 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "[32mGET /static//assets/css/style-svg.css HTTP/1.1[0m" 308 -
+2025-02-02 11:48:04,538 INFO werkzeug Thread-34 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "[32mGET /static//assets/css/style-general.css HTTP/1.1[0m" 308 -
+2025-02-02 11:48:04,553 INFO werkzeug Thread-38 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "[33mGET /assets/js/plugins/smooth-scrollbar.min.js HTTP/1.1[0m" 404 -
+2025-02-02 11:48:04,554 INFO werkzeug Thread-39 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "[33mGET /assets/js/js-general.min.js?v=1.0.7 HTTP/1.1[0m" 404 -
+2025-02-02 11:48:04,555 INFO werkzeug Thread-40 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "[32mGET /static//assets/js/core/popper.min.js HTTP/1.1[0m" 308 -
+2025-02-02 11:48:04,557 INFO werkzeug Thread-41 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "[32mGET /static//assets/js/core/bootstrap.min.js HTTP/1.1[0m" 308 -
+2025-02-02 11:48:04,560 INFO werkzeug Thread-42 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "[32mGET /static//assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 308 -
+2025-02-02 11:48:04,562 INFO werkzeug Thread-43 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "[32mGET /static//assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 308 -
+2025-02-02 11:48:04,567 INFO werkzeug Thread-44 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "GET /static/assets/css/style-icons.css HTTP/1.1" 200 -
+2025-02-02 11:48:04,569 INFO werkzeug Thread-45 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "GET /static/assets/css/style-svg.css HTTP/1.1" 200 -
+2025-02-02 11:48:04,571 INFO werkzeug Thread-47 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "[32mGET /static//assets/js/js-general.min.js HTTP/1.1[0m" 308 -
+2025-02-02 11:48:04,572 INFO werkzeug Thread-46 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "GET /static/assets/css/style-general.css HTTP/1.1" 200 -
+2025-02-02 11:48:04,576 INFO werkzeug Thread-49 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "GET /static/assets/js/core/bootstrap.min.js HTTP/1.1" 200 -
+2025-02-02 11:48:04,576 INFO werkzeug Thread-48 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "GET /static/assets/js/core/popper.min.js HTTP/1.1" 200 -
+2025-02-02 11:48:04,577 INFO werkzeug Thread-50 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "GET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1" 200 -
+2025-02-02 11:48:04,578 INFO werkzeug Thread-51 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "GET /static/assets/js/plugins/chartjs.min.js HTTP/1.1" 200 -
+2025-02-02 11:48:04,588 INFO werkzeug Thread-52 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:04,605 INFO werkzeug Thread-53 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "GET /static/assets/js/js-general.min.js HTTP/1.1" 200 -
+2025-02-02 11:48:04,807 INFO werkzeug Thread-54 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:04,824 INFO werkzeug Thread-55 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "[32mGET /static//assets/img/insahdf.webp HTTP/1.1[0m" 308 -
+2025-02-02 11:48:04,905 INFO werkzeug Thread-56 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:04] "GET /static/assets/img/insahdf.webp HTTP/1.1" 200 -
+2025-02-02 11:48:05,248 INFO werkzeug Thread-57 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:05] "[32mGET /static//assets/img/logos/favicon.png HTTP/1.1[0m" 308 -
+2025-02-02 11:48:05,251 INFO werkzeug Thread-58 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:05] "GET /static/assets/img/logos/favicon.png HTTP/1.1" 200 -
+2025-02-02 11:48:05,902 DEBUG requests_oauthlib.oauth2_session Thread-59 (process_request_thread) : Generated new state yAU1cDdkBKigH4ZdkkmVnHIVkfzS54.
+2025-02-02 11:48:05,904 INFO werkzeug Thread-59 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:05] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-02-02 11:48:11,183 DEBUG requests_oauthlib.oauth2_session Thread-60 (process_request_thread) : Encoding `client_id` "981235864567-g4qf2f76vf7b6ivdtuivc8tictrtf4r3.apps.googleusercontent.com" with `client_secret` as Basic auth credentials.
+2025-02-02 11:48:11,184 DEBUG requests_oauthlib.oauth2_session Thread-60 (process_request_thread) : Requesting url https://oauth2.googleapis.com/token using method POST.
+2025-02-02 11:48:11,184 DEBUG requests_oauthlib.oauth2_session Thread-60 (process_request_thread) : Supplying headers {'Accept': 'application/json', 'Content-Type': 'application/x-www-form-urlencoded'} and data {'grant_type': 'authorization_code', 'code': '4/0ASVgi3LLuYjcFIr-PeWfnbPEhPPW1z1NXQB9aRceaktddZgt3hXkkiALrAnTIXIH2yY0wg', 'redirect_uri': 'http://127.0.0.1:5000/callback'}
+2025-02-02 11:48:11,184 DEBUG requests_oauthlib.oauth2_session Thread-60 (process_request_thread) : Passing through key word arguments {'timeout': None, 'auth': <requests.auth.HTTPBasicAuth object at 0x0000024AE97C96A0>, 'verify': None, 'proxies': None, 'cert': None}.
+2025-02-02 11:48:11,185 DEBUG urllib3.connectionpool Thread-60 (process_request_thread) : Starting new HTTPS connection (1): oauth2.googleapis.com:443
+2025-02-02 11:48:11,301 DEBUG urllib3.connectionpool Thread-60 (process_request_thread) : https://oauth2.googleapis.com:443 "POST /token HTTP/11" 200 None
+2025-02-02 11:48:11,304 DEBUG requests_oauthlib.oauth2_session Thread-60 (process_request_thread) : Request to fetch token completed with status 200.
+2025-02-02 11:48:11,304 DEBUG requests_oauthlib.oauth2_session Thread-60 (process_request_thread) : Request url was https://oauth2.googleapis.com/token
+2025-02-02 11:48:11,304 DEBUG requests_oauthlib.oauth2_session Thread-60 (process_request_thread) : Request headers were {'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': 'application/json', 'Connection': 'keep-alive', 'Content-Type': 'application/x-www-form-urlencoded', 'Content-Length': '164', 'Authorization': 'Basic OTgxMjM1ODY0NTY3LWc0cWYyZjc2dmY3YjZpdmR0dWl2Yzh0aWN0cnRmNHIzLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tOkdPQ1NQWC1HV2tkT214em9Ta0xpcHh2akpkeDZxOTNGckRz'}
+2025-02-02 11:48:11,304 DEBUG requests_oauthlib.oauth2_session Thread-60 (process_request_thread) : Request body was grant_type=authorization_code&code=4%2F0ASVgi3LLuYjcFIr-PeWfnbPEhPPW1z1NXQB9aRceaktddZgt3hXkkiALrAnTIXIH2yY0wg&redirect_uri=http%3A%2F%2F127.0.0.1%3A5000%2Fcallback
+2025-02-02 11:48:11,304 DEBUG requests_oauthlib.oauth2_session Thread-60 (process_request_thread) : Response headers were {'Expires': 'Mon, 01 Jan 1990 00:00:00 GMT', 'Pragma': 'no-cache', 'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate', 'Date': 'Sun, 02 Feb 2025 10:48:12 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Vary': 'Origin, X-Origin, Referer', 'Content-Encoding': 'gzip', 'Server': 'scaffolding on HTTPServer2', 'X-XSS-Protection': '0', 'X-Frame-Options': 'SAMEORIGIN', 'X-Content-Type-Options': 'nosniff', 'Alt-Svc': 'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000', 'Transfer-Encoding': 'chunked'} and content {
+  "access_token": "ya29.a0AXeO80Q-cqBSBn9MLwdGZAIKBXyyUoFEliXglW8QEpxO9snHFw_p9tDT07l4_iwKsm_jJhp07zu_IbL4H4JvUl332XwmMNASqU4qUuKNY5jtjYSFTw02P1L8jH7y8W1SKjVYgpzwtaonWkCC0ZpZYZ-oGUZMc2eDgEo1n6kkaCgYKASMSARISFQHGX2Mi_0NJp1IXcw-S8F1tL0IIig0175",
+  "expires_in": 3599,
+  "refresh_token": "1//03w9ZZ13KRdGdCgYIARAAGAMSNwF-L9Ir_IAuxZBgPtTd0dxyJZntRObSO-6us88TwvLGzhRjMBvl10gqT0UFms2lmIRGc_IZ8bo",
+  "scope": "https://www.googleapis.com/auth/script.external_request https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/userinfo.profile openid",
+  "token_type": "Bearer",
+  "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZhMDcyZjc1Nzg0NjQyNjE1MDg3YzcxODJjMTAxMzQxZTE4ZjdhM2EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI5ODEyMzU4NjQ1NjctZzRxZjJmNzZ2ZjdiNml2ZHR1aXZjOHRpY3RydGY0cjMuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI5ODEyMzU4NjQ1NjctZzRxZjJmNzZ2ZjdiNml2ZHR1aXZjOHRpY3RydGY0cjMuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTM2NzczMTE1MjQ5NzAwOTQ0MzUiLCJlbWFpbCI6ImtoYWxpbC5tem91Z2hpa21AZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJERkpJNGVSMXNqcmsxc1RRZ1ZlQzNBIiwibmFtZSI6IktoYWxpbCBNem91Z2hpIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0xWeGJ0QmxVV2FSNnNrRmpKX05qNm55ZkxVTXpsenBJQUNzeERzXzN3WXFVZ1prSUhJUGc9czk2LWMiLCJnaXZlbl9uYW1lIjoiS2hhbGlsIiwiZmFtaWx5X25hbWUiOiJNem91Z2hpIiwiaWF0IjoxNzM4NDkzMjkyLCJleHAiOjE3Mzg0OTY4OTJ9.O7oOTZTy-FRRyTaPBNWcfaZHs9zY_Jd7BzQ30PwQNJ8q10oovGLIUmn4wwBcoigxSyKAkoIR5WfB49Bi25HnrwruKMAxy4YvzkvuzC-jWQ7KD8mLB6gk8WUqZARId1Mi6B6JvuoKSXq7tGcZna4KWoX6wGIUORxFyBoH2WYM3jkuTa96vlrhqzrePbpN_JJEOf07pEVAHPkWY3wRgmWso_TjXZRUtHWoaSsxX6gfYQ5oVyXaD0ML6aOn28aT2W-2tC78U7misc4wpV11Vp_BL4cKm1clnDAJ9PIzQWQxmN07_RzKu3c53EsfayLRToWpGHrZI7sBqBDol47vWyHKbQ"
+}.
+2025-02-02 11:48:11,304 DEBUG requests_oauthlib.oauth2_session Thread-60 (process_request_thread) : Invoking 0 token response hooks.
+2025-02-02 11:48:11,304 DEBUG requests_oauthlib.oauth2_session Thread-60 (process_request_thread) : Obtained token {'access_token': 'ya29.a0AXeO80Q-cqBSBn9MLwdGZAIKBXyyUoFEliXglW8QEpxO9snHFw_p9tDT07l4_iwKsm_jJhp07zu_IbL4H4JvUl332XwmMNASqU4qUuKNY5jtjYSFTw02P1L8jH7y8W1SKjVYgpzwtaonWkCC0ZpZYZ-oGUZMc2eDgEo1n6kkaCgYKASMSARISFQHGX2Mi_0NJp1IXcw-S8F1tL0IIig0175', 'expires_in': 3599, 'refresh_token': '1//03w9ZZ13KRdGdCgYIARAAGAMSNwF-L9Ir_IAuxZBgPtTd0dxyJZntRObSO-6us88TwvLGzhRjMBvl10gqT0UFms2lmIRGc_IZ8bo', 'scope': ['https://www.googleapis.com/auth/script.external_request', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/userinfo.profile', 'openid'], 'token_type': 'Bearer', 'id_token': 'eyJhbGciOiJSUzI1NiIsImtpZCI6ImZhMDcyZjc1Nzg0NjQyNjE1MDg3YzcxODJjMTAxMzQxZTE4ZjdhM2EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI5ODEyMzU4NjQ1NjctZzRxZjJmNzZ2ZjdiNml2ZHR1aXZjOHRpY3RydGY0cjMuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI5ODEyMzU4NjQ1NjctZzRxZjJmNzZ2ZjdiNml2ZHR1aXZjOHRpY3RydGY0cjMuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTM2NzczMTE1MjQ5NzAwOTQ0MzUiLCJlbWFpbCI6ImtoYWxpbC5tem91Z2hpa21AZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJERkpJNGVSMXNqcmsxc1RRZ1ZlQzNBIiwibmFtZSI6IktoYWxpbCBNem91Z2hpIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0xWeGJ0QmxVV2FSNnNrRmpKX05qNm55ZkxVTXpsenBJQUNzeERzXzN3WXFVZ1prSUhJUGc9czk2LWMiLCJnaXZlbl9uYW1lIjoiS2hhbGlsIiwiZmFtaWx5X25hbWUiOiJNem91Z2hpIiwiaWF0IjoxNzM4NDkzMjkyLCJleHAiOjE3Mzg0OTY4OTJ9.O7oOTZTy-FRRyTaPBNWcfaZHs9zY_Jd7BzQ30PwQNJ8q10oovGLIUmn4wwBcoigxSyKAkoIR5WfB49Bi25HnrwruKMAxy4YvzkvuzC-jWQ7KD8mLB6gk8WUqZARId1Mi6B6JvuoKSXq7tGcZna4KWoX6wGIUORxFyBoH2WYM3jkuTa96vlrhqzrePbpN_JJEOf07pEVAHPkWY3wRgmWso_TjXZRUtHWoaSsxX6gfYQ5oVyXaD0ML6aOn28aT2W-2tC78U7misc4wpV11Vp_BL4cKm1clnDAJ9PIzQWQxmN07_RzKu3c53EsfayLRToWpGHrZI7sBqBDol47vWyHKbQ', 'expires_at': 1738496890.3048246}.
+2025-02-02 11:48:11,313 INFO googleapiclient.discovery_cache Thread-60 (process_request_thread) : file_cache is only supported with oauth2client<4.0.0
+2025-02-02 11:48:11,316 INFO googleapiclient.discovery_cache Thread-60 (process_request_thread) : file_cache is only supported with oauth2client<4.0.0
+2025-02-02 11:48:11,317 DEBUG googleapiclient.discovery Thread-60 (process_request_thread) : URL being requested: GET https://www.googleapis.com/oauth2/v2/userinfo?alt=json
+2025-02-02 11:48:11,576 INFO werkzeug Thread-60 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:11] "[32mGET /callback?state=yAU1cDdkBKigH4ZdkkmVnHIVkfzS54&code=4/0ASVgi3LLuYjcFIr-PeWfnbPEhPPW1z1NXQB9aRceaktddZgt3hXkkiALrAnTIXIH2yY0wg&scope=email%20profile%20https://www.googleapis.com/auth/script.external_request%20https://www.googleapis.com/auth/spreadsheets%20openid%20https://www.googleapis.com/auth/userinfo.profile%20https://www.googleapis.com/auth/userinfo.email&authuser=0&prompt=consent HTTP/1.1[0m" 302 -
+2025-02-02 11:48:11,583 INFO werkzeug Thread-61 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:11] "GET / HTTP/1.1" 200 -
+2025-02-02 11:48:11,624 INFO werkzeug Thread-62 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:11] "[32mGET /static//assets/css/timeline.css HTTP/1.1[0m" 308 -
+2025-02-02 11:48:11,625 INFO werkzeug Thread-63 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:11] "[32mGET /static//assets/img/logos/insa.png HTTP/1.1[0m" 308 -
+2025-02-02 11:48:11,653 INFO werkzeug Thread-65 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:11] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:11,653 INFO werkzeug Thread-68 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:11] "GET /static/assets/img/logos/insa.png HTTP/1.1" 200 -
+2025-02-02 11:48:11,655 INFO werkzeug Thread-64 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:11] "GET /static/assets/css/timeline.css HTTP/1.1" 200 -
+2025-02-02 11:48:11,655 INFO werkzeug Thread-66 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:11] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:11,659 INFO werkzeug Thread-69 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:11] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:11,659 INFO werkzeug Thread-67 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:11] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:11,668 INFO werkzeug Thread-70 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:11] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:11,676 INFO werkzeug Thread-71 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:11] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:11,677 INFO werkzeug Thread-72 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:11] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:11,681 INFO werkzeug Thread-73 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:11] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:11,730 INFO werkzeug Thread-74 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:11] "[36mGET /static/assets/img/insahdf.webp HTTP/1.1[0m" 304 -
+2025-02-02 11:48:11,731 INFO werkzeug Thread-75 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:11] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:11,732 INFO werkzeug Thread-76 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:11] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:17,854 INFO werkzeug Thread-77 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:17] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-02-02 11:48:23,884 INFO werkzeug Thread-78 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:23] "GET / HTTP/1.1" 200 -
+2025-02-02 11:48:23,951 INFO werkzeug Thread-79 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:23] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:23,955 INFO werkzeug Thread-80 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:23] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:23,957 INFO werkzeug Thread-81 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:23] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:23,967 INFO werkzeug Thread-82 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:23] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:23,968 INFO werkzeug Thread-83 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:23] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-02 11:48:23,969 INFO werkzeug Thread-84 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:23] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:24,048 INFO werkzeug Thread-85 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:24,086 INFO werkzeug Thread-86 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:24,088 INFO werkzeug Thread-87 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:24,116 INFO werkzeug Thread-90 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:24,136 INFO werkzeug Thread-89 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:24,140 INFO werkzeug Thread-88 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[36mGET /static/assets/img/insahdf.webp HTTP/1.1[0m" 304 -
+2025-02-02 11:48:24,144 INFO werkzeug Thread-91 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:24,259 INFO werkzeug Thread-92 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-02-02 11:48:24,811 INFO werkzeug Thread-93 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "GET /singleUser HTTP/1.1" 200 -
+2025-02-02 11:48:24,853 INFO werkzeug Thread-96 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:24,854 INFO werkzeug Thread-94 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:24,855 INFO werkzeug Thread-97 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:24,858 INFO werkzeug Thread-98 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-02 11:48:24,859 INFO werkzeug Thread-99 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:24,860 INFO werkzeug Thread-95 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:24,884 INFO werkzeug Thread-101 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:24,884 INFO werkzeug Thread-100 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:24,886 INFO werkzeug Thread-102 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:24,899 INFO werkzeug Thread-103 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[32mGET /static//assets/img/bg-user.jpg HTTP/1.1[0m" 308 -
+2025-02-02 11:48:24,919 INFO werkzeug Thread-104 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "GET /static/assets/img/bg-user.jpg HTTP/1.1" 200 -
+2025-02-02 11:48:24,921 INFO werkzeug Thread-105 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:24,923 INFO werkzeug Thread-107 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:24,926 INFO werkzeug Thread-106 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:24] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:25,010 INFO werkzeug Thread-108 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:25] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-02-02 11:48:25,832 INFO werkzeug Thread-109 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:25] "GET /users HTTP/1.1" 200 -
+2025-02-02 11:48:25,870 INFO werkzeug Thread-110 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:25] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:25,871 INFO werkzeug Thread-115 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:25] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:25,871 INFO werkzeug Thread-113 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:25] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:25,872 INFO werkzeug Thread-114 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:25] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-02 11:48:25,874 INFO werkzeug Thread-112 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:25] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:25,874 INFO werkzeug Thread-111 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:25] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:25,898 INFO werkzeug Thread-116 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:25] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:25,898 INFO werkzeug Thread-118 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:25] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:25,900 INFO werkzeug Thread-117 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:25] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:25,922 INFO werkzeug Thread-119 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:25] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:25,922 INFO werkzeug Thread-120 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:25] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:25,922 INFO werkzeug Thread-121 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:25] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:26,013 INFO werkzeug Thread-122 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:26] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-02-02 11:48:26,811 INFO werkzeug Thread-123 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:26] "GET / HTTP/1.1" 200 -
+2025-02-02 11:48:26,852 INFO werkzeug Thread-126 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:26] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:26,852 INFO werkzeug Thread-125 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:26] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:26,853 INFO werkzeug Thread-129 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:26] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:26,854 INFO werkzeug Thread-128 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:26] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-02 11:48:26,856 INFO werkzeug Thread-127 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:26] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:26,856 INFO werkzeug Thread-124 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:26] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:26,870 INFO werkzeug Thread-130 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:26] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:26,876 INFO werkzeug Thread-131 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:26] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:26,878 INFO werkzeug Thread-132 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:26] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:26,882 INFO werkzeug Thread-133 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:26] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:26,896 INFO werkzeug Thread-134 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:26] "[36mGET /static/assets/img/insahdf.webp HTTP/1.1[0m" 304 -
+2025-02-02 11:48:26,896 INFO werkzeug Thread-136 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:26] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:26,897 INFO werkzeug Thread-135 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:26] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:26,979 INFO werkzeug Thread-137 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:26] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-02-02 11:48:27,208 INFO werkzeug Thread-138 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:27] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-02 11:48:29,808 INFO werkzeug Thread-139 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:29] "GET /timeline HTTP/1.1" 200 -
+2025-02-02 11:48:29,842 INFO werkzeug Thread-140 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:29] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:29,850 INFO werkzeug Thread-142 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:29] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:29,851 INFO werkzeug Thread-143 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:29] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:29,851 INFO werkzeug Thread-141 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:29] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:29,854 INFO werkzeug Thread-144 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:29] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-02 11:48:29,854 INFO werkzeug Thread-145 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:29] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:29,872 INFO werkzeug Thread-147 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:29] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:29,872 INFO werkzeug Thread-146 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:29] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:29,873 INFO werkzeug Thread-148 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:29] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:29,897 INFO werkzeug Thread-150 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:29] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:29,897 INFO werkzeug Thread-151 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:29] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:29,898 INFO werkzeug Thread-149 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:29] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:30,028 INFO werkzeug Thread-152 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:30] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-02-02 11:48:36,742 INFO werkzeug Thread-153 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:36] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-02 11:48:43,455 INFO werkzeug Thread-154 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:43] "GET / HTTP/1.1" 200 -
+2025-02-02 11:48:43,510 INFO werkzeug Thread-157 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:43] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:43,512 INFO werkzeug Thread-155 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:43] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:43,513 INFO werkzeug Thread-156 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:43] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:43,516 INFO werkzeug Thread-159 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:43] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-02-02 11:48:43,517 INFO werkzeug Thread-160 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:43] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:43,519 INFO werkzeug Thread-158 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:43] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:43,539 INFO werkzeug Thread-162 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:43] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:43,539 INFO werkzeug Thread-163 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:43] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:43,540 INFO werkzeug Thread-161 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:43] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:43,563 INFO werkzeug Thread-164 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:43] "[36mGET /static/assets/img/insahdf.webp HTTP/1.1[0m" 304 -
+2025-02-02 11:48:43,563 INFO werkzeug Thread-165 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:43] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-02-02 11:48:43,564 INFO werkzeug Thread-166 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:43] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:43,566 INFO werkzeug Thread-167 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:43] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-02-02 11:48:43,689 INFO werkzeug Thread-168 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:48:43] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-02-02 11:59:52,365 INFO werkzeug Thread-169 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:59:52] "GET /login HTTP/1.1" 200 -
+2025-02-02 11:59:55,394 INFO werkzeug Thread-170 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:59:55] "[32mGET / HTTP/1.1[0m" 302 -
+2025-02-02 11:59:55,399 INFO werkzeug Thread-171 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:59:55] "GET /login HTTP/1.1" 200 -
+2025-02-02 11:59:58,422 INFO werkzeug Thread-172 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:59:58] "[32mGET /singleUser HTTP/1.1[0m" 302 -
+2025-02-02 11:59:58,428 INFO werkzeug Thread-173 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 11:59:58] "GET /login HTTP/1.1" 200 -
+2025-02-02 12:00:01,450 INFO werkzeug Thread-174 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 12:00:01] "[32mGET /users HTTP/1.1[0m" 302 -
+2025-02-02 12:00:01,457 INFO werkzeug Thread-175 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 12:00:01] "GET /login HTTP/1.1" 200 -
+2025-02-02 12:00:04,866 INFO werkzeug Thread-176 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 12:00:04] "[32mGET /timeline HTTP/1.1[0m" 302 -
+2025-02-02 12:00:04,877 INFO werkzeug Thread-177 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 12:00:04] "GET /login HTTP/1.1" 200 -
+2025-02-02 15:13:56,582 INFO werkzeug Thread-178 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 15:13:56] "[32mGET / HTTP/1.1[0m" 302 -
+2025-02-02 15:13:56,594 INFO werkzeug Thread-179 (process_request_thread) : 127.0.0.1 - - [02/Feb/2025 15:13:56] "GET /login HTTP/1.1" 200 -
+2025-02-02 20:12:03,259 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:12:03,900 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:12:05,751 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:12:05,755 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:12:23,482 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:12:23,719 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:12:25,218 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:12:25,221 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:13:24,470 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:13:24,652 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:13:25,987 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:13:25,989 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:13:34,388 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:13:34,703 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:13:36,055 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:13:36,057 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:15:42,912 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:15:43,145 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:15:44,934 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:15:44,936 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:15:55,371 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:15:55,623 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:15:57,064 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:15:57,067 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:16:04,434 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:16:04,687 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:16:06,013 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:16:06,015 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:16:11,285 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:16:11,497 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:16:12,760 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:16:12,762 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:16:16,005 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:16:16,254 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:16:17,514 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:16:17,516 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:16:29,003 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:16:29,201 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:16:30,457 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:16:30,460 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:16:38,842 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:16:39,102 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:16:40,403 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:16:40,405 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:19:14,157 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:19:14,409 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:19:15,905 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:19:15,908 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:19:24,316 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:19:24,528 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:19:25,827 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:19:25,829 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:19:32,228 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:19:32,541 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:19:34,011 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:19:34,015 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:21:15,984 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:21:16,269 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:21:17,945 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:21:17,948 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:22:30,689 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:22:30,923 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:22:32,350 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:22:32,353 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:22:39,670 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:22:39,895 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:22:41,269 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:22:41,271 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:23:39,466 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:23:39,695 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:23:41,035 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:23:41,037 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:23:57,720 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:23:57,937 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:23:59,254 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:23:59,256 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:24:07,629 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:24:07,818 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:24:09,161 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:24:09,164 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:25:04,322 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:25:04,522 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:25:05,857 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:25:05,860 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:25:45,305 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:25:45,499 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:25:46,923 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:25:46,925 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:26:09,862 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:26:10,049 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:26:11,369 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:26:11,371 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:26:57,094 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:26:57,338 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:26:58,662 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:26:58,664 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:27:38,157 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:27:38,372 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:27:39,740 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:27:39,742 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:27:45,045 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:27:45,234 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:27:46,492 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:27:46,495 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:28:07,303 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:28:07,522 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:28:08,852 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:28:08,855 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:29:03,937 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:29:04,218 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:29:05,589 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:29:05,592 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:29:16,045 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:29:16,287 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:29:17,599 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:29:17,601 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-02-02 20:31:11,771 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\sms.py', reloading
+2025-02-02 20:31:11,959 INFO werkzeug MainThread :  * Restarting with stat
+2025-02-02 20:31:13,251 WARNING werkzeug MainThread :  * Debugger is active!
+2025-02-02 20:31:13,253 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
