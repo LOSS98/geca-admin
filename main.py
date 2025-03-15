@@ -23,15 +23,13 @@ from entities.income import Income
 from entities.expense import Expense
 from entities.task import Task, TaskState
 
-if True :
+if True:
     logging.basicConfig(level=logging.DEBUG,
-                         format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s',
-                         handlers=[
-                             logging.FileHandler("app.log"),  # Log to a file named 'app.log'
-                             logging.StreamHandler()  # Also log to console
-                         ])
-
-
+                        format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s',
+                        handlers=[
+                            logging.FileHandler("app.log"),  # Log to a file named 'app.log'
+                            logging.StreamHandler()  # Also log to console
+                        ])
 
 load_dotenv()
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '0'
@@ -43,14 +41,12 @@ Session(app)
 
 credentials_path = './credentials.json'
 
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gecaDB.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gecaDB.db'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://khalil:Kh4lil9870720406*@51.38.83.204:1125/postgres_geca_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 migrate = Migrate(app, db)
-
-
 
 with app.app_context():
     db.create_all()
@@ -68,21 +64,26 @@ scopes = [
     'openid'
 ]
 
+
 def is_credentials_valid(credentials):
     # Créer un objet Credentials à partir du dictionnaire
     creds = Credentials(**credentials)
     # Vérifier si les credentials sont valides et non expirés
     return creds and creds.valid
 
+
 def is_not_connected():
     return 'credentials' not in session or not is_credentials_valid(session['credentials'])
+
 
 @app.route('/')
 def index():
     if is_not_connected():
         return redirect(url_for('login'))
 
-    return render_template('dashboard.html', user_info=session['user_info'])
+    user_info = session.get('user_info', {})
+    return render_template('dashboard.html', user_info=user_info)
+
 
 # Connections
 @app.route('/login', methods=['GET', 'POST'])
@@ -99,6 +100,7 @@ def login():
         session['state'] = state
         return redirect(authorization_url)
     return render_template('login.html')
+
 
 @app.route('/callback')
 def callback():
@@ -128,15 +130,27 @@ def callback():
 
     with app.app_context():
         user = User.query.filter_by(email=user_info['email']).first()
-    if not user:
-        flash("Your email is not registered in the system.")
-        return redirect(url_for('login'))
+        if not user:
+            flash("Your email is not registered in the system.")
+            return redirect(url_for('login'))
+
+        try:
+            role_names = db.session.query(Role.name) \
+                .join(user_roles) \
+                .filter(user_roles.c.user_email == user.email) \
+                .all()
+
+            roles = [role[0] for role in role_names]
+        except Exception as e:
+            print(f"Error fetching roles: {e}")
+            roles = ["member"]
 
     session['user_info'] = user_info
-    session['role'] = user.get_role()
+    session['role'] = roles
 
-    flash(f"Welcome {user_info['email']}! You are logged in as {session['role']}.")
+    flash(f"Welcome {user_info['email']}! You are logged in.")
     return redirect(url_for('index'))
+
 
 @app.route('/disconnect')
 def disconnect():
@@ -145,6 +159,8 @@ def disconnect():
 
 
 '''EXPENSES'''
+
+
 @app.route('/addExpense')
 def addExpense():
     if is_not_connected():
@@ -200,7 +216,10 @@ def addingExpense():
 
     return redirect(url_for('addExpense'))
 
+
 '''INCOMES'''
+
+
 @app.route('/addIncome')
 def addIncome():
     if is_not_connected():
@@ -259,7 +278,10 @@ def addingIncome():
 
     return redirect(url_for('addIncome'))
 
+
 '''INTERNAL TRANSFERS'''
+
+
 @app.route('/addInternalTransfer')
 def addInternalTransfer():
     if is_not_connected():
@@ -274,7 +296,8 @@ def addInternalTransfer():
     connector.authenticate(session_credentials)
     members = User.get_all_names()
 
-    return render_template('addInternalTransfer.html', error=error_message, user_info=session['user_info'], members=members)
+    return render_template('addInternalTransfer.html', error=error_message, user_info=session['user_info'],
+                           members=members)
 
 
 @app.route('/addingInternalTransfer', methods=['GET', 'POST'])
@@ -440,8 +463,7 @@ def viewOdds():
     return redirect(url_for('searchOdds', error="Une erreur est survenue"))'''
 
 
-
-#User management
+# User management
 @app.route('/singleUser')
 def singleUser():
     if is_not_connected():
@@ -472,7 +494,8 @@ def users():
     error_message = None
     if 'error' in request.args:
         error_message = request.args.get('error')
-    return render_template('users.html', error = error_message, user_info=session['user_info'])
+    return render_template('users.html', error=error_message, user_info=session['user_info'])
+
 
 @app.route('/createUser')
 def createUser():
@@ -481,7 +504,8 @@ def createUser():
     error_message = None
     if 'error' in request.args:
         error_message = request.args.get('error')
-    return render_template('users.html', error = error_message, user_info=session['user_info'])
+    return render_template('users.html', error=error_message, user_info=session['user_info'])
+
 
 @app.route('/incomes')
 def incomes():
@@ -490,7 +514,8 @@ def incomes():
     error_message = None
     if 'error' in request.args:
         error_message = request.args.get('error')
-    return render_template('viewIncomes.html', error = error_message, user_info=session['user_info'])
+    return render_template('viewIncomes.html', error=error_message, user_info=session['user_info'])
+
 
 @app.route('/task')
 def timeline():
@@ -499,7 +524,8 @@ def timeline():
     error_message = None
     if 'error' in request.args:
         error_message = request.args.get('error')
-    return render_template('timeline old.html', error = error_message, user_info=session['user_info'])
+    return render_template('timeline old.html', error=error_message, user_info=session['user_info'])
+
 
 @app.route('/save-location', methods=['POST'])
 def save_location():
@@ -515,6 +541,7 @@ def save_location():
         return jsonify({'status': 'success', 'message': 'Location saved successfully!'}), 201
     else:
         return jsonify({'status': 'error', 'message': 'Invalid data'}), 400
+
 
 def credentials_to_dict(credentials):
     return {'token': credentials.token,
@@ -541,6 +568,8 @@ from datetime import datetime
 
 
 '''TASKS'''
+
+
 @app.route('/tasks')
 def tasks():
     if is_not_connected():
@@ -556,6 +585,7 @@ def tasks():
 
     return render_template('timeline.html', error=error_message, user_info=session['user_info'], user_role=user_role)
 
+
 @app.route('/createTask')
 def create_task_page():
     if is_not_connected():
@@ -569,7 +599,9 @@ def create_task_page():
         members = User.get_all_names()
         roles = ['admin', 'member', 'treasurer']  # Add all available roles in your system
 
-    return render_template('createTask.html', error=error_message, user_info=session['user_info'], members=members, roles=roles)
+    return render_template('createTask.html', error=error_message, user_info=session['user_info'], members=members,
+                           roles=roles)
+
 
 @app.route('/api/tasks')
 def get_tasks():
@@ -672,6 +704,7 @@ def create_task_api():
         print(f"Error creating task: {e}")
         return jsonify({'success': False, 'error': str(e)}), 500
 
+
 @app.route('/api/tasks/<int:task_id>/dispute', methods=['POST'])
 def dispute_task(task_id):
     if is_not_connected():
@@ -698,6 +731,7 @@ def dispute_task(task_id):
         db.session.rollback()
         print(f"Error disputing task: {str(e)}")
         return jsonify({'error': str(e)}), 500
+
 
 @app.route('/api/tasks/<int:task_id>/validate', methods=['POST'])
 def validate_task(task_id):
@@ -753,6 +787,7 @@ def complete_task(task_id):
         print(f"Error completing task: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
+
 @app.route('/api/tasks/<int:task_id>/remove-assignee', methods=['POST'])
 def remove_assignee(task_id):
     if is_not_connected():
@@ -774,6 +809,7 @@ def remove_assignee(task_id):
         task.remove_assignee(assignee_email)
 
     return jsonify({'success': True})
+
 
 @app.route('/api/tasks/<int:task_id>/delete', methods=['POST'])
 def delete_task(task_id):
@@ -800,6 +836,7 @@ def delete_task(task_id):
         db.session.rollback()
         print(f"Error deleting task: {str(e)}")
         return jsonify({'error': str(e)}), 500
+
 
 @app.route('/api/tasks/<int:task_id>/cancel-validation', methods=['POST'])
 def cancel_validation(task_id):
@@ -853,6 +890,7 @@ def reject_validation(task_id):
         db.session.rollback()
         print(f"Error rejecting validation: {str(e)}")
         return jsonify({'error': str(e)}), 500
+
 
 # 2. Mise à jour de la fonction de rejet de contestation pour gérer correctement les erreurs de notification
 @app.route('/api/tasks/<int:task_id>/reject-dispute', methods=['POST'])
@@ -961,7 +999,8 @@ def available_tasks_page():
         user = User.query.filter_by(email=user_email).first()
         user_roles = user.get_roles() if user else []
 
-    return render_template('available-tasks.html', error=error_message, user_info=session['user_info'], user_roles=user_roles)
+    return render_template('available-tasks.html', error=error_message, user_info=session['user_info'],
+                           user_roles=user_roles)
 
 
 @app.route('/api/available-tasks')
@@ -1103,13 +1142,15 @@ def remind_task(task_id):
         # Envoyer un rappel à tous les assignés
         for user in task.assignees:
             if hasattr(user, 'phone') and user.phone:
-                message = task._format_message("reminder", user_email, "Ce rappel a été envoyé par le créateur de la tâche.")
+                message = task._format_message("reminder", user_email,
+                                               "Ce rappel a été envoyé par le créateur de la tâche.")
                 task._send_notification(user.phone, message)
 
         return jsonify({'success': True})
     except Exception as e:
         print(f"Error sending reminder: {str(e)}")
         return jsonify({'error': str(e)}), 500
+
 
 @app.route('/api/updateUserRole', methods=['POST'])
 def update_user_role():
@@ -1318,6 +1359,7 @@ def reject_task_transfer(task_id):
         print(f"Error rejecting task transfer: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
+
 @app.route('/api/users', methods=['GET'])
 def get_users():
     """API pour récupérer la liste des utilisateurs (pour la sélection lors de la cession)"""
@@ -1429,6 +1471,7 @@ def transfer_task_ownership(task_id):
         print(f"Error transferring task ownership: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
+
 @app.route('/api/tasks/<int:task_id>/release', methods=['POST'])
 def release_task_api(task_id):
     if is_not_connected():
@@ -1525,7 +1568,6 @@ def get_users_locations():
     try:
         from entities.user import User
         users = User.query.order_by(User.lname, User.fname).all()
-
 
         # Récupérer seulement les utilisateurs qui ont des coordonnées de localisation
         users_with_location = []
@@ -1677,7 +1719,6 @@ def get_members_management():
         from entities.task import Task
         users = User.query.order_by(User.lname, User.fname).all()
 
-
         members_data = []
         for user in users:
             # Obtenir les tâches assignées à cet utilisateur (pour le compteur)
@@ -1699,7 +1740,6 @@ def get_members_management():
     except Exception as e:
         print(f"Error getting members data: {str(e)}")
         return jsonify({'error': str(e)}), 500
-
 
 
 if __name__ == '__main__':
