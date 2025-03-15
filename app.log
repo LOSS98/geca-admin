@@ -3162,3 +3162,68 @@
 2025-03-15 15:36:05,374 INFO werkzeug Thread-595 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:36:05] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
 2025-03-15 15:36:17,806 INFO werkzeug Thread-596 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:36:17] "GET /api/tasks HTTP/1.1" 200 -
 2025-03-15 15:36:36,111 INFO werkzeug Thread-597 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:36:36] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:36:48,160 INFO werkzeug Thread-598 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:36:48] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:37:06,108 INFO werkzeug Thread-599 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:37:06] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:37:18,163 INFO werkzeug Thread-600 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:37:18] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:37:36,112 INFO werkzeug Thread-601 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:37:36] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:38:06,117 INFO werkzeug Thread-602 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:38:06] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:38:47,130 INFO werkzeug Thread-604 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:38:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:38:47,182 INFO werkzeug Thread-603 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:38:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:39:07,174 INFO werkzeug Thread-605 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:07] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:39:16,298 INFO werkzeug MainThread : [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.181:5000
+2025-03-15 15:39:16,298 INFO werkzeug MainThread : [33mPress CTRL+C to quit[0m
+2025-03-15 15:39:16,300 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 15:39:17,782 INFO werkzeug Thread-606 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:17] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 15:39:17,915 INFO werkzeug Thread-607 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:17] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 15:39:17,916 INFO werkzeug Thread-609 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:17] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 15:39:17,916 INFO werkzeug Thread-612 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:17] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 15:39:17,919 INFO werkzeug Thread-608 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:17] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 15:39:17,920 INFO werkzeug Thread-611 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:17] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 15:39:17,922 INFO werkzeug Thread-610 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:17] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 15:39:17,934 INFO werkzeug Thread-613 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:17] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 15:39:17,935 INFO werkzeug Thread-614 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:17] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 15:39:17,946 INFO werkzeug Thread-616 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:17] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 15:39:17,947 INFO werkzeug Thread-615 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:17] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 15:39:17,953 INFO werkzeug Thread-617 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:17] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 15:39:18,056 INFO werkzeug Thread-618 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:18] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 15:39:18,077 INFO werkzeug Thread-620 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:18] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 15:39:18,168 INFO werkzeug Thread-621 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:18] "GET /api/users HTTP/1.1" 200 -
+2025-03-15 15:39:18,196 INFO werkzeug Thread-619 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:18] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:39:18,217 INFO werkzeug Thread-622 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:18] "GET /api/users HTTP/1.1" 200 -
+2025-03-15 15:39:18,352 INFO werkzeug Thread-623 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:18] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 15:39:18,702 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 15:39:18,705 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 15:39:47,162 INFO werkzeug Thread-624 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:39:49,108 INFO werkzeug Thread-625 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:39:49] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:40:19,113 INFO werkzeug Thread-626 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:40:19] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:40:47,158 INFO werkzeug Thread-627 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:40:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:40:49,101 INFO werkzeug Thread-628 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:40:49] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:41:19,106 INFO werkzeug Thread-629 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:41:19] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:41:47,165 INFO werkzeug Thread-630 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:41:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:42:47,111 INFO werkzeug Thread-632 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:42:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:42:47,171 INFO werkzeug Thread-631 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:42:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:43:47,135 INFO werkzeug Thread-634 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:43:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:43:47,167 INFO werkzeug Thread-633 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:43:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:44:37,275 INFO werkzeug Thread-635 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:37] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:44:39,223 INFO werkzeug Thread-636 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:39] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 15:44:39,319 INFO werkzeug Thread-637 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:39] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 15:44:39,319 INFO werkzeug Thread-638 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:39] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 15:44:39,321 INFO werkzeug Thread-639 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:39] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 15:44:39,322 INFO werkzeug Thread-640 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:39] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 15:44:39,323 INFO werkzeug Thread-641 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:39] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 15:44:39,325 INFO werkzeug Thread-642 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:39] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 15:44:39,336 INFO werkzeug Thread-643 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:39] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 15:44:39,336 INFO werkzeug Thread-644 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:39] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 15:44:39,347 INFO werkzeug Thread-646 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:39] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 15:44:39,348 INFO werkzeug Thread-645 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:39] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 15:44:39,356 INFO werkzeug Thread-647 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:39] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 15:44:39,469 INFO werkzeug Thread-648 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:39] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 15:44:39,488 INFO werkzeug Thread-650 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:39] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 15:44:39,565 INFO werkzeug Thread-651 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:39] "GET /api/users HTTP/1.1" 200 -
+2025-03-15 15:44:39,602 INFO werkzeug Thread-649 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:39] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 15:44:39,616 INFO werkzeug Thread-652 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:39] "GET /api/users HTTP/1.1" 200 -
+2025-03-15 15:44:39,726 INFO werkzeug Thread-653 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:39] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 15:44:47,162 INFO werkzeug Thread-654 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 15:44:47] "GET /api/tasks HTTP/1.1" 200 -
