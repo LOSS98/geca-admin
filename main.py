@@ -41,7 +41,8 @@ Session(app)
 
 credentials_path = './credentials.json'
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gecaDB.db'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gecaDB.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://khalil:Kh4lil9870720406*@51.38.83.204:1125/postgres_geca_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
