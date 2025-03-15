@@ -1,0 +1,313 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<style>
+  .assignment-option {
+    margin-bottom: 1rem;
+  }
+  .assignment-section {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid #eee;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+  }
+  .active-section {
+    border-color: #5e72e4;
+    background-color: rgba(94, 114, 228, 0.05);
+  }
+  .date-time-group {
+    display: flex;
+    gap: 1rem;
+  }
+  .date-time-group .form-group {
+    flex: 1;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="page-header min-height-200 border-radius-xl mt-4" style="background-image: url('/static/assets/img/money.png'); background-position-y: 50%;">
+  </div>
+  <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
+    <div class="row gx-4">
+      <div class="col-auto my-auto">
+        <div class="h-100">
+          <h5 class="mb-1">
+            Créer une nouvelle tâche
+          </h5>
+          <p class="mb-0 font-weight-bold text-danger text-sm">
+            {% if error %}
+              {{ error }}
+            {% else %}
+              Veuillez remplir tous les champs nécessaires
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card h-100">
+        <div class="card-header pb-0 p-3">
+          <h6 class="mb-0">Détails de la tâche</h6>
+        </div>
+        <div class="card-body p-3">
+          <form id="taskForm">
+            <div class="row">
+              <div class="col-12 col-xl-12">
+                <label>Sujet</label>
+                <div class="mb-3">
+                  <input type="text" id="subject" name="subject" class="form-control" placeholder="Sujet de la tâche" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 col-xl-12">
+                <label>Description</label>
+                <div class="mb-3">
+                  <textarea id="description" name="description" class="form-control" placeholder="Description détaillée de la tâche" rows="4" required></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <label>Date et heure de début</label>
+                <div class="mb-3">
+                  <input type="datetime-local" id="startDate" name="startDate" class="form-control" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label>Date et heure d'échéance</label>
+                <div class="mb-3">
+                  <input type="datetime-local" id="dueDate" name="dueDate" class="form-control" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-12">
+                <label>Attribution de la tâche</label>
+                <div class="assignment-option">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="assignmentType" id="assignToUsers" value="users" checked>
+                    <label class="form-check-label" for="assignToUsers">
+                      Attribuer à des utilisateurs spécifiques
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="assignmentType" id="assignToRole" value="role">
+                    <label class="form-check-label" for="assignToRole">
+                      Attribuer à un rôle
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="usersSection" class="assignment-section active-section">
+              <div class="row">
+                <div class="col-12">
+                  <label>Sélectionner les utilisateurs</label>
+                  <div class="mb-3">
+                    <select class="form-control" id="userSelect" multiple>
+                      {% for member in members %}
+                      <option value="{{ member }}">{{ member }}</option>
+                      {% endfor %}
+                    </select>
+                    <div class="form-text">Maintenez Ctrl (ou Cmd sur Mac) pour sélectionner plusieurs utilisateurs</div>
+                    <div id="selectedUsers" class="mt-2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="roleSection" class="assignment-section" style="display: none;">
+              <div class="row">
+                <div class="col-12">
+                  <label>Sélectionner un rôle</label>
+                  <div class="mb-3">
+                    <select class="form-control" id="roleSelect">
+                      <option value="" disabled selected>Choisir un rôle</option>
+                      {% for role in roles %}
+                      <option value="{{ role }}">{{ role }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-12">
+                <div id="formError" class="alert alert-danger" style="display: none;"></div>
+                <button type="submit" id="submitBtn" class="btn bg-gradient-primary w-100">Créer la tâche</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Handle assignment type selection
+    const assignToUsers = document.getElementById('assignToUsers');
+    const assignToRole = document.getElementById('assignToRole');
+    const usersSection = document.getElementById('usersSection');
+    const roleSection = document.getElementById('roleSection');
+    const userSelect = document.getElementById('userSelect');
+    const selectedUsersDiv = document.getElementById('selectedUsers');
+
+    // Update selected users display when selection changes
+    userSelect.addEventListener('change', function() {
+      const selectedOptions = Array.from(this.selectedOptions);
+      const selectedUsersHTML = selectedOptions.map(option =>
+        `<span class="badge bg-primary m-1">${option.text}</span>`
+      ).join('');
+
+      selectedUsersDiv.innerHTML = selectedUsersHTML || '<em>Aucun utilisateur sélectionné</em>';
+    });
+
+    assignToUsers.addEventListener('change', function() {
+      if (this.checked) {
+        usersSection.style.display = 'block';
+        usersSection.classList.add('active-section');
+        roleSection.style.display = 'none';
+        roleSection.classList.remove('active-section');
+      }
+    });
+
+    assignToRole.addEventListener('change', function() {
+      if (this.checked) {
+        roleSection.style.display = 'block';
+        roleSection.classList.add('active-section');
+        usersSection.style.display = 'none';
+        usersSection.classList.remove('active-section');
+      }
+    });
+
+    // Set default dates
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    document.getElementById('startDate').value = formatDateTime(now);
+    document.getElementById('dueDate').value = formatDateTime(tomorrow);
+
+    // Form submission
+    const taskForm = document.getElementById('taskForm');
+    taskForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const subject = document.getElementById('subject').value;
+      const description = document.getElementById('description').value;
+      const startDate = document.getElementById('startDate').value;
+      const dueDate = document.getElementById('dueDate').value;
+      const assignmentType = document.querySelector('input[name="assignmentType"]:checked').value;
+
+      // Validation
+      if (!subject || !startDate || !dueDate) {
+        showError('Veuillez remplir tous les champs obligatoires.');
+        return;
+      }
+
+      if (new Date(startDate) >= new Date(dueDate)) {
+        showError('La date d\'échéance doit être postérieure à la date de début.');
+        return;
+      }
+
+      // Prepare data based on assignment type
+      let assignmentData = {};
+      if (assignmentType === 'users') {
+        const userSelect = document.getElementById('userSelect');
+        const selectedUsers = Array.from(userSelect.selectedOptions).map(option => option.value);
+
+        console.log("Selected users:", selectedUsers);
+
+        if (selectedUsers.length === 0) {
+          showError('Veuillez sélectionner au moins un utilisateur.');
+          return;
+        }
+
+        assignmentData = {
+          assignment_type: 'users',
+          assignees: selectedUsers
+        };
+      } else {
+        const selectedRole = document.getElementById('roleSelect').value;
+        if (!selectedRole) {
+          showError('Veuillez sélectionner un rôle.');
+          return;
+        }
+        assignmentData = {
+          assignment_type: 'role',
+          role: selectedRole
+        };
+      }
+
+      // Prepare task data
+      const taskData = {
+        subject: subject,
+        description: description,
+        start_date: startDate,
+        due_date: dueDate,
+        ...assignmentData
+      };
+
+      // Submit task data
+      const submitBtn = document.getElementById('submitBtn');
+      const originalText = submitBtn.innerText;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Création en cours...';
+
+      fetch('/api/createTask', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(taskData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = '/tasks';
+        } else {
+          showError(data.error || 'Une erreur est survenue lors de la création de la tâche.');
+          submitBtn.disabled = false;
+          submitBtn.innerText = originalText;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showError('Une erreur est survenue lors de la communication avec le serveur.');
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalText;
+      });
+    });
+
+    // Helper functions
+    function showError(message) {
+      const errorElement = document.getElementById('formError');
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+      setTimeout(() => {
+        errorElement.style.display = 'none';
+      }, 5000);
+    }
+
+    function formatDateTime(date) {
+      return date.toISOString().slice(0, 16);
+    }
+  });
+</script>
+{% endblock %}

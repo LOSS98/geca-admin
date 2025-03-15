@@ -1,47 +1,445 @@
 {% extends "layout.html" %}
 
+{% block head %}
+<style>
+  .task-card {
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+  }
+  .task-card:hover {
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+  }
+  .delay-info {
+    font-weight: bold;
+  }
+  .task-actions {
+    margin-top: 1rem;
+  }
+  .task-badge {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+  }
+  .badge-assigned {
+    background-color: #3498db;
+    color: white;
+  }
+  .badge-disputed {
+    background-color: #e74c3c;
+    color: white;
+  }
+  .badge-to-validated {
+    background-color: #f39c12;
+    color: white;
+  }
+  .badge-done {
+    background-color: #2ecc71;
+    color: white;
+  }
+  .badge-info {
+    background-color: #3498db;
+    color: white;
+  }
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+  }
+  .floating-button {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #f5365c;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+  .floating-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+  #tasks-container {
+    min-height: 200px;
+  }
+  .no-tasks {
+    text-align: center;
+    padding: 2rem;
+    font-style: italic;
+    color: #777;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-
-
-    <div class="container-fluid py-4">
-
-
-<div class="container py-2 mt-4 mb-4">
-  <div class="row no-gutters">
-    <div class="col-sm py-2">
-      <div class="card">
-        <div class="card-body">
-            <div class="float-right text-muted small">Attribuée par : Khalil MZOUGHI</div>
-          <div class="float-right text-muted small">Début : 12:44 12/04/2024</div>
-            <div class="float-right text-muted small">Fin : 16:44 12/04/2024</div>
-            <div class="float-right text-muted small"><p class="text-danger">Retard 33 min</p></div>
-          <h4 class="card-title">Faire les courses</h4>
-          <p class="card-text">Welcome to the campus, introduction and get started with the tour.</p>
-            <button href="#" class="btn btn-success">Terminer</button>
-            <button href="#" class="btn btn-warning">Faire valider</button>
-            <button href="#" class="btn btn-danger">Contester</button>
-        </div>
-      </div>
-    </div>
+<div class="container-fluid">
+  <div class="page-header min-height-200 border-radius-xl mt-4" style="background-image: url('/static/assets/img/bg-task.jpg'); background-position-y: 50%;">
   </div>
-    <div class="row no-gutters">
-    <div class="col-sm py-2">
-      <div class="card">
-        <div class="card-body">
-            <div class="float-right text-muted small">Attribuée par : Khalil MZOUGHI</div>
-          <div class="float-right text-muted small">Début : 12:44 12/04/2024</div>
-            <div class="float-right text-muted small">Fin : 16:44 12/04/2024</div>
-            <div class="float-right text-muted small"><p class="text-danger">Retard 33 min</p></div>
-          <h4 class="card-title">Faire les courses</h4>
-          <p class="card-text">Welcome to the campus, introduction and get started with the tour.</p>
-            <button href="#" class="btn btn-success">Terminer</button>
-            <button href="#" class="btn btn-warning">Faire valider</button>
-            <button href="#" class="btn btn-danger">Contester</button>
+  <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
+    <div class="row gx-4">
+      <div class="col-auto my-auto">
+        <div class="h-100">
+          <h5 class="mb-1">
+            Mes tâches
+          </h5>
+          <p class="mb-0 font-weight-bold text-sm">
+            {% if error %}
+              {{ error }}
+            {% else %}
+              Gérez vos tâches et suivez leur progression
+            {% endif %}
+          </p>
         </div>
       </div>
     </div>
   </div>
 </div>
 
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header pb-0 p-3">
+          <div class="row">
+            <div class="col-md-6">
+              <h6 class="mb-0">Liste des tâches</h6>
+            </div>
+            <div class="col-md-6 d-flex justify-content-end">
+              <div class="dropdown">
+                <button class="btn bg-gradient-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa fa-filter me-2"></i> Filtrer
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                  <li><a class="dropdown-item filter-option" data-filter="all" href="#">Toutes les tâches</a></li>
+                  <li><a class="dropdown-item filter-option" data-filter="assigned" href="#">Assignées</a></li>
+                  <li><a class="dropdown-item filter-option" data-filter="disputed" href="#">Contestées</a></li>
+                  <li><a class="dropdown-item filter-option" data-filter="to_validated" href="#">À valider</a></li>
+                  <li><a class="dropdown-item filter-option" data-filter="done" href="#">Terminées</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-3">
+          <div id="tasks-container">
+            <div class="loading-spinner">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Chargement...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
+<a href="/createTask" class="floating-button">
+  <i class="fa fa-plus"></i>
+</a>
+
+<script>
+  // Task state translations
+  const stateTranslations = {
+    'assigned': 'Assignée',
+    'disputed': 'Contestée',
+    'to_validated': 'En attente de validation',
+    'done': 'Terminée',
+    'deleted': 'Supprimée'
+  };
+
+  // Get state badge class
+  function getStateBadgeClass(state) {
+    switch (state) {
+      case 'assigned': return 'badge-assigned';
+      case 'disputed': return 'badge-disputed';
+      case 'to_validated': return 'badge-to-validated';
+      case 'done': return 'badge-done';
+      default: return '';
+    }
+  }
+
+  // Format date
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+  // Format delay
+  function formatDelay(delay) {
+    if (!delay) return '';
+
+    let delayText = '';
+    if (delay.days > 0) {
+      delayText += `${delay.days} jour${delay.days > 1 ? 's' : ''} `;
+    }
+    if (delay.hours > 0) {
+      delayText += `${delay.hours} heure${delay.hours > 1 ? 's' : ''} `;
+    }
+    if (delay.minutes > 0) {
+      delayText += `${delay.minutes} minute${delay.minutes > 1 ? 's' : ''} `;
+    }
+    return delayText.trim();
+  }
+
+  // Get current user's role
+  const userRole = "{{ user_role }}";
+  // Get current user's email
+  const userEmail = "{{ user_info.email }}";
+
+  // Handle task action button clicks
+  function handleTaskAction(event, taskId, action) {
+    event.preventDefault();
+
+    // Disable the button to prevent double clicks
+    const button = event.target.closest('button');
+    const originalText = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> En cours...';
+
+    console.log(`Executing action ${action} on task ${taskId}`);
+
+    // Make API call
+    fetch(`/api/tasks/${taskId}/${action}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({})
+    })
+    .then(response => {
+      console.log(`Response status: ${response.status}`);
+      // First check if the response is OK
+      if (!response.ok) {
+        // If response is not OK, get the text and throw an error
+        return response.text().then(text => {
+          console.error('Error response text:', text);
+          throw new Error(`Server error: ${response.status} - ${text}`);
+        });
+      }
+
+      // If response is OK, try to parse the JSON
+      return response.text().then(text => {
+        console.log('Response text:', text);
+        try {
+          return JSON.parse(text);
+        } catch (e) {
+          console.error('JSON parse error:', e);
+          throw new Error('Failed to parse response');
+        }
+      });
+    })
+    .then(data => {
+      console.log('Response data:', data);
+      if (data && data.success) {
+        // Refresh tasks after successful action
+        fetchTasks();
+      } else {
+        const errorMessage = data && data.error ? data.error : 'Une erreur inconnue est survenue';
+        alert(`Erreur: ${errorMessage}`);
+        // Restore button
+        button.disabled = false;
+        button.innerHTML = originalText;
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert(`Une erreur est survenue: ${error.message}`);
+      // Restore button
+      button.disabled = false;
+      button.innerHTML = originalText;
+    });
+  }
+
+  // Create task card HTML
+  function createTaskCard(task) {
+    const isTaskAssigner = task.is_assigner;
+    const canManageTask = task.can_manage;
+    const isAssignee = task.assignees.includes(userEmail);
+
+    // Debug: log task info
+    console.log(`Creating card for task ${task.id}:`, {
+      subject: task.subject,
+      state: task.state,
+      is_assigner: isTaskAssigner,
+      can_manage: canManageTask,
+      is_assignee: isAssignee
+    });
+
+    let actionButtons = '';
+
+    if (task.state === 'assigned') {
+      // Only show these buttons to assignees
+      if (isAssignee) {
+        actionButtons += `
+          <button onclick="handleTaskAction(event, ${task.id}, 'dispute')" class="btn btn-danger btn-sm">Contester</button>
+          <button onclick="handleTaskAction(event, ${task.id}, 'validate')" class="btn btn-warning btn-sm">Faire valider</button>
+        `;
+      }
+
+      if (canManageTask) {
+        actionButtons += `
+          <button onclick="handleTaskAction(event, ${task.id}, 'complete')" class="btn btn-success btn-sm">Terminer</button>
+        `;
+      }
+    } else if (task.state === 'disputed') {
+      if (canManageTask) {
+        actionButtons += `
+          <button onclick="handleTaskAction(event, ${task.id}, 'reject-dispute')" class="btn btn-warning btn-sm">Rejeter la contestation</button>
+          <button onclick="handleTaskAction(event, ${task.id}, 'delete')" class="btn btn-danger btn-sm">Supprimer la tâche</button>
+        `;
+      }
+    } else if (task.state === 'to_validated') {
+      if (canManageTask) {
+        actionButtons += `
+          <button onclick="handleTaskAction(event, ${task.id}, 'complete')" class="btn btn-success btn-sm">Valider la tâche</button>
+          <button onclick="handleTaskAction(event, ${task.id}, 'reject-validation')" class="btn btn-danger btn-sm">Refuser la validation</button>
+        `;
+      }
+      // Allow assignees to cancel their validation request
+      if (isAssignee) {
+        actionButtons += `
+          <button onclick="handleTaskAction(event, ${task.id}, 'cancel-validation')" class="btn btn-secondary btn-sm">Annuler la validation</button>
+        `;
+      }
+    } else if (task.state === 'done') {
+      // Allow assigner/admin to reopen completed tasks
+      if (canManageTask) {
+        actionButtons += `
+          <button onclick="handleTaskAction(event, ${task.id}, 'reopen')" class="btn btn-info btn-sm">Réouvrir la tâche</button>
+        `;
+      }
+    }
+
+    // Add delete button for admin/assigners at all times except disputed state
+    if (canManageTask && task.state !== 'disputed') {
+      actionButtons += `
+        <button onclick="handleTaskAction(event, ${task.id}, 'delete')" class="btn btn-danger btn-sm">Supprimer</button>
+      `;
+    }
+
+    // Format delay info
+    let delayHTML = '';
+    if (task.delay && task.state !== 'done') {
+      delayHTML = `
+        <div class="delay-info text-danger mt-2">
+          <i class="fa fa-exclamation-circle"></i> Retard: ${formatDelay(task.delay)}
+        </div>
+      `;
+    }
+
+    // Show role badge for task (assigned by you or assigned to you)
+    let roleBadgeHtml = '';
+    if (task.is_assigner) {
+      roleBadgeHtml = '<span class="task-badge badge-info">Attribuée par vous</span>';
+    } else if (task.assignees.includes(userEmail)) {
+      roleBadgeHtml = '<span class="task-badge badge-info">Attribuée à vous</span>';
+    }
+
+    // Get list of assignees
+    const assigneesText = task.assignees.length > 0
+      ? `<div class="float-right text-muted small">Attribuée à: ${task.assignees.join(', ')}</div>`
+      : '';
+
+    return `
+      <div class="task-card card" data-task-state="${task.state}">
+        <div class="card-body">
+          <div class="float-right text-muted small">Attribuée par: ${task.assigned_by}</div>
+          ${assigneesText}
+          <div class="float-right text-muted small">Début: ${formatDate(task.start_date)}</div>
+          <div class="float-right text-muted small">Fin: ${formatDate(task.due_date)}</div>
+          ${delayHTML}
+          <span class="task-badge ${getStateBadgeClass(task.state)}">${stateTranslations[task.state]}</span>
+          ${roleBadgeHtml}
+          <h4 class="card-title">${task.subject}</h4>
+          <p class="card-text">${task.description || 'Pas de description'}</p>
+          <div class="task-actions">
+            ${actionButtons}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Fetch tasks from API
+  let currentFilter = 'all';
+  function fetchTasks() {
+    const tasksContainer = document.getElementById('tasks-container');
+    tasksContainer.innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+    `;
+
+    fetch('/api/tasks')
+      .then(response => response.json())
+      .then(tasks => {
+        if (tasks.length === 0) {
+          tasksContainer.innerHTML = `
+            <div class="no-tasks">
+              <p>Aucune tâche trouvée</p>
+            </div>
+          `;
+        } else {
+          // Filter tasks based on current filter
+          const filteredTasks = currentFilter === 'all'
+            ? tasks
+            : tasks.filter(task => task.state === currentFilter);
+
+          if (filteredTasks.length === 0) {
+            tasksContainer.innerHTML = `
+              <div class="no-tasks">
+                <p>Aucune tâche ne correspond au filtre sélectionné</p>
+              </div>
+            `;
+          } else {
+            // Create HTML for each task card
+            const tasksHTML = filteredTasks.map(task => createTaskCard(task)).join('');
+            tasksContainer.innerHTML = tasksHTML;
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        tasksContainer.innerHTML = `
+          <div class="alert alert-danger">
+            Une erreur est survenue lors du chargement des tâches. Veuillez réessayer.
+          </div>
+        `;
+      });
+  }
+
+  // Initial fetch
+  fetchTasks();
+
+  // Set up automatic refresh every 30 seconds
+  setInterval(fetchTasks, 30000);
+
+  // Set up filter options
+  document.querySelectorAll('.filter-option').forEach(option => {
+    option.addEventListener('click', function(e) {
+      e.preventDefault();
+      currentFilter = this.dataset.filter;
+      document.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('active'));
+      this.classList.add('active');
+      fetchTasks();
+    });
+  });
+</script>
 {% endblock %}

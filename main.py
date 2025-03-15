@@ -20,6 +20,7 @@ from db import db
 from entities.user import User
 from entities.income import Income
 from entities.expense import Expense
+from entities.task import Task, TaskState
 
 if True :
     logging.basicConfig(level=logging.DEBUG,
@@ -473,14 +474,14 @@ def incomes():
         error_message = request.args.get('error')
     return render_template('viewIncomes.html', error = error_message, user_info=session['user_info'])
 
-@app.route('/timeline')
+@app.route('/task')
 def timeline():
     if is_not_connected():
         return redirect(url_for('login'))
     error_message = None
     if 'error' in request.args:
         error_message = request.args.get('error')
-    return render_template('timeline.html', error = error_message, user_info=session['user_info'])
+    return render_template('timeline old.html', error = error_message, user_info=session['user_info'])
 
 @app.route('/save-location', methods=['POST'])
 def save_location():
@@ -504,6 +505,401 @@ def credentials_to_dict(credentials):
             'client_id': credentials.client_id,
             'client_secret': credentials.client_secret,
             'scopes': credentials.scopes}
+
+
+# Add these imports at the top of main.py
+from entities.task import Task, TaskState
+from flask import jsonify
+from datetime import datetime
+
+# Add these route handlers to main.py
+
+# Add these imports at the top of main.py
+from entities.task import Task, TaskState
+from flask import jsonify
+from datetime import datetime
+
+# Add these route handlers to main.py
+
+
+'''TASKS'''
+@app.route('/tasks')
+def tasks():
+    if is_not_connected():
+        return redirect(url_for('login'))
+
+    error_message = None
+    if 'error' in request.args:
+        error_message = request.args.get('error')
+
+    with app.app_context():
+        user_email = session['user_info']['email']
+        user_role = session.get('role', 'member')
+
+    return render_template('timeline.html', error=error_message, user_info=session['user_info'], user_role=user_role)
+
+@app.route('/createTask')
+def create_task_page():
+    if is_not_connected():
+        return redirect(url_for('login'))
+
+    error_message = None
+    if 'error' in request.args:
+        error_message = request.args.get('error')
+
+    with app.app_context():
+        members = User.get_all_names()
+        roles = ['admin', 'member', 'treasurer']  # Add all available roles in your system
+
+    return render_template('createTask.html', error=error_message, user_info=session['user_info'], members=members, roles=roles)
+
+@app.route('/api/tasks')
+def get_tasks():
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        user_role = session.get('role', 'member')
+
+        # Get tasks assigned to the current user
+        tasks_as_assignee = Task.get_tasks_for_user(user_email)
+
+        # Get tasks assigned by the current user (regardless of role)
+        tasks_as_assigner = Task.get_assigned_tasks_by_user(user_email)
+
+        # Combine and remove duplicates
+        all_tasks = []
+        task_ids = set()
+
+        for task in tasks_as_assignee + tasks_as_assigner:
+            if task.id not in task_ids:
+                all_tasks.append(task)
+                task_ids.add(task.id)
+
+        # Convert tasks to dictionaries with a flag indicating if the user is the assigner
+        tasks_data = []
+        for task in all_tasks:
+            task_dict = task.to_dict()
+            task_dict['is_assigner'] = (task.assigned_by == user_email)
+            task_dict['can_manage'] = (task.assigned_by == user_email) or (user_role == 'admin')
+            tasks_data.append(task_dict)
+
+        return jsonify(tasks_data)
+    except Exception as e:
+        print(f"Error getting tasks: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/createTask', methods=['POST'])
+def create_task_api():
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    data = request.json
+    user_email = session['user_info']['email']
+
+    try:
+        start_date = datetime.strptime(data['start_date'], '%Y-%m-%dT%H:%M')
+        due_date = datetime.strptime(data['due_date'], '%Y-%m-%dT%H:%M')
+
+        task_data = {
+            'assigned_by': user_email,
+            'start_date': start_date,
+            'due_date': due_date,
+            'subject': data['subject'],
+            'description': data['description']
+        }
+
+        task = Task(task_data)
+        db.session.add(task)  # Explicitly add to session
+        db.session.flush()    # Flush to get the ID
+
+        # Assign to specific users or by role
+        if data.get('assignment_type') == 'users':
+            # Get selected users
+            assignees = data.get('assignees', [])
+            print(f"Selected assignees: {assignees}")
+            if assignees:
+                from entities.user import User
+                for assignee_name in assignees:
+                    # Find user by name (format: "lastname firstname")
+                    parts = assignee_name.split(' ', 1)
+                    print(f"Processing assignee: {assignee_name}, parts: {parts}")
+                    if len(parts) == 2:
+                        lname, fname = parts
+                        user = User.query.filter_by(lname=lname, fname=fname).first()
+                        print(f"Found user: {user}")
+                        if user:
+                            task.assignees.append(user)
+                            print(f"Added user {user.email} to task assignees")
+        else:  # assignment_type == 'role'
+            role = data.get('role')
+            if role:
+                from entities.user import User
+                users = User.query.filter_by(role=role).all()
+                for user in users:
+                    task.assignees.append(user)
+
+        db.session.commit()
+
+        # Send notifications
+        task.notify_assignment()
+
+        return jsonify({'success': True, 'task_id': task.id})
+
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error creating task: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/tasks/<int:task_id>/dispute', methods=['POST'])
+def dispute_task(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Task not found'}), 404
+
+        # Check if the user is assigned to this task
+        from entities.user import User
+        user = User.query.filter_by(email=user_email).first()
+        if user not in task.assignees:
+            return jsonify({'error': 'Not authorized'}), 403
+
+        # Directly set the task state
+        task.state = TaskState.DISPUTED
+        db.session.commit()
+
+        # Send notification separately
+        try:
+            task.notify_dispute(user_email)
+        except Exception as e:
+            print(f"Error sending dispute notification: {str(e)}")
+
+        return jsonify({'success': True})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error disputing task: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/tasks/<int:task_id>/validate', methods=['POST'])
+def validate_task(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Task not found'}), 404
+
+        # Check if the user is assigned to this task
+        from entities.user import User
+        user = User.query.filter_by(email=user_email).first()
+        if user not in task.assignees:
+            return jsonify({'error': 'Not authorized'}), 403
+
+        # Directly set the task state
+        task.state = TaskState.TO_VALIDATED
+        db.session.commit()
+
+        # Send notification separately
+        try:
+            task.notify_to_validate(user_email)
+        except Exception as e:
+            print(f"Error sending validation notification: {str(e)}")
+
+        return jsonify({'success': True})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error validating task: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/tasks/<int:task_id>/complete', methods=['POST'])
+def complete_task(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        user_role = session.get('role', 'member')
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Task not found'}), 404
+
+        # Only the assigner or an admin can mark a task as complete
+        if task.assigned_by != user_email and user_role != 'admin':
+            return jsonify({'error': 'Not authorized'}), 403
+
+        # Directly set the task state
+        task.state = TaskState.DONE
+        db.session.commit()
+
+        return jsonify({'success': True})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error completing task: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/tasks/<int:task_id>/reject-dispute', methods=['POST'])
+def reject_dispute(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Task not found'}), 404
+
+        # Only the assigner can reject a dispute
+        if task.assigned_by != user_email:
+            return jsonify({'error': 'Not authorized'}), 403
+
+        # Directly set the task state
+        task.state = TaskState.ASSIGNED
+        db.session.commit()
+
+        # Send notification separately
+        try:
+            task.notify_dispute_rejected()
+        except Exception as e:
+            print(f"Error sending dispute rejection notification: {str(e)}")
+
+        return jsonify({'success': True})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error rejecting dispute: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/tasks/<int:task_id>/remove-assignee', methods=['POST'])
+def remove_assignee(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    data = request.json
+    user_email = session['user_info']['email']
+    task = Task.query.get(task_id)
+
+    if not task:
+        return jsonify({'error': 'Task not found'}), 404
+
+    # Only the assigner can remove assignees
+    if task.assigned_by != user_email:
+        return jsonify({'error': 'Not authorized'}), 403
+
+    assignee_email = data.get('assignee_email')
+    if assignee_email:
+        task.remove_assignee(assignee_email)
+
+    return jsonify({'success': True})
+
+@app.route('/api/tasks/<int:task_id>/delete', methods=['POST'])
+def delete_task(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        user_role = session.get('role', 'member')
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Task not found'}), 404
+
+        # Only the assigner or an admin can delete a task
+        if task.assigned_by != user_email and user_role != 'admin':
+            return jsonify({'error': 'Not authorized'}), 403
+
+        # Directly set the task state to deleted
+        task.state = TaskState.DELETED
+        db.session.commit()
+
+        return jsonify({'success': True})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error deleting task: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/tasks/<int:task_id>/cancel-validation', methods=['POST'])
+def cancel_validation(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Task not found'}), 404
+
+        # Only task assignees can cancel their validation request
+        from entities.user import User
+        user = User.query.filter_by(email=user_email).first()
+        if user not in task.assignees:
+            return jsonify({'error': 'Not authorized'}), 403
+
+        if task.state != TaskState.TO_VALIDATED:
+            return jsonify({'error': 'Only tasks awaiting validation can have their validation cancelled'}), 400
+
+        # Directly update the state
+        task.state = TaskState.ASSIGNED
+        db.session.commit()
+
+        # Send notification separately
+        try:
+            task.notify_validation_cancelled()
+        except Exception as e:
+            print(f"Error sending notification: {str(e)}")
+
+        return jsonify({'success': True})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error cancelling validation: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/tasks/<int:task_id>/reopen', methods=['POST'])
+def reopen_task(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        user_role = session.get('role', 'member')
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Task not found'}), 404
+
+        # Only the assigner or an admin can reopen a task
+        if task.assigned_by != user_email and user_role != 'admin':
+            return jsonify({'error': 'Not authorized'}), 403
+
+        if task.state != TaskState.DONE:
+            return jsonify({'error': 'Only completed tasks can be reopened'}), 400
+
+        task.state = TaskState.ASSIGNED
+        db.session.commit()
+
+        # Send notification separately to avoid blocking the response
+        try:
+            task.notify_task_reopened()
+        except Exception as e:
+            print(f"Error sending notification: {str(e)}")
+
+        return jsonify({'success': True})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error reopening task: {str(e)}")
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
