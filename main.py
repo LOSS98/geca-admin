@@ -1026,6 +1026,7 @@ def take_task(task_id):
         return jsonify({'error': 'Not connected'}), 401
 
     try:
+        from entities.user import User
         user_email = session['user_info']['email']
         user = User.query.filter_by(email=user_email).first()
 
@@ -1042,19 +1043,39 @@ def take_task(task_id):
             return jsonify({'error': 'Cette tâche n\'est plus disponible'}), 400
 
         # Vérifier si la tâche est disponible pour cet utilisateur en fonction de ses rôles
-        user_roles = user.get_roles()
-
-        # Si la tâche a des rôles cibles
+        is_available = True
         if task.target_roles:
+            user_roles = user.get_roles()
             target_role_names = [role.name for role in task.target_roles]
             if not any(role in target_role_names for role in user_roles):
-                return jsonify({'error': 'Vous n\'avez pas les rôles requis pour cette tâche'}), 403
+                is_available = False
+
+        if not is_available:
+            return jsonify({'error': 'Vous n\'avez pas les rôles requis pour cette tâche'}), 403
 
         # Assigner la tâche à cet utilisateur
-        task.assign_to_users([user_email])
+        task.assignees.append(user)
 
-        # Notifier le créateur de la tâche que quelqu'un l'a prise
-        task.notify_task_taken(user_email)
+        # Enregistrer l'action dans l'historique
+        from entities.task_history import TaskHistory
+        history_entry = TaskHistory(
+            task_id=task.id,
+            user_email=user_email,
+            action="self_assigned"
+        )
+        history_entry.save_to_db()
+
+        db.session.commit()
+
+        # Notifier le créateur de la tâche
+        try:
+            from entities.user import User
+            creator = User.query.filter_by(email=task.assigned_by).first()
+            if creator and creator.phone:
+                message = f"Votre tâche '{task.subject}' a été prise par {user.fname} {user.lname}."
+                task._send_notification(creator.phone, message)
+        except Exception as e:
+            print(f"Erreur lors de la notification: {str(e)}")
 
         return jsonify({'success': True})
     except Exception as e:
@@ -1471,7 +1492,7 @@ def release_task_api(task_id):
         if not task:
             return jsonify({'error': 'Tâche non trouvée'}), 404
 
-        # Utiliser la méthode de libération de tâche
+        # Utiliser la nouvelle méthode de libération de tâche
         success, message = task.release_task(user_email)
 
         if not success:
@@ -1483,6 +1504,68 @@ def release_task_api(task_id):
         print(f"Error releasing task: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
+
+@app.route('/api/tasks/<int:task_id>/reassign-by-assignee', methods=['POST'])
+def reassign_task_by_assignee(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Tâche non trouvée'}), 404
+
+        data = request.json
+        assignment_type = data.get('assignment_type')
+
+        if assignment_type not in ['users', 'roles', 'all']:
+            return jsonify({'error': 'Type d\'assignation invalide'}), 400
+
+        # Préparer les données de réassignation selon le type
+        reassignment_data = {}
+
+        if assignment_type == 'users':
+            # Pour l'assignation à des utilisateurs spécifiques
+            assignees = data.get('assignees', [])
+
+            # Convertir les noms d'utilisateurs en emails si nécessaire
+            assignee_emails = []
+            from entities.user import User
+
+            for assignee in assignees:
+                # Si c'est un email, l'utiliser directement
+                if '@' in assignee:
+                    user = User.query.filter_by(email=assignee).first()
+                    if user:
+                        assignee_emails.append(assignee)
+                else:
+                    # Sinon c'est un nom complet, le convertir en email
+                    parts = assignee.split(' ', 1)
+                    if len(parts) == 2:
+                        lname, fname = parts
+                        user = User.query.filter_by(lname=lname, fname=fname).first()
+                        if user:
+                            assignee_emails.append(user.email)
+
+            reassignment_data['assignees'] = assignee_emails
+
+        elif assignment_type == 'roles':
+            # Pour l'assignation à des rôles
+            reassignment_data['target_roles'] = data.get('target_roles', [])
+
+        # Utiliser la méthode de réassignation par l'assigné
+        success, message = task.reassign_by_assignee(user_email, assignment_type, reassignment_data)
+
+        if not success:
+            return jsonify({'error': message}), 400
+
+        return jsonify({'success': True, 'message': message})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error reassigning task by assignee: {str(e)}")
+        return jsonify({'error': str(e)}), 500
 # Route pour réassigner une tâche
 @app.route('/api/tasks/<int:task_id>/reassign', methods=['POST'])
 def reassign_task_api(task_id):

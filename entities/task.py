@@ -148,7 +148,7 @@ class Task(db.Model):
         return False
 
     def release_task(self, user_email):
-        """Libère une tâche pour la rendre disponible à nouveau"""
+        """Libère une tâche pour la rendre disponible à nouveau, en préservant les restrictions de rôle"""
         from entities.user import User
         user = User.query.filter_by(email=user_email).first()
 
@@ -157,6 +157,13 @@ class Task(db.Model):
 
         if user not in self.assignees:
             return False, "Vous n'êtes pas assigné à cette tâche"
+
+        # Vérifier si la tâche a été attribuée directement à un utilisateur spécifique
+        # Si elle a été attribuée directement (pas via rôle ou à tout le monde), on ne peut pas la libérer
+        is_task_assignable = len(self.target_roles) > 0 or len(self.assignees) == 0
+
+        if not is_task_assignable:
+            return False, "Cette tâche vous a été attribuée directement et ne peut pas être libérée"
 
         # Retirer l'utilisateur des assignés
         self.assignees.remove(user)
@@ -167,6 +174,7 @@ class Task(db.Model):
             self.state = TaskState.ASSIGNED
 
         # Enregistrer l'action dans l'historique
+        from entities.task_history import TaskHistory
         history_entry = TaskHistory(
             task_id=self.id,
             user_email=user_email,
@@ -186,53 +194,79 @@ class Task(db.Model):
         return True, "Tâche libérée avec succès"
 
     # Méthode pour réassigner une tâche
-    def reassign_task(self, new_assignee_emails):
-        """Réassigne la tâche à de nouveaux utilisateurs"""
-        if not new_assignee_emails:
-            return False, "Aucun destinataire spécifié"
-
-        # Enregistrer l'action dans l'historique pour chaque assigné actuel
-        for user in self.assignees:
-            history_entry = TaskHistory(
-                task_id=self.id,
-                user_email=user.email,
-                action="unassigned"
-            )
-            history_entry.save_to_db()
-
-        # Supprimer les assignations actuelles
-        self.assignees = []
-
-        # Ajouter les nouveaux assignés
+    def reassign_by_assignee(self, user_email, assignment_type, reassignment_data):
+        """Permet à un assigné de réattribuer la tâche à d'autres personnes, équipes ou à tout le monde"""
         from entities.user import User
-        new_assignees = []
+        user = User.query.filter_by(email=user_email).first()
 
-        for email in new_assignee_emails:
-            user = User.query.filter_by(email=email).first()
-            if user:
-                self.assignees.append(user)
-                new_assignees.append(user)
+        if not user:
+            return False, "Utilisateur non trouvé"
 
-                # Enregistrer l'action dans l'historique
-                history_entry = TaskHistory(
-                    task_id=self.id,
-                    user_email=user.email,
-                    action="reassigned"
-                )
-                history_entry.save_to_db()
+        if user not in self.assignees:
+            return False, "Vous n'êtes pas assigné à cette tâche"
 
-        # Remettre l'état à "assigned" si ce n'est pas déjà le cas
-        if self.state not in [TaskState.DONE, TaskState.DELETED]:
-            self.state = TaskState.ASSIGNED
+        # Enregistrer l'action dans l'historique
+        from entities.task_history import TaskHistory
+        history_entry = TaskHistory(
+            task_id=self.id,
+            user_email=user_email,
+            action="reassigned_by_assignee"
+        )
+        history_entry.save_to_db()
+
+        # Retirer l'utilisateur actuel des assignés
+        self.assignees.remove(user)
+
+        # Traiter selon le type d'assignation
+        if assignment_type == 'users':
+            # Assigner à des utilisateurs spécifiques
+            new_assignee_emails = reassignment_data.get('assignees', [])
+
+            for email in new_assignee_emails:
+                new_user = User.query.filter_by(email=email).first()
+                if new_user and new_user not in self.assignees:
+                    self.assignees.append(new_user)
+
+                    # Enregistrer l'action dans l'historique
+                    history_entry = TaskHistory(
+                        task_id=self.id,
+                        user_email=email,
+                        action="assigned_by_peer"
+                    )
+                    history_entry.save_to_db()
+
+        elif assignment_type == 'roles':
+            # Assigner à des rôles spécifiques
+            self.target_roles = []
+            role_names = reassignment_data.get('target_roles', [])
+
+            from entities.role import Role
+            for role_name in role_names:
+                role = Role.query.filter_by(name=role_name).first()
+                if role:
+                    self.target_roles.append(role)
+
+            # La tâche devient disponible pour ces rôles
+            if len(self.assignees) == 0:
+                self.state = TaskState.ASSIGNED
+
+        elif assignment_type == 'all':
+            # Rendre la tâche disponible pour tous
+            self.target_roles = []
+
+            # La tâche devient disponible pour tous
+            if len(self.assignees) == 0:
+                self.state = TaskState.ASSIGNED
 
         # Sauvegarder les changements
         db.session.commit()
 
-        # Notifier les nouveaux assignés
-        try:
-            self.notify_task_reassigned(new_assignees)
-        except Exception as e:
-            print(f"Erreur lors de la notification: {str(e)}")
+        # Notifier les nouveaux assignés si la tâche a été assignée à des utilisateurs spécifiques
+        if assignment_type == 'users' and len(self.assignees) > 0:
+            try:
+                self.notify_reassignment_by_peer(user_email)
+            except Exception as e:
+                print(f"Erreur lors de la notification: {str(e)}")
 
         return True, "Tâche réassignée avec succès"
 
@@ -1061,6 +1095,36 @@ class Task(db.Model):
 
         # Envoyer la notification
         self._send_notification(new_owner.phone, message)
+
+    def notify_reassignment_by_peer(self, reassigner_email):
+        """Notifie les nouveaux assignés qu'un pair leur a assigné la tâche"""
+        for user in self.assignees:
+            # Skip if user has no phone
+            if not hasattr(user, 'phone') or not user.phone:
+                print(f"User {user.email} has no phone number, skipping notification")
+                continue
+
+            # Get the reassigner's name
+            from entities.user import User
+            reassigner = User.query.filter_by(email=reassigner_email).first()
+            reassigner_name = f"{reassigner.fname} {reassigner.lname}" if reassigner else reassigner_email
+
+            # Format message
+            message = f"La tâche '{self.subject}' vous a été assignée par {reassigner_name}, qui était précédemment assigné à cette tâche."
+
+            # Add task details
+            message += "\nDétail de la tâche :\n"
+            message += f"{self.description or 'Aucune description fournie'}"
+
+            # Add due date
+            message += f"\nDate d'échéance: {self.due_date.strftime('%d/%m/%Y à %H:%M')}"
+
+            # Add time info
+            time_info_str = self.format_time_remaining()
+            message += f"\n{time_info_str}"
+
+            # Send notification
+            self._send_notification(user.phone, message)
 
     @staticmethod
     def get_assigned_tasks_by_user(user_email: str):
