@@ -1191,5 +1191,111 @@ def remove_user_role():
         print(f"Error removing user role: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
+
+@app.route('/api/tasks/<int:task_id>/request-transfer', methods=['POST'])
+def request_task_transfer(task_id):
+    """API pour demander une cession de tâche"""
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Tâche non trouvée'}), 404
+
+        # Récupérer l'email du nouvel utilisateur depuis la requête
+        data = request.json
+        new_user_email = data.get('new_user_email')
+
+        if not new_user_email:
+            return jsonify({'error': 'Email du nouvel utilisateur manquant'}), 400
+
+        # Vérifier que l'utilisateur existe
+        from entities.user import User
+        new_user = User.query.filter_by(email=new_user_email).first()
+        if not new_user:
+            return jsonify({'error': 'Utilisateur cible non trouvé'}), 404
+
+        # Demander la cession
+        success, message = task.request_transfer(user_email, new_user_email)
+
+        if not success:
+            return jsonify({'error': message}), 400
+
+        return jsonify({'success': True, 'message': message})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error requesting task transfer: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/tasks/<int:task_id>/approve-transfer', methods=['POST'])
+def approve_task_transfer(task_id):
+    """API pour approuver une cession de tâche"""
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Tâche non trouvée'}), 404
+
+        # Approuver la cession
+        success, message = task.approve_transfer(user_email)
+
+        if not success:
+            return jsonify({'error': message}), 400
+
+        return jsonify({'success': True, 'message': message})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error approving task transfer: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/tasks/<int:task_id>/reject-transfer', methods=['POST'])
+def reject_task_transfer(task_id):
+    """API pour rejeter une cession de tâche"""
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Tâche non trouvée'}), 404
+
+        # Rejeter la cession
+        success, message = task.reject_transfer(user_email)
+
+        if not success:
+            return jsonify({'error': message}), 400
+
+        return jsonify({'success': True, 'message': message})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error rejecting task transfer: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/users', methods=['GET'])
+def get_users():
+    """API pour récupérer la liste des utilisateurs (pour la sélection lors de la cession)"""
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        from entities.user import User
+        users = User.query.all()
+        users_data = [{'email': user.email, 'name': f"{user.lname} {user.fname}"} for user in users]
+        return jsonify(users_data)
+    except Exception as e:
+        print(f"Error getting users: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)

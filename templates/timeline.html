@@ -42,6 +42,10 @@
     background-color: #3498db;
     color: white;
   }
+  .badge-transfer-pending {
+    background-color: #9b59b6;
+    color: white;
+  }
   .loading-spinner {
     display: flex;
     justify-content: center;
@@ -192,6 +196,7 @@
                   <li><a class="dropdown-item filter-option" data-filter="assigned" href="#">Assignées</a></li>
                   <li><a class="dropdown-item filter-option" data-filter="disputed" href="#">Contestées</a></li>
                   <li><a class="dropdown-item filter-option" data-filter="to_validated" href="#">À valider</a></li>
+                  <li><a class="dropdown-item filter-option" data-filter="transfer_pending" href="#">Cession en attente</a></li>
                   <li><a class="dropdown-item filter-option" data-filter="done" href="#">Terminées</a></li>
                 </ul>
               </div>
@@ -265,6 +270,33 @@
   </div>
 </div>
 
+<!-- Modal pour céder une tâche -->
+<div class="modal fade" id="transferModal" tabindex="-1" aria-labelledby="transferModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="transferModalLabel">Céder une tâche</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Choisissez l'utilisateur à qui vous souhaitez céder cette tâche:</p>
+        <input type="hidden" id="taskIdForTransfer" value="">
+        <div class="mb-3">
+          <select class="form-select" id="transferUserSelect">
+            <option value="" disabled selected>Choisir un utilisateur</option>
+            <!-- Les options seront remplies dynamiquement -->
+          </select>
+          <div class="form-text">La cession doit être approuvée par le créateur de la tâche.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary" id="requestTransferBtn">Demander la cession</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   // Task state translations
   const stateTranslations = {
@@ -272,7 +304,8 @@
     'disputed': 'Contestée',
     'to_validated': 'En attente de validation',
     'done': 'Terminée',
-    'deleted': 'Supprimée'
+    'deleted': 'Supprimée',
+    'transfer_pending': 'Cession en attente'
   };
 
   // Task priority translations
@@ -289,6 +322,7 @@
       case 'disputed': return 'badge-disputed';
       case 'to_validated': return 'badge-to-validated';
       case 'done': return 'badge-done';
+      case 'transfer_pending': return 'badge-transfer-pending';
       default: return '';
     }
   }
@@ -349,6 +383,50 @@
   const userRole = "{{ user_role }}";
   // Get current user's email
   const userEmail = "{{ user_info.email }}";
+
+  // Variable pour stocker la liste des utilisateurs
+  let usersForTransfer = [];
+
+  // Fonction pour charger la liste des utilisateurs
+  function loadUsers() {
+    fetch('/api/users')
+      .then(response => response.json())
+      .then(users => {
+        usersForTransfer = users;
+      })
+      .catch(error => {
+        console.error('Error fetching users:', error);
+      });
+  }
+
+  // Charger les utilisateurs au chargement de la page
+  document.addEventListener('DOMContentLoaded', loadUsers);
+
+  // Fonction pour ouvrir le modal de cession
+  function openTransferModal(event, taskId) {
+    event.preventDefault();
+
+    // Mettre à jour l'ID de la tâche
+    document.getElementById('taskIdForTransfer').value = taskId;
+
+    // Remplir le select avec les utilisateurs
+    const userSelect = document.getElementById('transferUserSelect');
+    userSelect.innerHTML = '<option value="" disabled selected>Choisir un utilisateur</option>';
+
+    usersForTransfer.forEach(user => {
+      // Ne pas inclure l'utilisateur courant dans la liste
+      if (user.email !== userEmail) {
+        const option = document.createElement('option');
+        option.value = user.email;
+        option.textContent = user.name;
+        userSelect.appendChild(option);
+      }
+    });
+
+    // Afficher le modal
+    const transferModal = new bootstrap.Modal(document.getElementById('transferModal'));
+    transferModal.show();
+  }
 
   // Fonction pour gérer les rappels de tâches
   function handleReminderAction(event, taskId) {
@@ -415,35 +493,13 @@
       },
       body: JSON.stringify({})
     })
-    .then(response => {
-      console.log(`Response status: ${response.status}`);
-      // First check if the response is OK
-      if (!response.ok) {
-        // If response is not OK, get the text and throw an error
-        return response.text().then(text => {
-          console.error('Error response text:', text);
-          throw new Error(`Server error: ${response.status} - ${text}`);
-        });
-      }
-
-      // If response is OK, try to parse the JSON
-      return response.text().then(text => {
-        console.log('Response text:', text);
-        try {
-          return JSON.parse(text);
-        } catch (e) {
-          console.error('JSON parse error:', e);
-          throw new Error('Failed to parse response');
-        }
-      });
-    })
+    .then(response => response.json())
     .then(data => {
-      console.log('Response data:', data);
-      if (data && data.success) {
+      if (data.success) {
         // Refresh tasks after successful action
         fetchTasks();
       } else {
-        const errorMessage = data && data.error ? data.error : 'Une erreur inconnue est survenue';
+        const errorMessage = data.error ? data.error : 'Une erreur inconnue est survenue';
         alert(`Erreur: ${errorMessage}`);
         // Restore button
         button.disabled = false;
@@ -521,8 +577,8 @@
 
   // Create task card HTML
   function createTaskCard(task) {
-    const isTaskAssigner = task.is_assigner;
-    const canManageTask = task.can_manage;
+    const isTaskAssigner = task.assigned_by === userEmail;
+    const canManageTask = task.can_manage || task.assigned_by === userEmail;
     const isAssignee = task.assignees.includes(userEmail);
 
     // Debug: log task info
@@ -533,7 +589,9 @@
       is_assigner: isTaskAssigner,
       can_manage: canManageTask,
       is_assignee: isAssignee,
-      time_info: task.time_info
+      time_info: task.time_info,
+      transfer_from: task.transfer_from,
+      transfer_to: task.transfer_to
     });
 
     let actionButtons = '';
@@ -544,6 +602,9 @@
         actionButtons += `
           <button onclick="handleTaskAction(event, ${task.id}, 'dispute')" class="btn btn-danger btn-sm">Contester</button>
           <button onclick="handleTaskAction(event, ${task.id}, 'validate')" class="btn btn-warning btn-sm">Faire valider</button>
+          <button onclick="openTransferModal(event, ${task.id})" class="btn btn-info btn-sm">
+            <i class="fa fa-exchange"></i> Céder
+          </button>
         `;
       }
 
@@ -579,6 +640,25 @@
       if (isAssignee) {
         actionButtons += `
           <button onclick="handleTaskAction(event, ${task.id}, 'cancel-validation')" class="btn btn-secondary btn-sm">Annuler la validation</button>
+        `;
+      }
+    } else if (task.state === 'transfer_pending') {
+      // Afficher des boutons pour approuver/rejeter la cession si on est le créateur
+      if (isTaskAssigner) {
+        actionButtons += `
+          <button onclick="handleTaskAction(event, ${task.id}, 'approve-transfer')" class="btn btn-success btn-sm">
+            Approuver la cession
+          </button>
+          <button onclick="handleTaskAction(event, ${task.id}, 'reject-transfer')" class="btn btn-danger btn-sm">
+            Rejeter la cession
+          </button>
+        `;
+      }
+
+      // Afficher un message spécial si on est celui qui a demandé la cession
+      if (task.transfer_from === userEmail) {
+        actionButtons += `
+          <span class="task-badge badge-info">En attente d'approbation de cession</span>
         `;
       }
     } else if (task.state === 'done') {
@@ -623,6 +703,12 @@
       roleBadgeHtml = '<span class="task-badge badge-info">Attribuée à vous</span>';
     }
 
+    // Information sur la cession en cours si applicable
+    let transferInfoHtml = '';
+    if (task.state === 'transfer_pending' && task.transfer_from && task.transfer_to) {
+      transferInfoHtml = `<div class="text-info"><strong>En attente de cession</strong> : De ${task.transfer_from} à ${task.transfer_to}</div>`;
+    }
+
     // Afficher les rôles cibles si présents
     let targetRolesBadgesHtml = '';
     if (task.target_roles && task.target_roles.length > 0) {
@@ -644,6 +730,7 @@
           <div class="float-right text-muted small">Début: ${formatDate(task.start_date)}</div>
           <div class="float-right text-muted small">Fin: ${formatDate(task.due_date)}</div>
           ${timeInfoHTML}
+          ${transferInfoHtml}
           <div class="mb-2">
             <span class="task-badge ${getStateBadgeClass(task.state)}">${stateTranslations[task.state]}</span>
             ${getPriorityBadge(task.priority)}
@@ -669,7 +756,7 @@
   function fetchTasks() {
     const tasksContainer = document.getElementById('tasks-container');
     tasksContainer.innerHTML = `
-      <div class="loading-spinner">
+      <div class="loading-spinner<div class="loading-spinner">
         <div class="spinner-border text-primary" role="status">
           <span class="visually-hidden">Chargement...</span>
         </div>
@@ -746,6 +833,60 @@
       document.querySelectorAll('.priority-filter-option').forEach(opt => opt.classList.remove('active'));
       this.classList.add('active');
       fetchTasks();
+    });
+  });
+
+  // Gestionnaire pour le bouton de demande de cession
+  document.getElementById('requestTransferBtn').addEventListener('click', function() {
+    const taskId = document.getElementById('taskIdForTransfer').value;
+    const newUserEmail = document.getElementById('transferUserSelect').value;
+
+    if (!newUserEmail) {
+      alert('Veuillez sélectionner un utilisateur');
+      return;
+    }
+
+    // Désactiver le bouton pendant la requête
+    this.disabled = true;
+    this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Envoi...';
+
+    // Faire la requête API
+    fetch(`/api/tasks/${taskId}/request-transfer`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        new_user_email: newUserEmail
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Fermer le modal
+        const transferModal = bootstrap.Modal.getInstance(document.getElementById('transferModal'));
+        transferModal.hide();
+
+        // Rafraîchir la liste des tâches
+        fetchTasks();
+
+        // Afficher un message de succès
+        alert('Demande de cession envoyée avec succès');
+      } else {
+        alert(`Erreur: ${data.error || 'Une erreur est survenue'}`);
+
+        // Réactiver le bouton
+        this.disabled = false;
+        this.innerHTML = 'Demander la cession';
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert(`Une erreur est survenue: ${error.message}`);
+
+      // Réactiver le bouton
+      this.disabled = false;
+      this.innerHTML = 'Demander la cession';
     });
   });
 </script>

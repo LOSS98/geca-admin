@@ -21,6 +21,7 @@ class TaskState(enum.Enum):
     TO_VALIDATED = "to_validated"
     DONE = "done"
     DELETED = "deleted"
+    TRANSFER_PENDING = "transfer_pending"  # État pour les cessions en attente
 
     def __str__(self):
         return self.value
@@ -65,6 +66,10 @@ class Task(db.Model):
     state = db.Column(db.Enum(TaskState), nullable=False, default=TaskState.ASSIGNED)
     priority = db.Column(db.Enum(TaskPriority), nullable=False, default=TaskPriority.MEDIUM)
 
+    # Colonnes pour la cession de tâches
+    transfer_from = db.Column(db.String(120), nullable=True)
+    transfer_to = db.Column(db.String(120), nullable=True)
+
     # Relation avec les rôles cibles
     target_roles = db.relationship('Role', secondary=task_roles, backref=db.backref('tasks', lazy='dynamic'))
 
@@ -81,6 +86,8 @@ class Task(db.Model):
         self.description = data.get('description')
         self.state = TaskState.ASSIGNED
         self.target_roles = []
+        self.transfer_from = None
+        self.transfer_to = None
 
         # Ajouter les rôles cibles si fournis
         target_roles = data.get('target_roles', [])
@@ -155,7 +162,9 @@ class Task(db.Model):
             'assignees': [user.email for user in self.assignees],
             'target_roles': self.get_target_roles(),
             'delay': self.calculate_delay() if self.due_date and self.due_date < datetime.now() and self.state != TaskState.DONE else None,
-            'time_info': time_info
+            'time_info': time_info,
+            'transfer_from': self.transfer_from,
+            'transfer_to': self.transfer_to
         }
 
     def set_priority(self, priority_str):
@@ -372,6 +381,120 @@ class Task(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def request_transfer(self, current_user_email: str, new_user_email: str):
+        """Demande de céder la tâche à un autre utilisateur"""
+        # Vérifier que l'utilisateur actuel est bien un assigné de la tâche
+        from entities.user import User
+        current_user = User.query.filter_by(email=current_user_email).first()
+        new_user = User.query.filter_by(email=new_user_email).first()
+
+        if not current_user or not new_user:
+            return False, "Utilisateur non trouvé"
+
+        if current_user not in self.assignees:
+            return False, "Vous n'êtes pas assigné à cette tâche"
+
+        # Stocker l'information de cession dans un attribut temporaire
+        self.transfer_from = current_user_email
+        self.transfer_to = new_user_email
+
+        # Changer l'état de la tâche
+        self.state = TaskState.TRANSFER_PENDING
+        db.session.commit()
+
+        # Notifier le créateur de la tâche
+        self.notify_transfer_request(current_user_email, new_user_email)
+
+        return True, "Demande de cession envoyée avec succès"
+
+    def approve_transfer(self, approver_email: str):
+        """Approuver la demande de cession de tâche"""
+        # Vérifier que l'approbateur est bien le créateur de la tâche
+        if self.assigned_by != approver_email:
+            return False, "Vous n'êtes pas autorisé à approuver cette cession"
+
+        if self.state != TaskState.TRANSFER_PENDING:
+            return False, "Cette tâche n'est pas en attente de cession"
+
+        from entities.user import User
+        current_assignee = User.query.filter_by(email=self.transfer_from).first()
+        new_assignee = User.query.filter_by(email=self.transfer_to).first()
+
+        if not current_assignee or not new_assignee:
+            return False, "Utilisateur non trouvé"
+
+        # Retirer l'assigné actuel
+        if current_assignee in self.assignees:
+            self.assignees.remove(current_assignee)
+
+        # Ajouter le nouvel assigné
+        if new_assignee not in self.assignees:
+            self.assignees.append(new_assignee)
+
+        # Remettre l'état à assigned
+        self.state = TaskState.ASSIGNED
+        db.session.commit()
+
+        # Notifier les deux utilisateurs
+        self.notify_transfer_approved(self.transfer_from, self.transfer_to)
+
+        # Nettoyer les attributs temporaires
+        self.transfer_from = None
+        self.transfer_to = None
+        db.session.commit()
+
+        return True, "Cession approuvée avec succès"
+
+    def reject_transfer(self, approver_email: str):
+        """Rejeter la demande de cession de tâche"""
+        # Vérifier que l'approbateur est bien le créateur de la tâche
+        if self.assigned_by != approver_email:
+            return False, "Vous n'êtes pas autorisé à rejeter cette cession"
+
+        if self.state != TaskState.TRANSFER_PENDING:
+            return False, "Cette tâche n'est pas en attente de cession"
+
+        # Remettre l'état à assigned
+        self.state = TaskState.ASSIGNED
+
+        # Notifier l'utilisateur du rejet
+        self.notify_transfer_rejected(self.transfer_from, self.transfer_to)
+
+        # Nettoyer les attributs temporaires
+        self.transfer_from = None
+        self.transfer_to = None
+        db.session.commit()
+
+        return True, "Cession rejetée"
+
+    def reopen_task(self):
+        """Reopen a completed task (set it back to assigned)"""
+        if self.state == TaskState.DONE:
+            self.state = TaskState.ASSIGNED
+            db.session.commit()
+            self.notify_task_reopened()
+
+    def cancel_validation(self):
+        """Cancel a to-be-validated task (set it back to assigned)"""
+        if self.state == TaskState.TO_VALIDATED:
+            self.state = TaskState.ASSIGNED
+            db.session.commit()
+            self.notify_validation_cancelled()
+
+    def validate_task(self, user_email: str):
+        """Validate a task and mark it as done"""
+        if self.state == TaskState.TO_VALIDATED:
+            self.state = TaskState.DONE
+            db.session.commit()
+            self.notify_task_validated(user_email)
+
+    def reject_validation(self):
+        """Reject a validation request and set the task back to assigned state"""
+        if self.state == TaskState.TO_VALIDATED:
+            self.state = TaskState.ASSIGNED
+            db.session.commit()
+            self.notify_validation_rejected()
+
     def _get_api_details(self):
         """Get API details from environment variables"""
         api_key = os.getenv('WHATSAPP_API_KEY', 'UDvABgmTtdWC')  # Fallback to hardcoded value if not set
@@ -454,6 +577,15 @@ class Task(db.Model):
             message = f"{priority_icon} RAPPEL: La tâche '{self.subject}' requiert votre attention. {actor_name} vous a envoyé ce rappel le {current_time}"
         elif message_type == "task_taken":
             message = f"{priority_icon} La tâche '{self.subject}' a été prise par {actor_name} le {current_time}"
+        # Types de messages pour les cessions
+        elif message_type == "transfer_request":
+            message = f"{priority_icon} DEMANDE DE CESSION: La tâche '{self.subject}' est en attente de cession. {actor_name} a fait cette demande le {current_time}"
+        elif message_type == "transfer_approved":
+            message = f"{priority_icon} CESSION APPROUVÉE: Votre demande de céder la tâche '{self.subject}' a été approuvée par {actor_name} le {current_time}"
+        elif message_type == "transfer_approved_new":
+            message = f"{priority_icon} NOUVELLE TÂCHE: La tâche '{self.subject}' vous a été cédée et approuvée par {actor_name} le {current_time}"
+        elif message_type == "transfer_rejected":
+            message = f"{priority_icon} CESSION REJETÉE: Votre demande de céder la tâche '{self.subject}' a été rejetée par {actor_name} le {current_time}"
         else:
             # Message générique au cas où
             message = f"{priority_icon} Mise à jour de la tâche '{self.subject}' par {actor_name} le {current_time}"
@@ -543,27 +675,6 @@ class Task(db.Model):
         message = self._format_message("validation_request", user_email)
         self._send_notification(assigner.phone, message)
 
-    def reopen_task(self):
-        """Reopen a completed task (set it back to assigned)"""
-        if self.state == TaskState.DONE:
-            self.state = TaskState.ASSIGNED
-            db.session.commit()
-            self.notify_task_reopened()
-
-    def cancel_validation(self):
-        """Cancel a to-be-validated task (set it back to assigned)"""
-        if self.state == TaskState.TO_VALIDATED:
-            self.state = TaskState.ASSIGNED
-            db.session.commit()
-            self.notify_validation_cancelled()
-
-    def validate_task(self, user_email: str):
-        """Validate a task and mark it as done"""
-        if self.state == TaskState.TO_VALIDATED:
-            self.state = TaskState.DONE
-            db.session.commit()
-            self.notify_task_validated(user_email)
-
     def notify_task_reopened(self):
         """Notify all assignees that a task has been reopened"""
         for user in self.assignees:
@@ -575,13 +686,6 @@ class Task(db.Model):
             additional_info = "Cette tâche a été rouverte et nécessite à nouveau votre attention."
             message = self._format_message("task_reopened", self.assigned_by, additional_info)
             self._send_notification(user.phone, message)
-
-    def reject_validation(self):
-        """Reject a validation request and set the task back to assigned state"""
-        if self.state == TaskState.TO_VALIDATED:
-            self.state = TaskState.ASSIGNED
-            db.session.commit()
-            self.notify_validation_rejected()
 
     def notify_validation_cancelled(self):
         """Notify all assignees that validation has been cancelled"""
@@ -680,6 +784,71 @@ class Task(db.Model):
             message += "\n\nCe rappel a été envoyé par le créateur de la tâche."
 
             self._send_notification(user.phone, message)
+
+    def notify_transfer_request(self, from_email: str, to_email: str):
+        """Notifier le créateur qu'un utilisateur souhaite céder sa tâche"""
+        from entities.user import User
+        assigner = User.query.filter_by(email=self.assigned_by).first()
+        current_user = User.query.filter_by(email=from_email).first()
+        new_user = User.query.filter_by(email=to_email).first()
+
+        if not assigner or not current_user or not new_user:
+            print(f"Utilisateur manquant pour la notification de demande de cession")
+            return
+
+        if not assigner.phone:
+            print(f"Créateur sans numéro de téléphone: {self.assigned_by}")
+            return
+
+        # Information supplémentaire
+        current_name = f"{current_user.fname} {current_user.lname}"
+        new_name = f"{new_user.fname} {new_user.lname}"
+
+        additional_info = f"{current_name} souhaite céder cette tâche à {new_name}. Veuillez approuver ou rejeter cette demande."
+
+        message = self._format_message("transfer_request", from_email, additional_info)
+        self._send_notification(assigner.phone, message)
+
+    def notify_transfer_approved(self, from_email: str, to_email: str):
+        """Notifier les deux utilisateurs que la cession a été approuvée"""
+        from entities.user import User
+        current_user = User.query.filter_by(email=from_email).first()
+        new_user = User.query.filter_by(email=to_email).first()
+
+        if not current_user or not new_user:
+            print(f"Utilisateur manquant pour la notification d'approbation de cession")
+            return
+
+        # Notifier l'utilisateur précédent
+        if current_user.phone:
+            current_name = f"{current_user.fname} {current_user.lname}"
+            new_name = f"{new_user.fname} {new_user.lname}"
+            additional_info = f"Votre demande de céder cette tâche à {new_name} a été approuvée."
+            message = self._format_message("transfer_approved", self.assigned_by, additional_info)
+            self._send_notification(current_user.phone, message)
+
+        # Notifier le nouvel utilisateur
+        if new_user.phone:
+            current_name = f"{current_user.fname} {current_user.lname}"
+            additional_info = f"Vous avez reçu cette tâche de {current_name}. La cession a été approuvée."
+            message = self._format_message("transfer_approved_new", self.assigned_by, additional_info)
+            self._send_notification(new_user.phone, message)
+
+    def notify_transfer_rejected(self, from_email: str, to_email: str):
+        """Notifier l'utilisateur que sa demande de cession a été rejetée"""
+        from entities.user import User
+        current_user = User.query.filter_by(email=from_email).first()
+        new_user = User.query.filter_by(email=to_email).first()
+
+        if not current_user:
+            print(f"Utilisateur manquant pour la notification de rejet de cession")
+            return
+
+        if current_user.phone:
+            new_name = f"{new_user.fname} {new_user.lname}" if new_user else to_email
+            additional_info = f"Votre demande de céder cette tâche à {new_name} a été rejetée. Vous êtes toujours responsable de cette tâche."
+            message = self._format_message("transfer_rejected", self.assigned_by, additional_info)
+            self._send_notification(current_user.phone, message)
 
     @staticmethod
     def get_tasks_for_user(user_email: str):
