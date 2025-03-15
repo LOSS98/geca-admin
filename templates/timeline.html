@@ -135,6 +135,17 @@
   .priority-menu {
     display: inline-block;
   }
+
+  /* Style pour les rôles */
+  .role-badge {
+    background-color: #5e72e4;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+  }
 </style>
 {% endblock %}
 
@@ -339,6 +350,51 @@
   // Get current user's email
   const userEmail = "{{ user_info.email }}";
 
+  // Fonction pour gérer les rappels de tâches
+  function handleReminderAction(event, taskId) {
+    event.preventDefault();
+
+    // Disable the button to prevent double clicks
+    const button = event.target.closest('button');
+    const originalText = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Envoi...';
+
+    console.log(`Sending reminder for task ${taskId}`);
+
+    // Make API call
+    fetch(`/api/tasks/${taskId}/remind`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({})
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Show success message
+        alert('Rappel envoyé avec succès !');
+        // Enable the button
+        button.disabled = false;
+        button.innerHTML = originalText;
+      } else {
+        const errorMessage = data.error ? data.error : 'Une erreur inconnue est survenue';
+        alert(`Erreur: ${errorMessage}`);
+        // Restore button
+        button.disabled = false;
+        button.innerHTML = originalText;
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert(`Une erreur est survenue: ${error.message}`);
+      // Restore button
+      button.disabled = false;
+      button.innerHTML = originalText;
+    });
+  }
+
   // Handle task action button clicks
   function handleTaskAction(event, taskId, action) {
     event.preventDefault();
@@ -496,6 +552,15 @@
           <button onclick="handleTaskAction(event, ${task.id}, 'complete')" class="btn btn-success btn-sm">Terminer</button>
         `;
       }
+
+      // Ajouter le bouton de rappel pour les tâches assignées avec des assignés
+      if (canManageTask && task.assignees.length > 0) {
+        actionButtons += `
+          <button onclick="handleReminderAction(event, ${task.id})" class="btn btn-info btn-sm">
+            <i class="fa fa-bell"></i> Relancer
+          </button>
+        `;
+      }
     } else if (task.state === 'disputed') {
       if (canManageTask) {
         actionButtons += `
@@ -558,6 +623,14 @@
       roleBadgeHtml = '<span class="task-badge badge-info">Attribuée à vous</span>';
     }
 
+    // Afficher les rôles cibles si présents
+    let targetRolesBadgesHtml = '';
+    if (task.target_roles && task.target_roles.length > 0) {
+      targetRolesBadgesHtml = task.target_roles.map(role =>
+        `<span class="role-badge">Rôle: ${role}</span>`
+      ).join(' ');
+    }
+
     // Get list of assignees
     const assigneesText = task.assignees.length > 0
       ? `<div class="float-right text-muted small">Attribuée à: ${task.assignees.join(', ')}</div>`
@@ -575,6 +648,9 @@
             <span class="task-badge ${getStateBadgeClass(task.state)}">${stateTranslations[task.state]}</span>
             ${getPriorityBadge(task.priority)}
             ${roleBadgeHtml}
+          </div>
+          <div class="mb-2">
+            ${targetRolesBadgesHtml}
           </div>
           <h4 class="card-title">${task.subject}</h4>
           <p class="card-text">${task.description || 'Pas de description'}</p>

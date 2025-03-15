@@ -3,6 +3,7 @@ from datetime import datetime
 from flask import Flask, render_template, request, session, redirect, url_for, flash, jsonify
 from flask_migrate import Migrate
 
+from entities.role import Role
 from flask_session import Session
 import os
 from dotenv import load_dotenv
@@ -49,8 +50,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 migrate = Migrate(app, db)
 
+
+
 with app.app_context():
     db.create_all()
+    Role.initialize_roles()
 
 with app.app_context():
     allowed_people = User.get_all_emails()
@@ -442,10 +446,24 @@ def viewOdds():
 def singleUser():
     if is_not_connected():
         return redirect(url_for('login'))
+
     error_message = None
     if 'error' in request.args:
         error_message = request.args.get('error')
-    return render_template('singleUser.html', error = error_message, user_info=session['user_info'])
+
+    # Récupérer les informations de l'utilisateur connecté
+    user_email = session['user_info']['email']
+    user = User.query.filter_by(email=user_email).first()
+
+    if not user:
+        return redirect(url_for('index', error="Utilisateur non trouvé"))
+
+    # Récupérer les rôles de l'utilisateur
+    user_roles = user.get_roles()
+
+    return render_template('singleUser.html', error=error_message, user_info=session['user_info'], user=user,
+                           user_roles=user_roles)
+
 
 @app.route('/users')
 def users():
@@ -609,8 +627,16 @@ def create_task_api():
             'due_date': due_date,
             'subject': data['subject'],
             'description': data['description'],
-            'priority': data.get('priority', 'medium')  # Default to medium priority
+            'priority': data.get('priority', 'medium'),  # Default to medium priority
+            'target_roles': []  # Default à une liste vide
         }
+
+        # Handle different assignment types
+        assignment_type = data.get('assignment_type')
+
+        if assignment_type == 'role':
+            # Récupérer les rôles cibles de la tâche
+            task_data['target_roles'] = data.get('target_roles', [])
 
         # Créer la tâche en utilisant le constructeur
         task = Task(task_data)
@@ -618,8 +644,8 @@ def create_task_api():
         # Sauvegarder la tâche en base de données
         task.save_to_db()
 
-        # Assign to specific users or by role
-        if data.get('assignment_type') == 'users':
+        # Si la tâche est attribuée à des utilisateurs spécifiques
+        if assignment_type == 'users':
             # Get selected users
             assignees = data.get('assignees', [])
             print(f"Selected assignees: {assignees}")
@@ -638,11 +664,6 @@ def create_task_api():
 
                 if user_emails:
                     task.assign_to_users(user_emails)
-        else:  # assignment_type == 'role'
-            role = data.get('role')
-            if role:
-                # Utiliser la méthode d'assignation par rôle
-                task.assign_to_role(role)
 
         return jsonify({'success': True, 'task_id': task.id})
 
@@ -887,43 +908,6 @@ def reopen_task(task_id):
         print(f"Error reopening task: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
-    @app.route('/api/tasks/<int:task_id>/priority', methods=['POST'])
-    def change_task_priority(task_id):
-        if is_not_connected():
-            return jsonify({'error': 'Not connected'}), 401
-
-        try:
-            user_email = session['user_info']['email']
-            user_role = session.get('role', 'member')
-            task = Task.query.get(task_id)
-
-            if not task:
-                return jsonify({'error': 'Task not found'}), 404
-
-            # Only the assigner or an admin can change priority
-            if task.assigned_by != user_email and user_role != 'admin':
-                return jsonify({'error': 'Not authorized'}), 403
-
-            # Get new priority from request
-            data = request.json
-            new_priority = data.get('priority')
-
-            if not new_priority or new_priority not in ['low', 'medium', 'high']:
-                return jsonify({'error': 'Invalid priority value'}), 400
-
-            # Utiliser la méthode set_priority qui gère la notification
-            result = task.set_priority(new_priority)
-
-            if not result:
-                return jsonify({'error': 'Failed to update priority'}), 500
-
-            return jsonify({'success': True})
-
-        except Exception as e:
-            db.session.rollback()
-            print(f"Error changing task priority: {str(e)}")
-            return jsonify({'error': str(e)}), 500
-
 
 @app.route('/api/tasks/<int:task_id>/priority', methods=['POST'])
 def change_task_priority(task_id):
@@ -960,6 +944,251 @@ def change_task_priority(task_id):
     except Exception as e:
         db.session.rollback()
         print(f"Error changing task priority: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/available-tasks')
+def available_tasks_page():
+    if is_not_connected():
+        return redirect(url_for('login'))
+
+    error_message = None
+    if 'error' in request.args:
+        error_message = request.args.get('error')
+
+    with app.app_context():
+        user_email = session['user_info']['email']
+        user = User.query.filter_by(email=user_email).first()
+        user_roles = user.get_roles() if user else []
+
+    return render_template('available-tasks.html', error=error_message, user_info=session['user_info'], user_roles=user_roles)
+
+
+@app.route('/api/available-tasks')
+def get_available_tasks():
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        user = User.query.filter_by(email=user_email).first()
+
+        if not user:
+            return jsonify([])
+
+        # Récupérer les rôles de l'utilisateur
+        user_roles = user.get_roles()
+
+        # Récupérer toutes les tâches assignées
+        all_tasks = Task.query.filter(Task.state == TaskState.ASSIGNED).all()
+
+        # Filtrer les tâches disponibles pour cet utilisateur
+        available_tasks = []
+        for task in all_tasks:
+            # Si la tâche a déjà des assignés, elle n'est pas disponible
+            if len(task.assignees) > 0:
+                continue
+
+            # Si la tâche n'a pas de rôles cibles, elle est disponible pour tous
+            if not task.target_roles:
+                available_tasks.append(task.to_dict())
+                continue
+
+            # Si la tâche a des rôles cibles, vérifier si l'utilisateur a au moins un de ces rôles
+            target_role_names = [role.name for role in task.target_roles]
+            if any(role in target_role_names for role in user_roles):
+                available_tasks.append(task.to_dict())
+
+        return jsonify(available_tasks)
+    except Exception as e:
+        print(f"Error getting available tasks: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/tasks/<int:task_id>/take', methods=['POST'])
+def take_task(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        user = User.query.filter_by(email=user_email).first()
+
+        if not user:
+            return jsonify({'error': 'Utilisateur non trouvé'}), 404
+
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Tâche non trouvée'}), 404
+
+        # Vérifier si la tâche est dans l'état assigné et n'a pas d'assignés
+        if task.state != TaskState.ASSIGNED or len(task.assignees) > 0:
+            return jsonify({'error': 'Cette tâche n\'est plus disponible'}), 400
+
+        # Vérifier si la tâche est disponible pour cet utilisateur en fonction de ses rôles
+        user_roles = user.get_roles()
+
+        # Si la tâche a des rôles cibles
+        if task.target_roles:
+            target_role_names = [role.name for role in task.target_roles]
+            if not any(role in target_role_names for role in user_roles):
+                return jsonify({'error': 'Vous n\'avez pas les rôles requis pour cette tâche'}), 403
+
+        # Assigner la tâche à cet utilisateur
+        task.assign_to_users([user_email])
+
+        # Notifier le créateur de la tâche que quelqu'un l'a prise
+        task.notify_task_taken(user_email)
+
+        return jsonify({'success': True})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error taking task: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/tasks/<int:task_id>/remind', methods=['POST'])
+def remind_task(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Tâche non trouvée'}), 404
+
+        # Vérifier si l'utilisateur est le créateur de la tâche
+        if task.assigned_by != user_email:
+            return jsonify({'error': 'Non autorisé'}), 403
+
+        # Envoyer un rappel à tous les assignés
+        for user in task.assignees:
+            if hasattr(user, 'phone') and user.phone:
+                message = task._format_message("reminder", user_email, "Ce rappel a été envoyé par le créateur de la tâche.")
+                task._send_notification(user.phone, message)
+
+        return jsonify({'success': True})
+    except Exception as e:
+        print(f"Error sending reminder: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/updateUserRole', methods=['POST'])
+def update_user_role():
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        user = User.query.filter_by(email=user_email).first()
+
+        if not user:
+            return jsonify({'error': 'Utilisateur non trouvé'}), 404
+
+        data = request.json
+        new_role = data.get('role')
+
+        # Vérifier que le rôle est valide
+        valid_roles = [
+            'Team Bureau', 'Team Partenariat', 'Team Com', 'Team BDA', 'Team BDS',
+            'Team Soirée', 'Team FISA', 'Team Opé', 'Team Argent', 'Team Logistique',
+            'Team Orga', 'Team Animation', 'Team Sécu', 'Team Film', 'Team E-BDS',
+            'Team Silencieuses', 'Team Standard', 'Team Goodies', 'Team INFO', 'Team A&C'
+        ]
+
+        if new_role and new_role not in valid_roles:
+            return jsonify({'error': 'Rôle invalide'}), 400
+
+        # Mettre à jour le rôle
+        user.role = new_role
+        db.session.commit()
+
+        # Mettre à jour la session
+        session['role'] = new_role
+
+        return jsonify({'success': True})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error updating user role: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/addUserRole', methods=['POST'])
+def add_user_role():
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        user = User.query.filter_by(email=user_email).first()
+
+        if not user:
+            return jsonify({'error': 'Utilisateur non trouvé'}), 404
+
+        data = request.json
+        new_role = data.get('role')
+
+        # Vérifier que le rôle est valide
+        valid_roles = [
+            'Team Bureau', 'Team Partenariat', 'Team Com', 'Team BDA', 'Team BDS',
+            'Team Soirée', 'Team FISA', 'Team Opé', 'Team Argent', 'Team Logistique',
+            'Team Orga', 'Team Animation', 'Team Sécu', 'Team Film', 'Team E-BDS',
+            'Team Silencieuses', 'Team Standard', 'Team Goodies', 'Team INFO', 'Team A&C'
+        ]
+
+        if not new_role or new_role not in valid_roles:
+            return jsonify({'error': 'Rôle invalide'}), 400
+
+        # Vérifier si l'utilisateur a déjà ce rôle
+        if user.has_role(new_role):
+            return jsonify({'error': 'Vous avez déjà ce rôle'}), 400
+
+        # Ajouter le rôle
+        user.add_role(new_role)
+
+        # Renvoyer la liste mise à jour des rôles
+        return jsonify({
+            'success': True,
+            'roles': user.get_roles()
+        })
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error adding user role: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/removeUserRole', methods=['POST'])
+def remove_user_role():
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        user = User.query.filter_by(email=user_email).first()
+
+        if not user:
+            return jsonify({'error': 'Utilisateur non trouvé'}), 404
+
+        data = request.json
+        role_to_remove = data.get('role')
+
+        # Vérifier que l'utilisateur a bien ce rôle
+        if not user.has_role(role_to_remove):
+            return jsonify({'error': 'Vous n\'avez pas ce rôle'}), 400
+
+        # Supprimer le rôle
+        user.remove_role(role_to_remove)
+
+        # Renvoyer la liste mise à jour des rôles
+        return jsonify({
+            'success': True,
+            'roles': user.get_roles()
+        })
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error removing user role: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':

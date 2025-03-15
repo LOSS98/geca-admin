@@ -8,6 +8,12 @@ import json
 
 from db import db
 
+# Création d'une table d'association task_roles
+task_roles = db.Table('task_roles',
+                      db.Column('task_id', db.Integer, db.ForeignKey('tasks.id'), primary_key=True),
+                      db.Column('role_name', db.String(50), db.ForeignKey('roles.name'), primary_key=True)
+                      )
+
 
 class TaskState(enum.Enum):
     ASSIGNED = "assigned"
@@ -59,6 +65,9 @@ class Task(db.Model):
     state = db.Column(db.Enum(TaskState), nullable=False, default=TaskState.ASSIGNED)
     priority = db.Column(db.Enum(TaskPriority), nullable=False, default=TaskPriority.MEDIUM)
 
+    # Relation avec les rôles cibles
+    target_roles = db.relationship('Role', secondary=task_roles, backref=db.backref('tasks', lazy='dynamic'))
+
     # Relationships
     assigner = db.relationship('User', foreign_keys=[assigned_by], backref='assigned_tasks')
     assignees = db.relationship('User', secondary=task_user_association, backref='tasks')
@@ -71,6 +80,16 @@ class Task(db.Model):
         self.subject = data.get('subject')
         self.description = data.get('description')
         self.state = TaskState.ASSIGNED
+        self.target_roles = []
+
+        # Ajouter les rôles cibles si fournis
+        target_roles = data.get('target_roles', [])
+        if target_roles:
+            from entities.role import Role
+            for role_name in target_roles:
+                role = Role.query.filter_by(name=role_name).first()
+                if role:
+                    self.target_roles.append(role)
 
         # Définir la priorité (par défaut: MEDIUM)
         priority_str = data.get('priority', 'medium').lower()
@@ -80,6 +99,44 @@ class Task(db.Model):
             self.priority = TaskPriority.HIGH
         else:
             self.priority = TaskPriority.MEDIUM
+
+    # Méthodes de gestion des rôles cibles
+    def add_target_role(self, role_name):
+        """Ajoute un rôle cible à la tâche s'il n'existe pas déjà"""
+        from entities.role import Role
+        role = Role.query.filter_by(name=role_name).first()
+        if not role:
+            role = Role(name=role_name)
+            db.session.add(role)
+
+        if role not in self.target_roles:
+            self.target_roles.append(role)
+            db.session.commit()
+
+    def remove_target_role(self, role_name):
+        """Supprime un rôle cible de la tâche"""
+        from entities.role import Role
+        role = Role.query.filter_by(name=role_name).first()
+        if role and role in self.target_roles:
+            self.target_roles.remove(role)
+            db.session.commit()
+
+    def get_target_roles(self):
+        """Renvoie la liste des noms de rôles cibles de la tâche"""
+        return [role.name for role in self.target_roles]
+
+    def is_available_for_user(self, user):
+        """Vérifie si la tâche est disponible pour un utilisateur en fonction de ses rôles"""
+        # Si la tâche n'a pas de rôles cibles, elle est disponible pour tous
+        if not self.target_roles:
+            return True
+
+        # Si la tâche a des rôles cibles, vérifier si l'utilisateur a au moins un de ces rôles
+        for role in self.target_roles:
+            if user.has_role(role.name):
+                return True
+
+        return False
 
     def to_dict(self):
         time_info = self.get_time_info()
@@ -96,6 +153,7 @@ class Task(db.Model):
             'priority': str(self.priority.value) if isinstance(self.priority, TaskPriority) else str(self.priority),
             'priority_display': TaskPriority.get_display_name(self.priority),
             'assignees': [user.email for user in self.assignees],
+            'target_roles': self.get_target_roles(),
             'delay': self.calculate_delay() if self.due_date and self.due_date < datetime.now() and self.state != TaskState.DONE else None,
             'time_info': time_info
         }
@@ -262,7 +320,8 @@ class Task(db.Model):
     def assign_to_role(self, role: str):
         """Assign the task to all users with a specific role"""
         from entities.user import User
-        users = User.query.filter_by(role=role).all()
+        from entities.role import Role
+        users = User.get_users_by_role(role)
         for user in users:
             if user not in self.assignees:
                 self.assignees.append(user)
@@ -391,6 +450,10 @@ class Task(db.Model):
             message = f"{priority_icon} La tâche '{self.subject}' a été validée par {actor_name} le {current_time}"
         elif message_type == "priority_changed":
             message = f"{priority_icon} La priorité de la tâche '{self.subject}' a été changée à {priority_text} par {actor_name} le {current_time}"
+        elif message_type == "reminder":
+            message = f"{priority_icon} RAPPEL: La tâche '{self.subject}' requiert votre attention. {actor_name} vous a envoyé ce rappel le {current_time}"
+        elif message_type == "task_taken":
+            message = f"{priority_icon} La tâche '{self.subject}' a été prise par {actor_name} le {current_time}"
         else:
             # Message générique au cas où
             message = f"{priority_icon} Mise à jour de la tâche '{self.subject}' par {actor_name} le {current_time}"
@@ -425,6 +488,25 @@ class Task(db.Model):
             additional_info = f"Date d'échéance: {self.due_date.strftime('%d/%m/%Y à %H:%M')}"
             message = self._format_message("assignment", self.assigned_by, additional_info)
             self._send_notification(user.phone, message)
+
+    def notify_task_taken(self, user_email: str):
+        """Notify the task creator that someone has taken the task"""
+        # Get the assigner
+        from entities.user import User
+        assigner = User.query.filter_by(email=self.assigned_by).first()
+        taker = User.query.filter_by(email=user_email).first()
+
+        if not assigner or not hasattr(assigner, 'phone') or not assigner.phone:
+            print(f"Assigner {self.assigned_by} has no phone number, skipping notification")
+            return
+
+        taker_name = f"{taker.fname} {taker.lname}" if taker else user_email
+
+        # Formater le message de notification
+        message = self._format_message("task_taken", user_email, f"La tâche a été prise par {taker_name}")
+
+        # Envoyer la notification
+        self._send_notification(assigner.phone, message)
 
     def notify_priority_change(self):
         """Notify all assignees about priority change"""
@@ -571,6 +653,32 @@ class Task(db.Model):
 
             additional_info = "Félicitations ! Votre travail sur cette tâche a été validé."
             message = self._format_message("task_validated", validator_email, additional_info)
+            self._send_notification(user.phone, message)
+
+    def send_reminder(self):
+        """Send a reminder to all assignees"""
+        for user in self.assignees:
+            # Skip if user has no phone
+            if not hasattr(user, 'phone') or not user.phone:
+                print(f"User {user.email} has no phone number, skipping notification")
+                continue
+
+            message = f"⏰ RAPPEL: La tâche '{self.subject}' nécessite votre attention!"
+
+            # Add task details
+            message += "\nDétail de la tâche :\n"
+            message += f"{self.description or 'Aucune description fournie'}"
+
+            # Add time info
+            time_info_str = self.format_time_remaining()
+            message += f"\n{time_info_str}"
+
+            # Add due date
+            message += f"\nDate d'échéance: {self.due_date.strftime('%d/%m/%Y à %H:%M')}"
+
+            # Add message from assigner
+            message += "\n\nCe rappel a été envoyé par le créateur de la tâche."
+
             self._send_notification(user.phone, message)
 
     @staticmethod
