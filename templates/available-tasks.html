@@ -91,11 +91,23 @@
     margin-right: 0.5rem;
     font-size: 0.8rem;
   }
+  .badge-released {
+    background-color: #6c5ce7;
+    color: white;
+  }
   .no-tasks {
     text-align: center;
     padding: 2rem;
     font-style: italic;
     color: #777;
+  }
+
+  /* Styles pour les informations sur la tâche libérée */
+  .previously-assigned {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #6c757d;
+    font-style: italic;
   }
 </style>
 {% endblock %}
@@ -262,6 +274,18 @@
       `;
     }
 
+    // Ajouter badge "Tâche libérée" pour les tâches qui étaient assignées puis libérées
+    let statusBadgeHtml = '';
+    let previouslyAssignedHtml = '';
+    if (task.previous_assignees && task.previous_assignees.length > 0) {
+      statusBadgeHtml = `<span class="task-badge badge-released">Tâche libérée</span>`;
+      previouslyAssignedHtml = `
+        <div class="previously-assigned">
+          Cette tâche a été libérée par un utilisateur précédemment assigné.
+        </div>
+      `;
+    }
+
     // Add role badges for the task
     let rolesBadgesHtml = '';
     if (task.target_roles && task.target_roles.length > 0) {
@@ -272,19 +296,24 @@
       rolesBadgesHtml = `<span class="role-badge">Ouverte à tous</span>`;
     }
 
+    // Afficher le créateur de la tâche
+    const creatorInfo = `<div class="text-muted small mb-2">Créée par: ${task.assigned_by}</div>`;
+
     return `
       <div class="task-card card priority-${task.priority}" data-task-priority="${task.priority}">
         <div class="card-body">
-          <div class="float-right text-muted small">Attribuée par: ${task.assigned_by}</div>
+          ${creatorInfo}
           <div class="float-right text-muted small">Début: ${formatDate(task.start_date)}</div>
           <div class="float-right text-muted small">Fin: ${formatDate(task.due_date)}</div>
           ${timeInfoHTML}
           <div class="mb-2">
             ${getPriorityBadge(task.priority)}
+            ${statusBadgeHtml}
             ${rolesBadgesHtml}
           </div>
           <h4 class="card-title">${task.subject}</h4>
           <p class="card-text">${task.description || 'Pas de description'}</p>
+          ${previouslyAssignedHtml}
           <div class="task-actions">
             <button onclick="handleTakeTask(event, ${task.id})" class="btn btn-success btn-sm">Je prends cette tâche</button>
           </div>
@@ -329,6 +358,28 @@
               </div>
             `;
           } else {
+            // Trier les tâches par priorité et date d'échéance
+            filteredTasks.sort((a, b) => {
+              // D'abord par priorité (high > medium > low)
+              const priorityOrder = { 'high': 3, 'medium': 2, 'low': 1 };
+              const priorityDiff = priorityOrder[b.priority] - priorityOrder[a.priority];
+
+              if (priorityDiff !== 0) return priorityDiff;
+
+              // Ensuite par date d'échéance (la plus proche d'abord)
+              return new Date(a.due_date) - new Date(b.due_date);
+            });
+
+            // Placer les tâches libérées en premier
+            filteredTasks.sort((a, b) => {
+              const aHasHistory = a.previous_assignees && a.previous_assignees.length > 0;
+              const bHasHistory = b.previous_assignees && b.previous_assignees.length > 0;
+
+              if (aHasHistory && !bHasHistory) return -1;
+              if (!aHasHistory && bHasHistory) return 1;
+              return 0;
+            });
+
             // Create HTML for each task card
             const tasksHTML = filteredTasks.map(task => createAvailableTaskCard(task)).join('');
             tasksContainer.innerHTML = tasksHTML;

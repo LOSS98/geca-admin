@@ -980,7 +980,9 @@ def get_available_tasks():
         user_roles = user.get_roles()
 
         # Récupérer toutes les tâches assignées
-        all_tasks = Task.query.filter(Task.state == TaskState.ASSIGNED).all()
+        all_tasks = Task.query.filter(
+            Task.state == TaskState.ASSIGNED
+        ).all()
 
         # Filtrer les tâches disponibles pour cet utilisateur
         available_tasks = []
@@ -989,15 +991,28 @@ def get_available_tasks():
             if len(task.assignees) > 0:
                 continue
 
+            # Vérifier si la tâche est disponible pour cet utilisateur en fonction de ses rôles
+            is_available = False
+
             # Si la tâche n'a pas de rôles cibles, elle est disponible pour tous
             if not task.target_roles:
-                available_tasks.append(task.to_dict())
-                continue
+                is_available = True
+            else:
+                # Si la tâche a des rôles cibles, vérifier si l'utilisateur a au moins un de ces rôles
+                target_role_names = [role.name for role in task.target_roles]
+                if any(role in target_role_names for role in user_roles):
+                    is_available = True
 
-            # Si la tâche a des rôles cibles, vérifier si l'utilisateur a au moins un de ces rôles
-            target_role_names = [role.name for role in task.target_roles]
-            if any(role in target_role_names for role in user_roles):
-                available_tasks.append(task.to_dict())
+            # Si la tâche est disponible, l'ajouter à la liste
+            if is_available:
+                task_dict = task.to_dict()
+
+                # Ajouter les informations sur le fait que la tâche a été libérée
+                # Cela nécessite d'ajouter un champ dans la base de données ou une table de logs
+                # Pour l'instant, nous utilisons un champ fictif
+                task_dict['previous_assignees'] = []  # À implémenter : historique des assignés
+
+                available_tasks.append(task_dict)
 
         return jsonify(available_tasks)
     except Exception as e:
@@ -1295,6 +1310,253 @@ def get_users():
         return jsonify(users_data)
     except Exception as e:
         print(f"Error getting users: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/tasks/<int:task_id>/release', methods=['POST'])
+def release_task(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Tâche non trouvée'}), 404
+
+        # Vérifier si l'utilisateur est assigné à cette tâche
+        from entities.user import User
+        user = User.query.filter_by(email=user_email).first()
+        if user not in task.assignees:
+            return jsonify({'error': 'Vous n\'êtes pas assigné à cette tâche'}), 403
+
+        # Retirer l'utilisateur des assignés
+        task.assignees.remove(user)
+
+        # Si la tâche n'a plus d'assignés et n'est pas en état "done" ou "deleted"
+        if len(task.assignees) == 0 and task.state not in [TaskState.DONE, TaskState.DELETED]:
+            # Remettre la tâche à l'état "assigned" (disponible)
+            task.state = TaskState.ASSIGNED
+
+        db.session.commit()
+
+        # Notifier le créateur de la tâche
+        try:
+            from entities.user import User
+            creator = User.query.filter_by(email=task.assigned_by).first()
+            if creator and creator.phone:
+                message = f"La tâche '{task.subject}' a été libérée par {user.fname} {user.lname} et est maintenant disponible pour d'autres personnes."
+                # Utiliser la méthode existante pour envoyer la notification
+                task._send_notification(creator.phone, message)
+        except Exception as e:
+            print(f"Erreur d'envoi de notification: {str(e)}")
+
+        return jsonify({'success': True})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error releasing task: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/tasks/<int:task_id>/reassign', methods=['POST'])
+def reassign_task(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Tâche non trouvée'}), 404
+
+        # Vérifier si l'utilisateur est le créateur de la tâche
+        if task.assigned_by != user_email:
+            return jsonify({'error': 'Vous n\'êtes pas autorisé à réassigner cette tâche'}), 403
+
+        data = request.json
+        new_assignees = data.get('assignees', [])
+
+        if not new_assignees:
+            return jsonify({'error': 'Veuillez sélectionner au moins un destinataire'}), 400
+
+        # Supprimer les assignations actuelles
+        task.assignees = []
+
+        # Ajouter les nouveaux assignés
+        from entities.user import User
+        for assignee_name in new_assignees:
+            # Find user by name (format: "lastname firstname")
+            parts = assignee_name.split(' ', 1)
+            if len(parts) == 2:
+                lname, fname = parts
+                user = User.query.filter_by(lname=lname, fname=fname).first()
+                if user:
+                    task.assignees.append(user)
+
+        # Remettre l'état à "assigned" si ce n'est pas déjà le cas
+        if task.state not in [TaskState.DONE, TaskState.DELETED]:
+            task.state = TaskState.ASSIGNED
+
+        db.session.commit()
+
+        # Envoyer une notification aux nouveaux assignés
+        task.notify_assignment()
+
+        return jsonify({'success': True})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error reassigning task: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/tasks/<int:task_id>/transfer-ownership', methods=['POST'])
+def transfer_task_ownership(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Tâche non trouvée'}), 404
+
+        # Vérifier si l'utilisateur est le créateur de la tâche
+        if task.assigned_by != user_email:
+            return jsonify({'error': 'Vous n\'êtes pas autorisé à transférer la propriété de cette tâche'}), 403
+
+        data = request.json
+        new_owner_email = data.get('new_owner')
+
+        if not new_owner_email:
+            return jsonify({'error': 'Veuillez sélectionner un nouveau propriétaire'}), 400
+
+        # Vérifier que le nouvel utilisateur existe
+        from entities.user import User
+        new_owner = User.query.filter_by(email=new_owner_email).first()
+
+        if not new_owner:
+            return jsonify({'error': 'Utilisateur introuvable'}), 404
+
+        # Mettre à jour le propriétaire de la tâche
+        old_owner = task.assigned_by
+        task.assigned_by = new_owner_email
+        db.session.commit()
+
+        # Notifier le nouveau propriétaire
+        try:
+            if new_owner.phone:
+                message = f"La propriété de la tâche '{task.subject}' vous a été transférée par {user_email}. Vous êtes maintenant responsable de cette tâche."
+                task._send_notification(new_owner.phone, message)
+        except Exception as e:
+            print(f"Erreur d'envoi de notification: {str(e)}")
+
+        return jsonify({'success': True})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error transferring task ownership: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/tasks/<int:task_id>/release', methods=['POST'])
+def release_task_api(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Tâche non trouvée'}), 404
+
+        # Utiliser la méthode de libération de tâche
+        success, message = task.release_task(user_email)
+
+        if not success:
+            return jsonify({'error': message}), 400
+
+        return jsonify({'success': True, 'message': message})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error releasing task: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+# Route pour réassigner une tâche
+@app.route('/api/tasks/<int:task_id>/reassign', methods=['POST'])
+def reassign_task_api(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Tâche non trouvée'}), 404
+
+        # Vérifier si l'utilisateur est le créateur de la tâche
+        if task.assigned_by != user_email:
+            return jsonify({'error': 'Vous n\'êtes pas autorisé à réassigner cette tâche'}), 403
+
+        data = request.json
+        new_assignees = data.get('assignees', [])
+
+        # Convertir les noms d'utilisateurs en emails
+        new_assignee_emails = []
+        from entities.user import User
+        for assignee_name in new_assignees:
+            # Find user by name (format: "lastname firstname")
+            parts = assignee_name.split(' ', 1)
+            if len(parts) == 2:
+                lname, fname = parts
+                user = User.query.filter_by(lname=lname, fname=fname).first()
+                if user:
+                    new_assignee_emails.append(user.email)
+
+        # Utiliser la méthode de réassignation de tâche
+        success, message = task.reassign_task(new_assignee_emails)
+
+        if not success:
+            return jsonify({'error': message}), 400
+
+        return jsonify({'success': True, 'message': message})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error reassigning task: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+# Route pour transférer la propriété d'une tâche
+@app.route('/api/tasks/<int:task_id>/transfer-ownership', methods=['POST'])
+def transfer_task_ownership_api(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Tâche non trouvée'}), 404
+
+        # Vérifier si l'utilisateur est le créateur de la tâche
+        if task.assigned_by != user_email:
+            return jsonify({'error': 'Vous n\'êtes pas autorisé à transférer la propriété de cette tâche'}), 403
+
+        data = request.json
+        new_owner_email = data.get('new_owner')
+
+        # Utiliser la méthode de transfert de propriété
+        success, message = task.transfer_ownership(new_owner_email)
+
+        if not success:
+            return jsonify({'error': message}), 400
+
+        return jsonify({'success': True, 'message': message})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error transferring task ownership: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':

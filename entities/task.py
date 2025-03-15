@@ -5,6 +5,8 @@ from typing import Dict, Optional, Any, List
 import requests
 import os
 import json
+from entities.task_history import TaskHistory
+
 
 from db import db
 
@@ -145,8 +147,145 @@ class Task(db.Model):
 
         return False
 
+    def release_task(self, user_email):
+        """Libère une tâche pour la rendre disponible à nouveau"""
+        from entities.user import User
+        user = User.query.filter_by(email=user_email).first()
+
+        if not user:
+            return False, "Utilisateur non trouvé"
+
+        if user not in self.assignees:
+            return False, "Vous n'êtes pas assigné à cette tâche"
+
+        # Retirer l'utilisateur des assignés
+        self.assignees.remove(user)
+
+        # Si la tâche n'a plus d'assignés et n'est pas en état "done" ou "deleted"
+        if len(self.assignees) == 0 and self.state not in [TaskState.DONE, TaskState.DELETED]:
+            # Remettre la tâche à l'état "assigned" (disponible)
+            self.state = TaskState.ASSIGNED
+
+        # Enregistrer l'action dans l'historique
+        history_entry = TaskHistory(
+            task_id=self.id,
+            user_email=user_email,
+            action="released"
+        )
+        history_entry.save_to_db()
+
+        # Sauvegarder les changements
+        db.session.commit()
+
+        # Notifier le créateur
+        try:
+            self.notify_task_released(user_email)
+        except Exception as e:
+            print(f"Erreur lors de la notification: {str(e)}")
+
+        return True, "Tâche libérée avec succès"
+
+    # Méthode pour réassigner une tâche
+    def reassign_task(self, new_assignee_emails):
+        """Réassigne la tâche à de nouveaux utilisateurs"""
+        if not new_assignee_emails:
+            return False, "Aucun destinataire spécifié"
+
+        # Enregistrer l'action dans l'historique pour chaque assigné actuel
+        for user in self.assignees:
+            history_entry = TaskHistory(
+                task_id=self.id,
+                user_email=user.email,
+                action="unassigned"
+            )
+            history_entry.save_to_db()
+
+        # Supprimer les assignations actuelles
+        self.assignees = []
+
+        # Ajouter les nouveaux assignés
+        from entities.user import User
+        new_assignees = []
+
+        for email in new_assignee_emails:
+            user = User.query.filter_by(email=email).first()
+            if user:
+                self.assignees.append(user)
+                new_assignees.append(user)
+
+                # Enregistrer l'action dans l'historique
+                history_entry = TaskHistory(
+                    task_id=self.id,
+                    user_email=user.email,
+                    action="reassigned"
+                )
+                history_entry.save_to_db()
+
+        # Remettre l'état à "assigned" si ce n'est pas déjà le cas
+        if self.state not in [TaskState.DONE, TaskState.DELETED]:
+            self.state = TaskState.ASSIGNED
+
+        # Sauvegarder les changements
+        db.session.commit()
+
+        # Notifier les nouveaux assignés
+        try:
+            self.notify_task_reassigned(new_assignees)
+        except Exception as e:
+            print(f"Erreur lors de la notification: {str(e)}")
+
+        return True, "Tâche réassignée avec succès"
+
+    # Méthode pour transférer la propriété d'une tâche
+    def transfer_ownership(self, new_owner_email):
+        """Transfère la propriété d'une tâche à un autre utilisateur"""
+        from entities.user import User
+
+        # Vérifier que le nouvel utilisateur existe
+        new_owner = User.query.filter_by(email=new_owner_email).first()
+
+        if not new_owner:
+            return False, "Utilisateur introuvable"
+
+        # Enregistrer l'action dans l'historique
+        history_entry = TaskHistory(
+            task_id=self.id,
+            user_email=new_owner_email,
+            action="ownership_transferred"
+        )
+        history_entry.save_to_db()
+
+        # Sauvegarder l'ancien propriétaire pour la notification
+        old_owner = self.assigned_by
+
+        # Mettre à jour le propriétaire
+        self.assigned_by = new_owner_email
+
+        # Sauvegarder les changements
+        db.session.commit()
+
+        # Notifier le nouveau propriétaire
+        try:
+            self.notify_ownership_transfer(old_owner, new_owner_email)
+        except Exception as e:
+            print(f"Erreur lors de la notification: {str(e)}")
+
+        return True, "Propriété transférée avec succès"
+
+    # Mettre à jour la méthode to_dict pour inclure l'historique
     def to_dict(self):
         time_info = self.get_time_info()
+
+        # Récupérer l'historique des assignations
+        from entities.task_history import TaskHistory
+        history = TaskHistory.query.filter_by(task_id=self.id).order_by(TaskHistory.timestamp.desc()).all()
+
+        # Récupérer les utilisateurs précédemment assignés
+        previous_assignees = []
+        for entry in history:
+            if entry.action in ["released", "unassigned"]:
+                if entry.user_email not in previous_assignees:
+                    previous_assignees.append(entry.user_email)
 
         return {
             'id': self.id,
@@ -164,7 +303,9 @@ class Task(db.Model):
             'delay': self.calculate_delay() if self.due_date and self.due_date < datetime.now() and self.state != TaskState.DONE else None,
             'time_info': time_info,
             'transfer_from': self.transfer_from,
-            'transfer_to': self.transfer_to
+            'transfer_to': self.transfer_to,
+            'previous_assignees': previous_assignees,
+            'history': [entry.to_dict() for entry in history[:10]]  # Limiter à 10 entrées pour la performance
         }
 
     def set_priority(self, priority_str):
@@ -868,6 +1009,58 @@ class Task(db.Model):
         ).all()
 
         return tasks
+
+    def notify_task_released(self, user_email):
+        """Notifier le créateur de la tâche qu'un utilisateur a libéré la tâche"""
+        from entities.user import User
+        creator = User.query.filter_by(email=self.assigned_by).first()
+        releaser = User.query.filter_by(email=user_email).first()
+
+        if not creator or not releaser:
+            print(f"Créateur ou utilisateur libérant non trouvé")
+            return
+
+        if not creator.phone:
+            print(f"Créateur sans numéro de téléphone: {self.assigned_by}")
+            return
+
+        # Formater le message
+        message = f"La tâche '{self.subject}' a été libérée par {releaser.fname} {releaser.lname}. "
+        message += "Elle est maintenant disponible pour d'autres personnes."
+
+        # Envoyer la notification
+        self._send_notification(creator.phone, message)
+
+    # Méthode pour notifier un réassignement de tâche
+    def notify_task_reassigned(self, new_assignees):
+        """Notifier les nouveaux assignés qu'ils ont été assignés à cette tâche"""
+        for user in new_assignees:
+            # Skip if user has no phone
+            if not hasattr(user, 'phone') or not user.phone:
+                print(f"User {user.email} has no phone number, skipping notification")
+                continue
+
+            # Information supplémentaire : date d'échéance
+            additional_info = f"Date d'échéance: {self.due_date.strftime('%d/%m/%Y à %H:%M')}"
+            message = self._format_message("assignment", self.assigned_by, additional_info)
+            message += "\n\nVous avez été réassigné à cette tâche par le créateur."
+            self._send_notification(user.phone, message)
+
+    # Méthode pour notifier un transfert de propriété
+    def notify_ownership_transfer(self, old_owner, new_owner_email):
+        """Notifier le nouveau propriétaire du transfert de propriété"""
+        from entities.user import User
+        new_owner = User.query.filter_by(email=new_owner_email).first()
+        if not new_owner or not new_owner.phone:
+            print(f"Nouveau propriétaire sans numéro ou introuvable: {new_owner_email}")
+            return
+
+        # Formater le message
+        message = f"La propriété de la tâche '{self.subject}' vous a été transférée par {old_owner}. "
+        message += "Vous êtes maintenant responsable de cette tâche et pouvez la gérer."
+
+        # Envoyer la notification
+        self._send_notification(new_owner.phone, message)
 
     @staticmethod
     def get_assigned_tasks_by_user(user_email: str):

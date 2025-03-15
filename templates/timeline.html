@@ -150,6 +150,31 @@
     margin-bottom: 0.5rem;
     font-size: 0.85rem;
   }
+
+  /* Style pour l'historique des tâches */
+  .task-history {
+    font-size: 0.85rem;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+  }
+  .task-history-title {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  .task-history-item {
+    margin-bottom: 0.25rem;
+    padding: 0.25rem;
+    border-bottom: 1px solid #eee;
+  }
+  .task-history-action {
+    font-weight: bold;
+  }
+  .task-history-date {
+    color: #6c757d;
+    float: right;
+  }
 </style>
 {% endblock %}
 
@@ -270,28 +295,74 @@
   </div>
 </div>
 
-<!-- Modal pour céder une tâche -->
-<div class="modal fade" id="transferModal" tabindex="-1" aria-labelledby="transferModalLabel" aria-hidden="true">
+<!-- Modal pour réassigner une tâche -->
+<div class="modal fade" id="reassignModal" tabindex="-1" aria-labelledby="reassignModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="transferModalLabel">Céder une tâche</h5>
+        <h5 class="modal-title" id="reassignModalLabel">Réassigner la tâche</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>Choisissez l'utilisateur à qui vous souhaitez céder cette tâche:</p>
-        <input type="hidden" id="taskIdForTransfer" value="">
+        <p>Sélectionnez les utilisateurs à qui vous souhaitez attribuer cette tâche:</p>
+        <input type="hidden" id="taskIdForReassign" value="">
         <div class="mb-3">
-          <select class="form-select" id="transferUserSelect">
-            <option value="" disabled selected>Choisir un utilisateur</option>
+          <select class="form-select" id="reassignUserSelect" multiple>
             <!-- Les options seront remplies dynamiquement -->
           </select>
-          <div class="form-text">La cession doit être approuvée par le créateur de la tâche.</div>
+          <div class="form-text">Maintenez Ctrl (ou Cmd sur Mac) pour sélectionner plusieurs utilisateurs.</div>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-        <button type="button" class="btn btn-primary" id="requestTransferBtn">Demander la cession</button>
+        <button type="button" class="btn btn-primary" id="reassignBtn" onclick="reassignTask()">Réassigner</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal pour transférer la propriété d'une tâche -->
+<div class="modal fade" id="transferOwnershipModal" tabindex="-1" aria-labelledby="transferOwnershipModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="transferOwnershipModalLabel">Transférer la propriété de la tâche</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Sélectionnez l'utilisateur à qui vous souhaitez transférer la propriété de cette tâche:</p>
+        <input type="hidden" id="taskIdForOwnershipTransfer" value="">
+        <div class="mb-3">
+          <select class="form-select" id="ownershipTransferSelect">
+            <option value="" disabled selected>Choisir un utilisateur</option>
+            <!-- Les options seront remplies dynamiquement -->
+          </select>
+          <div class="form-text">Le nouvel utilisateur deviendra le propriétaire de la tâche et pourra la gérer.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary" id="transferOwnershipBtn" onclick="transferTaskOwnership()">Transférer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal pour voir l'historique d'une tâche -->
+<div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="historyModalLabel">Historique de la tâche</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="taskHistoryContent">
+          <!-- L'historique sera chargé dynamiquement ici -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
       </div>
     </div>
   </div>
@@ -313,6 +384,19 @@
     'high': 'Haute',
     'medium': 'Moyenne',
     'low': 'Faible'
+  };
+
+  // Action translations for history
+  const actionTranslations = {
+    'assigned': 'Assignée',
+    'reassigned': 'Réassignée',
+    'released': 'Libérée',
+    'unassigned': 'Désassignée',
+    'disputed': 'Contestée',
+    'validated': 'Validée',
+    'completed': 'Terminée',
+    'reopened': 'Réouverte',
+    'ownership_transferred': 'Propriété transférée'
   };
 
   // Get state badge class
@@ -402,19 +486,178 @@
   // Charger les utilisateurs au chargement de la page
   document.addEventListener('DOMContentLoaded', loadUsers);
 
-  // Fonction pour ouvrir le modal de cession
-  function openTransferModal(event, taskId) {
+  // Fonction pour ouvrir le modal d'historique des tâches
+  function openHistoryModal(event, taskId, history) {
+    event.preventDefault();
+
+    // Mettre à jour le contenu du modal
+    const historyContent = document.getElementById('taskHistoryContent');
+
+    if (!history || history.length === 0) {
+      historyContent.innerHTML = '<p>Aucun historique disponible pour cette tâche.</p>';
+    } else {
+      let historyHTML = `<div class="task-history">`;
+      historyHTML += `<div class="task-history-title">Historique des actions</div>`;
+
+      history.forEach(entry => {
+        const actionText = actionTranslations[entry.action] || entry.action;
+        historyHTML += `
+          <div class="task-history-item">
+            <span class="task-history-action">${actionText}</span> par ${entry.user_email}
+            <span class="task-history-date">${formatDate(entry.timestamp)}</span>
+          </div>
+        `;
+      });
+
+      historyHTML += `</div>`;
+      historyContent.innerHTML = historyHTML;
+    }
+
+    // Afficher le modal
+    const historyModal = new bootstrap.Modal(document.getElementById('historyModal'));
+    historyModal.show();
+  }
+
+  // Fonction pour libérer une tâche (la rendre disponible pour d'autres)
+  function releaseTask(event, taskId) {
+    event.preventDefault();
+
+    if (!confirm("Voulez-vous vraiment libérer cette tâche ? Elle deviendra disponible pour d'autres personnes.")) {
+      return;
+    }
+
+    // Disable the button to prevent double clicks
+    const button = event.target.closest('button');
+    const originalText = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> En cours...';
+
+    // Make API call
+    fetch(`/api/tasks/${taskId}/release`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({})
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Refresh tasks after successful action
+        fetchTasks();
+        alert("La tâche a été libérée avec succès. Elle est maintenant disponible dans la section 'Tâches disponibles'.");
+      } else {
+        const errorMessage = data.error ? data.error : 'Une erreur inconnue est survenue';
+        alert(`Erreur: ${errorMessage}`);
+        // Restore button
+        button.disabled = false;
+        button.innerHTML = originalText;
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert(`Une erreur est survenue: ${error.message}`);
+      // Restore button
+      button.disabled = false;
+      button.innerHTML = originalText;
+    });
+  }
+
+  // Fonction pour ouvrir le modal de réassignation
+  function openReassignModal(event, taskId, currentAssignees) {
     event.preventDefault();
 
     // Mettre à jour l'ID de la tâche
-    document.getElementById('taskIdForTransfer').value = taskId;
+    document.getElementById('taskIdForReassign').value = taskId;
 
     // Remplir le select avec les utilisateurs
-    const userSelect = document.getElementById('transferUserSelect');
+    const userSelect = document.getElementById('reassignUserSelect');
+    userSelect.innerHTML = '';
+
+    // Charger les utilisateurs dans le select
+    usersForTransfer.forEach(user => {
+      const option = document.createElement('option');
+      option.value = user.name;
+      option.textContent = user.name;
+      option.selected = currentAssignees.includes(user.email);
+      userSelect.appendChild(option);
+    });
+
+    // Afficher le modal
+    const reassignModal = new bootstrap.Modal(document.getElementById('reassignModal'));
+    reassignModal.show();
+  }
+
+  // Fonction pour réassigner une tâche
+  function reassignTask() {
+    const taskId = document.getElementById('taskIdForReassign').value;
+    const userSelect = document.getElementById('reassignUserSelect');
+    const selectedUsers = Array.from(userSelect.selectedOptions).map(option => option.value);
+
+    if (selectedUsers.length === 0) {
+      alert('Veuillez sélectionner au moins un destinataire');
+      return;
+    }
+
+    // Disable the button to prevent double clicks
+    const button = document.getElementById('reassignBtn');
+    const originalText = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> En cours...';
+
+    // Make API call
+    fetch(`/api/tasks/${taskId}/reassign`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        assignees: selectedUsers
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Hide the modal
+        const reassignModal = bootstrap.Modal.getInstance(document.getElementById('reassignModal'));
+        reassignModal.hide();
+
+        // Refresh tasks
+        fetchTasks();
+
+        // Show success message
+        alert('La tâche a été réassignée avec succès');
+      } else {
+        const errorMessage = data.error ? data.error : 'Une erreur inconnue est survenue';
+        alert(`Erreur: ${errorMessage}`);
+        // Restore button
+        button.disabled = false;
+        button.innerHTML = originalText;
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert(`Une erreur est survenue: ${error.message}`);
+      // Restore button
+      button.disabled = false;
+      button.innerHTML = originalText;
+    });
+  }
+
+  // Fonction pour ouvrir le modal de transfert de propriété
+  function openOwnershipTransferModal(event, taskId) {
+    event.preventDefault();
+
+    // Mettre à jour l'ID de la tâche
+    document.getElementById('taskIdForOwnershipTransfer').value = taskId;
+
+    // Remplir le select avec les utilisateurs
+    const userSelect = document.getElementById('ownershipTransferSelect');
     userSelect.innerHTML = '<option value="" disabled selected>Choisir un utilisateur</option>';
 
+    // Charger les utilisateurs dans le select
     usersForTransfer.forEach(user => {
-      // Ne pas inclure l'utilisateur courant dans la liste
+      // Exclure l'utilisateur courant
       if (user.email !== userEmail) {
         const option = document.createElement('option');
         option.value = user.email;
@@ -424,8 +667,63 @@
     });
 
     // Afficher le modal
-    const transferModal = new bootstrap.Modal(document.getElementById('transferModal'));
-    transferModal.show();
+    const transferOwnershipModal = new bootstrap.Modal(document.getElementById('transferOwnershipModal'));
+    transferOwnershipModal.show();
+  }
+
+  // Fonction pour transférer la propriété d'une tâche
+  function transferTaskOwnership() {
+    const taskId = document.getElementById('taskIdForOwnershipTransfer').value;
+    const newOwner = document.getElementById('ownershipTransferSelect').value;
+
+    if (!newOwner) {
+      alert('Veuillez sélectionner un nouveau propriétaire');
+      return;
+    }
+
+    // Disable the button to prevent double clicks
+    const button = document.getElementById('transferOwnershipBtn');
+    const originalText = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> En cours...';
+
+    // Make API call
+    fetch(`/api/tasks/${taskId}/transfer-ownership`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        new_owner: newOwner
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Hide the modal
+        const transferOwnershipModal = bootstrap.Modal.getInstance(document.getElementById('transferOwnershipModal'));
+        transferOwnershipModal.hide();
+
+        // Refresh tasks
+        fetchTasks();
+
+        // Show success message
+        alert('La propriété de la tâche a été transférée avec succès');
+      } else {
+        const errorMessage = data.error ? data.error : 'Une erreur inconnue est survenue';
+        alert(`Erreur: ${errorMessage}`);
+        // Restore button
+        button.disabled = false;
+        button.innerHTML = originalText;
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert(`Une erreur est survenue: ${error.message}`);
+      // Restore button
+      button.disabled = false;
+      button.innerHTML = originalText;
+    });
   }
 
   // Fonction pour gérer les rappels de tâches
@@ -479,8 +777,7 @@
 
     // Disable the button to prevent double clicks
     const button = event.target.closest('button');
-    const originalText = button.innerHTML;
-    button.disabled = true;
+    const originalText = button.innerHTMLbutton.disabled = true;
     button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> En cours...';
 
     console.log(`Executing action ${action} on task ${taskId}`);
@@ -591,7 +888,8 @@
       is_assignee: isAssignee,
       time_info: task.time_info,
       transfer_from: task.transfer_from,
-      transfer_to: task.transfer_to
+      transfer_to: task.transfer_to,
+      history: task.history || []
     });
 
     let actionButtons = '';
@@ -602,8 +900,8 @@
         actionButtons += `
           <button onclick="handleTaskAction(event, ${task.id}, 'dispute')" class="btn btn-danger btn-sm">Contester</button>
           <button onclick="handleTaskAction(event, ${task.id}, 'validate')" class="btn btn-warning btn-sm">Faire valider</button>
-          <button onclick="openTransferModal(event, ${task.id})" class="btn btn-info btn-sm">
-            <i class="fa fa-exchange"></i> Céder
+          <button onclick="releaseTask(event, ${task.id})" class="btn btn-info btn-sm">
+            <i class="fa fa-unlock"></i> Libérer
           </button>
         `;
       }
@@ -619,6 +917,18 @@
         actionButtons += `
           <button onclick="handleReminderAction(event, ${task.id})" class="btn btn-info btn-sm">
             <i class="fa fa-bell"></i> Relancer
+          </button>
+        `;
+      }
+
+      // Pour le créateur: ajouter des boutons pour réassigner et transférer la propriété
+      if (isTaskAssigner && task.assignees.length > 0) {
+        actionButtons += `
+          <button onclick="openReassignModal(event, ${task.id}, ${JSON.stringify(task.assignees)})" class="btn btn-primary btn-sm">
+            <i class="fa fa-users"></i> Réassigner
+          </button>
+          <button onclick="openOwnershipTransferModal(event, ${task.id})" class="btn btn-secondary btn-sm">
+            <i class="fa fa-exchange"></i> Transférer propriété
           </button>
         `;
       }
@@ -681,6 +991,15 @@
     if (canManageTask) {
       actionButtons += `
         <button onclick="openPriorityModal(${task.id}, '${task.priority}')" class="btn btn-info btn-sm">Changer la priorité</button>
+      `;
+    }
+
+    // Add history button
+    if (task.history && task.history.length > 0) {
+      actionButtons += `
+        <button onclick="openHistoryModal(event, ${task.id}, ${JSON.stringify(task.history)})" class="btn btn-secondary btn-sm">
+          <i class="fa fa-history"></i> Historique
+        </button>
       `;
     }
 
@@ -756,7 +1075,7 @@
   function fetchTasks() {
     const tasksContainer = document.getElementById('tasks-container');
     tasksContainer.innerHTML = `
-      <div class="loading-spinner<div class="loading-spinner">
+      <div class="loading-spinner">
         <div class="spinner-border text-primary" role="status">
           <span class="visually-hidden">Chargement...</span>
         </div>
@@ -833,60 +1152,6 @@
       document.querySelectorAll('.priority-filter-option').forEach(opt => opt.classList.remove('active'));
       this.classList.add('active');
       fetchTasks();
-    });
-  });
-
-  // Gestionnaire pour le bouton de demande de cession
-  document.getElementById('requestTransferBtn').addEventListener('click', function() {
-    const taskId = document.getElementById('taskIdForTransfer').value;
-    const newUserEmail = document.getElementById('transferUserSelect').value;
-
-    if (!newUserEmail) {
-      alert('Veuillez sélectionner un utilisateur');
-      return;
-    }
-
-    // Désactiver le bouton pendant la requête
-    this.disabled = true;
-    this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Envoi...';
-
-    // Faire la requête API
-    fetch(`/api/tasks/${taskId}/request-transfer`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        new_user_email: newUserEmail
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        // Fermer le modal
-        const transferModal = bootstrap.Modal.getInstance(document.getElementById('transferModal'));
-        transferModal.hide();
-
-        // Rafraîchir la liste des tâches
-        fetchTasks();
-
-        // Afficher un message de succès
-        alert('Demande de cession envoyée avec succès');
-      } else {
-        alert(`Erreur: ${data.error || 'Une erreur est survenue'}`);
-
-        // Réactiver le bouton
-        this.disabled = false;
-        this.innerHTML = 'Demander la cession';
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert(`Une erreur est survenue: ${error.message}`);
-
-      // Réactiver le bouton
-      this.disabled = false;
-      this.innerHTML = 'Demander la cession';
     });
   });
 </script>
