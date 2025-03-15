@@ -1326,7 +1326,8 @@ def get_users():
 
     try:
         from entities.user import User
-        users = User.query.all()
+        users = User.query.order_by(User.lname, User.fname).all()
+
         users_data = [{'email': user.email, 'name': f"{user.lname} {user.fname}"} for user in users]
         return jsonify(users_data)
     except Exception as e:
@@ -1377,58 +1378,6 @@ def release_task(task_id):
     except Exception as e:
         db.session.rollback()
         print(f"Error releasing task: {str(e)}")
-        return jsonify({'error': str(e)}), 500
-
-
-@app.route('/api/tasks/<int:task_id>/reassign', methods=['POST'])
-def reassign_task(task_id):
-    if is_not_connected():
-        return jsonify({'error': 'Not connected'}), 401
-
-    try:
-        user_email = session['user_info']['email']
-        task = Task.query.get(task_id)
-
-        if not task:
-            return jsonify({'error': 'Tâche non trouvée'}), 404
-
-        # Vérifier si l'utilisateur est le créateur de la tâche
-        if task.assigned_by != user_email:
-            return jsonify({'error': 'Vous n\'êtes pas autorisé à réassigner cette tâche'}), 403
-
-        data = request.json
-        new_assignees = data.get('assignees', [])
-
-        if not new_assignees:
-            return jsonify({'error': 'Veuillez sélectionner au moins un destinataire'}), 400
-
-        # Supprimer les assignations actuelles
-        task.assignees = []
-
-        # Ajouter les nouveaux assignés
-        from entities.user import User
-        for assignee_name in new_assignees:
-            # Find user by name (format: "lastname firstname")
-            parts = assignee_name.split(' ', 1)
-            if len(parts) == 2:
-                lname, fname = parts
-                user = User.query.filter_by(lname=lname, fname=fname).first()
-                if user:
-                    task.assignees.append(user)
-
-        # Remettre l'état à "assigned" si ce n'est pas déjà le cas
-        if task.state not in [TaskState.DONE, TaskState.DELETED]:
-            task.state = TaskState.ASSIGNED
-
-        db.session.commit()
-
-        # Envoyer une notification aux nouveaux assignés
-        task.notify_assignment()
-
-        return jsonify({'success': True})
-    except Exception as e:
-        db.session.rollback()
-        print(f"Error reassigning task: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 
@@ -1505,8 +1454,8 @@ def release_task_api(task_id):
         return jsonify({'error': str(e)}), 500
 
 
-@app.route('/api/tasks/<int:task_id>/reassign-by-assignee', methods=['POST'])
-def reassign_task_by_assignee(task_id):
+@app.route('/api/tasks/<int:task_id>/reassign', methods=['POST'])
+def reassign_task(task_id):
     if is_not_connected():
         return jsonify({'error': 'Not connected'}), 401
 
@@ -1556,50 +1505,7 @@ def reassign_task_by_assignee(task_id):
             reassignment_data['target_roles'] = data.get('target_roles', [])
 
         # Utiliser la méthode de réassignation par l'assigné
-        success, message = task.reassign_by_assignee(user_email, assignment_type, reassignment_data)
-
-        if not success:
-            return jsonify({'error': message}), 400
-
-        return jsonify({'success': True, 'message': message})
-    except Exception as e:
-        db.session.rollback()
-        print(f"Error reassigning task by assignee: {str(e)}")
-        return jsonify({'error': str(e)}), 500
-# Route pour réassigner une tâche
-@app.route('/api/tasks/<int:task_id>/reassign', methods=['POST'])
-def reassign_task_api(task_id):
-    if is_not_connected():
-        return jsonify({'error': 'Not connected'}), 401
-
-    try:
-        user_email = session['user_info']['email']
-        task = Task.query.get(task_id)
-
-        if not task:
-            return jsonify({'error': 'Tâche non trouvée'}), 404
-
-        # Vérifier si l'utilisateur est le créateur de la tâche
-        if task.assigned_by != user_email:
-            return jsonify({'error': 'Vous n\'êtes pas autorisé à réassigner cette tâche'}), 403
-
-        data = request.json
-        new_assignees = data.get('assignees', [])
-
-        # Convertir les noms d'utilisateurs en emails
-        new_assignee_emails = []
-        from entities.user import User
-        for assignee_name in new_assignees:
-            # Find user by name (format: "lastname firstname")
-            parts = assignee_name.split(' ', 1)
-            if len(parts) == 2:
-                lname, fname = parts
-                user = User.query.filter_by(lname=lname, fname=fname).first()
-                if user:
-                    new_assignee_emails.append(user.email)
-
-        # Utiliser la méthode de réassignation de tâche
-        success, message = task.reassign_task(new_assignee_emails)
+        success, message = task.reassign(user_email, assignment_type, reassignment_data)
 
         if not success:
             return jsonify({'error': message}), 400
@@ -1610,37 +1516,191 @@ def reassign_task_api(task_id):
         print(f"Error reassigning task: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
-# Route pour transférer la propriété d'une tâche
-@app.route('/api/tasks/<int:task_id>/transfer-ownership', methods=['POST'])
-def transfer_task_ownership_api(task_id):
+
+@app.route('/api/users-locations', methods=['GET'])
+def get_users_locations():
     if is_not_connected():
         return jsonify({'error': 'Not connected'}), 401
 
     try:
-        user_email = session['user_info']['email']
-        task = Task.query.get(task_id)
+        from entities.user import User
+        users = User.query.order_by(User.lname, User.fname).all()
 
-        if not task:
-            return jsonify({'error': 'Tâche non trouvée'}), 404
 
-        # Vérifier si l'utilisateur est le créateur de la tâche
-        if task.assigned_by != user_email:
-            return jsonify({'error': 'Vous n\'êtes pas autorisé à transférer la propriété de cette tâche'}), 403
+        # Récupérer seulement les utilisateurs qui ont des coordonnées de localisation
+        users_with_location = []
+        for user in users:
+            if user.lat is not None and user.long is not None:
+                users_with_location.append({
+                    'email': user.email,
+                    'fname': user.fname,
+                    'lname': user.lname,
+                    'phone': user.phone,
+                    'lat': user.lat,
+                    'long': user.long,
+                    'location_date': user.location_date.isoformat() if user.location_date else None
+                })
 
-        data = request.json
-        new_owner_email = data.get('new_owner')
-
-        # Utiliser la méthode de transfert de propriété
-        success, message = task.transfer_ownership(new_owner_email)
-
-        if not success:
-            return jsonify({'error': message}), 400
-
-        return jsonify({'success': True, 'message': message})
+        return jsonify(users_with_location)
     except Exception as e:
-        db.session.rollback()
-        print(f"Error transferring task ownership: {str(e)}")
+        print(f"Error getting users locations: {str(e)}")
         return jsonify({'error': str(e)}), 500
+
+
+@app.route('/users-map')
+def users_map():
+    if is_not_connected():
+        return redirect(url_for('login'))
+
+    error_message = None
+    if 'error' in request.args:
+        error_message = request.args.get('error')
+
+    return render_template('users-map.html', error=error_message, user_info=session['user_info'])
+
+
+@app.route('/members-management')
+def members_management():
+    """Page de gestion des membres"""
+    if is_not_connected():
+        return redirect(url_for('login'))
+
+    error_message = None
+    if 'error' in request.args:
+        error_message = request.args.get('error')
+
+    return render_template('members-management.html', error=error_message, user_info=session['user_info'])
+
+
+@app.route('/api/members/<string:email>/assigned-tasks', methods=['GET'])
+def get_member_assigned_tasks(email):
+    """API pour récupérer les tâches assignées à un membre"""
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        from entities.task import Task
+        tasks = Task.get_tasks_for_user(email)
+        tasks_data = [task.to_dict() for task in tasks]
+        return jsonify(tasks_data)
+    except Exception as e:
+        print(f"Error getting member assigned tasks: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/members/<string:email>/created-tasks', methods=['GET'])
+def get_member_created_tasks(email):
+    """API pour récupérer les tâches créées par un membre"""
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        from entities.task import Task
+        tasks = Task.get_assigned_tasks_by_user(email)
+        tasks_data = [task.to_dict() for task in tasks]
+        return jsonify(tasks_data)
+    except Exception as e:
+        print(f"Error getting member created tasks: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/members/add-role', methods=['POST'])
+def add_member_role():
+    """API pour ajouter un rôle à un membre"""
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        data = request.json
+        email = data.get('email')
+        role = data.get('role')
+
+        if not email or not role:
+            return jsonify({'error': 'Email et rôle requis'}), 400
+
+        from entities.user import User
+        user = User.query.filter_by(email=email).first()
+
+        if not user:
+            return jsonify({'error': 'Utilisateur non trouvé'}), 404
+
+        user.add_role(role)
+
+        return jsonify({
+            'success': True,
+            'roles': user.get_roles()
+        })
+    except Exception as e:
+        print(f"Error adding member role: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/members/remove-role', methods=['POST'])
+def remove_member_role():
+    """API pour supprimer un rôle d'un membre"""
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        data = request.json
+        email = data.get('email')
+        role = data.get('role')
+
+        if not email or not role:
+            return jsonify({'error': 'Email et rôle requis'}), 400
+
+        from entities.user import User
+        user = User.query.filter_by(email=email).first()
+
+        if not user:
+            return jsonify({'error': 'Utilisateur non trouvé'}), 404
+
+        user.remove_role(role)
+
+        return jsonify({
+            'success': True,
+            'roles': user.get_roles()
+        })
+    except Exception as e:
+        print(f"Error removing member role: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/members-management', methods=['GET'])
+def get_members_management():
+    """API pour récupérer tous les membres avec leurs informations"""
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        from entities.user import User
+        from entities.task import Task
+        users = User.query.order_by(User.lname, User.fname).all()
+
+
+        members_data = []
+        for user in users:
+            # Obtenir les tâches assignées à cet utilisateur (pour le compteur)
+            task_count = len(Task.get_tasks_for_user(user.email))
+
+            members_data.append({
+                'email': user.email,
+                'fname': user.fname,
+                'lname': user.lname,
+                'phone': user.phone,
+                'lat': user.lat,
+                'long': user.long,
+                'location_date': user.location_date.isoformat() if user.location_date else None,
+                'roles': user.get_roles(),
+                'task_count': task_count
+            })
+
+        return jsonify(members_data)
+    except Exception as e:
+        print(f"Error getting members data: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)

@@ -194,7 +194,7 @@ class Task(db.Model):
         return True, "Tâche libérée avec succès"
 
     # Méthode pour réassigner une tâche
-    def reassign_by_assignee(self, user_email, assignment_type, reassignment_data):
+    def reassign(self, user_email, assignment_type, reassignment_data):
         """Permet à un assigné de réattribuer la tâche à d'autres personnes, équipes ou à tout le monde"""
         from entities.user import User
         user = User.query.filter_by(email=user_email).first()
@@ -202,20 +202,18 @@ class Task(db.Model):
         if not user:
             return False, "Utilisateur non trouvé"
 
-        if user not in self.assignees:
-            return False, "Vous n'êtes pas assigné à cette tâche"
 
         # Enregistrer l'action dans l'historique
         from entities.task_history import TaskHistory
         history_entry = TaskHistory(
             task_id=self.id,
             user_email=user_email,
-            action="reassigned_by_assignee"
+            action="reassigned"
         )
         history_entry.save_to_db()
-
         # Retirer l'utilisateur actuel des assignés
-        self.assignees.remove(user)
+        if user in self.assignees:
+            self.assignees.remove(user)
 
         # Traiter selon le type d'assignation
         if assignment_type == 'users':

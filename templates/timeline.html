@@ -295,32 +295,6 @@
   </div>
 </div>
 
-<!-- Modal pour réassigner une tâche -->
-<div class="modal fade" id="reassignModal" tabindex="-1" aria-labelledby="reassignModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="reassignModalLabel">Réassigner la tâche</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p>Sélectionnez les utilisateurs à qui vous souhaitez attribuer cette tâche:</p>
-        <input type="hidden" id="taskIdForReassign" value="">
-        <div class="mb-3">
-          <select class="form-select" id="reassignUserSelect" multiple>
-            <!-- Les options seront remplies dynamiquement -->
-          </select>
-          <div class="form-text">Maintenez Ctrl (ou Cmd sur Mac) pour sélectionner plusieurs utilisateurs.</div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-        <button type="button" class="btn btn-primary" id="reassignBtn" onclick="reassignTask()">Réassigner</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- Modal pour transférer la propriété d'une tâche -->
 <div class="modal fade" id="transferOwnershipModal" tabindex="-1" aria-labelledby="transferOwnershipModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -368,16 +342,16 @@
   </div>
 </div>
 
-<!-- Modal pour la réassignation par un assigné -->
-<div class="modal fade" id="reassignByAssigneeModal" tabindex="-1" aria-labelledby="reassignByAssigneeModalLabel" aria-hidden="true">
+<!-- Modal pour la réassignation -->
+<div class="modal fade" id="reassignModal" tabindex="-1" aria-labelledby="reassignModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="reassignByAssigneeModalLabel">Réassigner la tâche</h5>
+        <h5 class="modal-title" id="reassignModalLabel">Réassigner la tâche</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <input type="hidden" id="taskIdForReassignByAssignee" value="">
+        <input type="hidden" id="taskIdForReassign" value="">
 
         <div class="mb-3">
           <label>Type d'assignation</label>
@@ -404,7 +378,7 @@
         <div id="reassignUsersSection">
           <div class="mb-3">
             <label>Sélectionner les utilisateurs</label>
-            <select class="form-select" id="reassignByAssigneeUserSelect" multiple>
+            <select class="form-select" id="reassignUserSelect" multiple>
               <!-- Les options seront remplies dynamiquement -->
             </select>
             <div class="form-text">Maintenez Ctrl (ou Cmd sur Mac) pour sélectionner plusieurs utilisateurs.</div>
@@ -414,7 +388,7 @@
         <div id="reassignRolesSection" style="display: none;">
           <div class="mb-3">
             <label>Sélectionner les équipes</label>
-            <select class="form-select" id="reassignByAssigneeRoleSelect" multiple>
+            <select class="form-select" id="reassignRoleSelect" multiple>
               <option value="Team Bureau">Team Bureau</option>
               <option value="Team Partenariat">Team Partenariat</option>
               <option value="Team Com">Team Com</option>
@@ -449,7 +423,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-        <button type="button" class="btn btn-primary" id="reassignByAssigneeBtn" onclick="reassignByAssignee()">Réassigner</button>
+        <button type="button" class="btn btn-primary" id="reassignBtn" onclick="reassign()">Réassigner</button>
       </div>
     </div>
   </div>
@@ -653,86 +627,6 @@
     });
   }
 
-  // Fonction pour ouvrir le modal de réassignation
-  function openReassignModal(event, taskId, currentAssignees) {
-    event.preventDefault();
-
-    // Mettre à jour l'ID de la tâche
-    document.getElementById('taskIdForReassign').value = taskId;
-
-    // Remplir le select avec les utilisateurs
-    const userSelect = document.getElementById('reassignUserSelect');
-    userSelect.innerHTML = '';
-
-    // Charger les utilisateurs dans le select
-    usersForTransfer.forEach(user => {
-      const option = document.createElement('option');
-      option.value = user.name;
-      option.textContent = user.name;
-      option.selected = currentAssignees.includes(user.email);
-      userSelect.appendChild(option);
-    });
-
-    // Afficher le modal
-    const reassignModal = new bootstrap.Modal(document.getElementById('reassignModal'));
-    reassignModal.show();
-  }
-
-  // Fonction pour réassigner une tâche
-  function reassignTask() {
-    const taskId = document.getElementById('taskIdForReassign').value;
-    const userSelect = document.getElementById('reassignUserSelect');
-    const selectedUsers = Array.from(userSelect.selectedOptions).map(option => option.value);
-
-    if (selectedUsers.length === 0) {
-      alert('Veuillez sélectionner au moins un destinataire');
-      return;
-    }
-
-    // Disable the button to prevent double clicks
-    const button = document.getElementById('reassignBtn');
-    const originalText = button.innerHTML;
-    button.disabled = true;
-    button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> En cours...';
-
-    // Make API call
-    fetch(`/api/tasks/${taskId}/reassign`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        assignees: selectedUsers
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        // Hide the modal
-        const reassignModal = bootstrap.Modal.getInstance(document.getElementById('reassignModal'));
-        reassignModal.hide();
-
-        // Refresh tasks
-        fetchTasks();
-
-        // Show success message
-        alert('La tâche a été réassignée avec succès');
-      } else {
-        const errorMessage = data.error ? data.error : 'Une erreur inconnue est survenue';
-        alert(`Erreur: ${errorMessage}`);
-        // Restore button
-        button.disabled = false;
-        button.innerHTML = originalText;
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert(`Uneerreur est survenue: ${error.message}`);
-      // Restore button
-      button.disabled = false;
-      button.innerHTML = originalText;
-    });
-  }
 
   // Fonction pour ouvrir le modal de transfert de propriété
   function openOwnershipTransferModal(event, taskId) {
@@ -904,20 +798,20 @@
   }
 
   // Function pour ouvrir le modal de réassignation par un assigné
-  function openReassignByAssigneeModal(event, taskId) {
+  function openReassignModal(event, taskId) {
     event.preventDefault();
 
     // Mettre à jour l'ID de la tâche dans le modal
-    document.getElementById('taskIdForReassignByAssignee').value = taskId;
+    document.getElementById('taskIdForReassign').value = taskId;
 
     // Afficher le modal
-    const reassignByAssigneeModal = new bootstrap.Modal(document.getElementById('reassignByAssigneeModal'));
-    reassignByAssigneeModal.show();
+    const reassignModal = new bootstrap.Modal(document.getElementById('reassignModal'));
+    reassignModal.show();
   }
 
   // Fonction pour réassigner une tâche par un assigné
-  function reassignByAssignee() {
-    const taskId = document.getElementById('taskIdForReassignByAssignee').value;
+  function reassign() {
+    const taskId = document.getElementById('taskIdForReassign').value;
     const assignmentType = document.querySelector('input[name="reassignmentType"]:checked').value;
 
     let reassignmentData = {
@@ -926,7 +820,7 @@
 
     // Récupérer les données spécifiques selon le type d'assignation
     if (assignmentType === 'users') {
-      const selectedUsers = Array.from(document.getElementById('reassignByAssigneeUserSelect').selectedOptions).map(option => option.value);
+      const selectedUsers = Array.from(document.getElementById('reassignUserSelect').selectedOptions).map(option => option.value);
 
       if (selectedUsers.length === 0) {
         alert('Veuillez sélectionner au moins un utilisateur');
@@ -936,7 +830,7 @@
       reassignmentData.assignees = selectedUsers;
     }
     else if (assignmentType === 'roles') {
-      const selectedRoles = Array.from(document.getElementById('reassignByAssigneeRoleSelect').selectedOptions).map(option => option.value);
+      const selectedRoles = Array.from(document.getElementById('reassignRoleSelect').selectedOptions).map(option => option.value);
 
       if (selectedRoles.length === 0) {
         alert('Veuillez sélectionner au moins un rôle');
@@ -947,13 +841,13 @@
     }
 
     // Disable the button to prevent double clicks
-    const button = document.getElementById('reassignByAssigneeBtn');
+    const button = document.getElementById('reassignBtn');
     const originalText = button.innerHTML;
     button.disabled = true;
     button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> En cours...';
 
     // Make API call
-    fetch(`/api/tasks/${taskId}/reassign-by-assignee`, {
+    fetch(`/api/tasks/${taskId}/reassign`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -964,7 +858,7 @@
     .then(data => {
       if (data.success) {
         // Hide the modal
-        const modal = bootstrap.Modal.getInstance(document.getElementById('reassignByAssigneeModal'));
+        const modal = bootstrap.Modal.getInstance(document.getElementById('reassignModal'));
         modal.hide();
 
         // Refresh tasks
@@ -1080,9 +974,6 @@
           <button onclick="releaseTask(event, ${task.id})" class="btn btn-info btn-sm">
             <i class="fa fa-unlock"></i> Libérer
           </button>
-          <button onclick="openReassignByAssigneeModal(event, ${task.id})" class="btn btn-primary btn-sm">
-            <i class="fa fa-share"></i> Réassigner
-          </button>
         `;
       }
 
@@ -1101,12 +992,17 @@
         `;
       }
 
+      if(isTaskAssigner && task.assignees.length > 0 || isAssignee){
+        actionButtons += `
+          <button onclick="openReassignModal(event, ${task.id})" class="btn btn-primary btn-sm">
+            <i class="fa fa-share"></i> Réassigner
+          </button>
+        `;
+      }
+
       // Pour le créateur: ajouter des boutons pour réassigner et transférer la propriété
       if (isTaskAssigner && task.assignees.length > 0) {
         actionButtons += `
-          <button onclick="openReassignModal(event, ${task.id}, ${JSON.stringify(task.assignees)})" class="btn btn-primary btn-sm">
-            <i class="fa fa-users"></i> Réassigner
-          </button>
           <button onclick="openOwnershipTransferModal(event, ${task.id})" class="btn btn-secondary btn-sm">
             <i class="fa fa-exchange"></i> Transférer propriété
           </button>
@@ -1177,7 +1073,7 @@
     // Add history button
     if (task.history && task.history.length > 0) {
       actionButtons += `
-        <button onclick="openHistoryModal(event, ${task.id}, ${JSON.stringify(task.history)})" class="btn btn-secondary btn-sm">
+        <button onclick='openHistoryModal(event, ${task.id}, ${JSON.stringify(task.history)})' class="btn btn-secondary btn-sm">
           <i class="fa fa-history"></i> Historique
         </button>
       `;
@@ -1373,7 +1269,7 @@
     fetch('/api/users')
       .then(response => response.json())
       .then(users => {
-        const userSelect = document.getElementById('reassignByAssigneeUserSelect');
+        const userSelect = document.getElementById('reassignUserSelect');
         userSelect.innerHTML = '';
 
         users.forEach(user => {
