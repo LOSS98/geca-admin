@@ -590,6 +590,7 @@ def get_tasks():
         print(f"Error getting tasks: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
+
 @app.route('/api/createTask', methods=['POST'])
 def create_task_api():
     if is_not_connected():
@@ -607,12 +608,15 @@ def create_task_api():
             'start_date': start_date,
             'due_date': due_date,
             'subject': data['subject'],
-            'description': data['description']
+            'description': data['description'],
+            'priority': data.get('priority', 'medium')  # Default to medium priority
         }
 
+        # Créer la tâche en utilisant le constructeur
         task = Task(task_data)
-        db.session.add(task)  # Explicitly add to session
-        db.session.flush()    # Flush to get the ID
+
+        # Sauvegarder la tâche en base de données
+        task.save_to_db()
 
         # Assign to specific users or by role
         if data.get('assignment_type') == 'users':
@@ -620,30 +624,25 @@ def create_task_api():
             assignees = data.get('assignees', [])
             print(f"Selected assignees: {assignees}")
             if assignees:
+                # Utiliser la méthode d'assignation multiple
+                user_emails = []
                 from entities.user import User
                 for assignee_name in assignees:
                     # Find user by name (format: "lastname firstname")
                     parts = assignee_name.split(' ', 1)
-                    print(f"Processing assignee: {assignee_name}, parts: {parts}")
                     if len(parts) == 2:
                         lname, fname = parts
                         user = User.query.filter_by(lname=lname, fname=fname).first()
-                        print(f"Found user: {user}")
                         if user:
-                            task.assignees.append(user)
-                            print(f"Added user {user.email} to task assignees")
+                            user_emails.append(user.email)
+
+                if user_emails:
+                    task.assign_to_users(user_emails)
         else:  # assignment_type == 'role'
             role = data.get('role')
             if role:
-                from entities.user import User
-                users = User.query.filter_by(role=role).all()
-                for user in users:
-                    task.assignees.append(user)
-
-        db.session.commit()
-
-        # Send notifications
-        task.notify_assignment()
+                # Utiliser la méthode d'assignation par rôle
+                task.assign_to_role(role)
 
         return jsonify({'success': True, 'task_id': task.id})
 
@@ -670,15 +669,8 @@ def dispute_task(task_id):
         if user not in task.assignees:
             return jsonify({'error': 'Not authorized'}), 403
 
-        # Directly set the task state
-        task.state = TaskState.DISPUTED
-        db.session.commit()
-
-        # Send notification separately
-        try:
-            task.notify_dispute(user_email)
-        except Exception as e:
-            print(f"Error sending dispute notification: {str(e)}")
+        # Utiliser la méthode dispute qui notifie automatiquement
+        task.dispute(user_email)
 
         return jsonify({'success': True})
     except Exception as e:
@@ -704,21 +696,15 @@ def validate_task(task_id):
         if user not in task.assignees:
             return jsonify({'error': 'Not authorized'}), 403
 
-        # Directly set the task state
-        task.state = TaskState.TO_VALIDATED
-        db.session.commit()
-
-        # Send notification separately
-        try:
-            task.notify_to_validate(user_email)
-        except Exception as e:
-            print(f"Error sending validation notification: {str(e)}")
+        # Utiliser la méthode mark_to_validate qui notifie automatiquement
+        task.mark_to_validate(user_email)
 
         return jsonify({'success': True})
     except Exception as e:
         db.session.rollback()
         print(f"Error validating task: {str(e)}")
         return jsonify({'error': str(e)}), 500
+
 
 @app.route('/api/tasks/<int:task_id>/complete', methods=['POST'])
 def complete_task(task_id):
@@ -737,46 +723,13 @@ def complete_task(task_id):
         if task.assigned_by != user_email and user_role != 'admin':
             return jsonify({'error': 'Not authorized'}), 403
 
-        # Directly set the task state
-        task.state = TaskState.DONE
-        db.session.commit()
+        # Utiliser la méthode mark_as_done qui notifie automatiquement
+        task.mark_as_done()
 
         return jsonify({'success': True})
     except Exception as e:
         db.session.rollback()
         print(f"Error completing task: {str(e)}")
-        return jsonify({'error': str(e)}), 500
-
-@app.route('/api/tasks/<int:task_id>/reject-dispute', methods=['POST'])
-def reject_dispute(task_id):
-    if is_not_connected():
-        return jsonify({'error': 'Not connected'}), 401
-
-    try:
-        user_email = session['user_info']['email']
-        task = Task.query.get(task_id)
-
-        if not task:
-            return jsonify({'error': 'Task not found'}), 404
-
-        # Only the assigner can reject a dispute
-        if task.assigned_by != user_email:
-            return jsonify({'error': 'Not authorized'}), 403
-
-        # Directly set the task state
-        task.state = TaskState.ASSIGNED
-        db.session.commit()
-
-        # Send notification separately
-        try:
-            task.notify_dispute_rejected()
-        except Exception as e:
-            print(f"Error sending dispute rejection notification: {str(e)}")
-
-        return jsonify({'success': True})
-    except Exception as e:
-        db.session.rollback()
-        print(f"Error rejecting dispute: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/tasks/<int:task_id>/remove-assignee', methods=['POST'])
@@ -818,9 +771,8 @@ def delete_task(task_id):
         if task.assigned_by != user_email and user_role != 'admin':
             return jsonify({'error': 'Not authorized'}), 403
 
-        # Directly set the task state to deleted
-        task.state = TaskState.DELETED
-        db.session.commit()
+        # Utiliser la méthode delete_task qui notifie automatiquement
+        task.delete_task()
 
         return jsonify({'success': True})
     except Exception as e:
@@ -846,18 +798,8 @@ def cancel_validation(task_id):
         if user not in task.assignees:
             return jsonify({'error': 'Not authorized'}), 403
 
-        if task.state != TaskState.TO_VALIDATED:
-            return jsonify({'error': 'Only tasks awaiting validation can have their validation cancelled'}), 400
-
-        # Directly update the state
-        task.state = TaskState.ASSIGNED
-        db.session.commit()
-
-        # Send notification separately
-        try:
-            task.notify_validation_cancelled()
-        except Exception as e:
-            print(f"Error sending notification: {str(e)}")
+        # Utiliser la méthode cancel_validation qui notifie automatiquement
+        task.cancel_validation()
 
         return jsonify({'success': True})
     except Exception as e:
@@ -866,6 +808,59 @@ def cancel_validation(task_id):
         return jsonify({'error': str(e)}), 500
 
 
+@app.route('/api/tasks/<int:task_id>/reject-validation', methods=['POST'])
+def reject_validation(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Task not found'}), 404
+
+        # Seul l'émetteur de la tâche peut rejeter une validation
+        if task.assigned_by != user_email:
+            return jsonify({'error': 'Not authorized'}), 403
+
+        # Utiliser la méthode reject_validation qui notifie automatiquement
+        task.reject_validation()
+
+        return jsonify({'success': True})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error rejecting validation: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+# 2. Mise à jour de la fonction de rejet de contestation pour gérer correctement les erreurs de notification
+@app.route('/api/tasks/<int:task_id>/reject-dispute', methods=['POST'])
+def reject_dispute(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Task not found'}), 404
+
+        # Only the assigner can reject a dispute
+        if task.assigned_by != user_email:
+            return jsonify({'error': 'Not authorized'}), 403
+
+        # Utiliser la méthode reject_dispute qui notifie automatiquement
+        task.reject_dispute()
+
+        return jsonify({'success': True})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error rejecting dispute: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+# 3. Amélioration de la fonction de réouverture de tâche
 @app.route('/api/tasks/<int:task_id>/reopen', methods=['POST'])
 def reopen_task(task_id):
     if is_not_connected():
@@ -883,22 +878,88 @@ def reopen_task(task_id):
         if task.assigned_by != user_email and user_role != 'admin':
             return jsonify({'error': 'Not authorized'}), 403
 
-        if task.state != TaskState.DONE:
-            return jsonify({'error': 'Only completed tasks can be reopened'}), 400
-
-        task.state = TaskState.ASSIGNED
-        db.session.commit()
-
-        # Send notification separately to avoid blocking the response
-        try:
-            task.notify_task_reopened()
-        except Exception as e:
-            print(f"Error sending notification: {str(e)}")
+        # Utiliser la méthode reopen_task qui notifie automatiquement
+        task.reopen_task()
 
         return jsonify({'success': True})
     except Exception as e:
         db.session.rollback()
         print(f"Error reopening task: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+    @app.route('/api/tasks/<int:task_id>/priority', methods=['POST'])
+    def change_task_priority(task_id):
+        if is_not_connected():
+            return jsonify({'error': 'Not connected'}), 401
+
+        try:
+            user_email = session['user_info']['email']
+            user_role = session.get('role', 'member')
+            task = Task.query.get(task_id)
+
+            if not task:
+                return jsonify({'error': 'Task not found'}), 404
+
+            # Only the assigner or an admin can change priority
+            if task.assigned_by != user_email and user_role != 'admin':
+                return jsonify({'error': 'Not authorized'}), 403
+
+            # Get new priority from request
+            data = request.json
+            new_priority = data.get('priority')
+
+            if not new_priority or new_priority not in ['low', 'medium', 'high']:
+                return jsonify({'error': 'Invalid priority value'}), 400
+
+            # Utiliser la méthode set_priority qui gère la notification
+            result = task.set_priority(new_priority)
+
+            if not result:
+                return jsonify({'error': 'Failed to update priority'}), 500
+
+            return jsonify({'success': True})
+
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error changing task priority: {str(e)}")
+            return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/tasks/<int:task_id>/priority', methods=['POST'])
+def change_task_priority(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        user_email = session['user_info']['email']
+        user_role = session.get('role', 'member')
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Task not found'}), 404
+
+        # Only the assigner or an admin can change priority
+        if task.assigned_by != user_email and user_role != 'admin':
+            return jsonify({'error': 'Not authorized'}), 403
+
+        # Get new priority from request
+        data = request.json
+        new_priority = data.get('priority')
+
+        if not new_priority or new_priority not in ['low', 'medium', 'high']:
+            return jsonify({'error': 'Invalid priority value'}), 400
+
+        # Utiliser la méthode set_priority qui gère la notification
+        result = task.set_priority(new_priority)
+
+        if not result:
+            return jsonify({'error': 'Failed to update priority'}), 500
+
+        return jsonify({'success': True})
+
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error changing task priority: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':

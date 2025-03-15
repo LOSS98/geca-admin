@@ -4875,3 +4875,1087 @@
 2025-03-15 11:42:28,079 INFO werkzeug Thread-78 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:42:28] "GET /api/tasks HTTP/1.1" 200 -
 2025-03-15 11:42:41,387 INFO werkzeug Thread-76 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:42:41] "POST /api/tasks/3/reopen HTTP/1.1" 200 -
 2025-03-15 11:42:41,487 INFO werkzeug Thread-79 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:42:41] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:42:56,071 INFO werkzeug Thread-80 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:42:56] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:42:58,074 INFO werkzeug Thread-81 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:42:58] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:43:26,068 INFO werkzeug Thread-82 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:43:26] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:43:28,074 INFO werkzeug Thread-83 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:43:28] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:43:56,068 INFO werkzeug Thread-84 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:43:56] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:44:47,088 INFO werkzeug Thread-86 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:44:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:44:47,088 INFO werkzeug Thread-85 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:44:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:44:49,812 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\entities\\task.py', reloading
+2025-03-15 11:44:50,095 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 11:44:50,251 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\entities\\task.py', reloading
+2025-03-15 11:44:50,432 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 11:44:52,090 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 11:44:52,093 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 11:44:52,138 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 11:44:52,141 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 11:45:47,097 INFO werkzeug Thread-2 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:45:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:45:47,170 INFO werkzeug Thread-3 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:45:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:46:06,561 INFO werkzeug Thread-4 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:06] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:46:08,232 INFO werkzeug Thread-5 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:08] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 11:46:08,476 INFO werkzeug Thread-9 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:08] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:08,478 INFO werkzeug Thread-10 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:08] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 11:46:08,481 INFO werkzeug Thread-6 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:08] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:08,483 INFO werkzeug Thread-7 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:08] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:08,486 INFO werkzeug Thread-8 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:08] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:08,488 INFO werkzeug Thread-11 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:08] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:08,490 INFO werkzeug Thread-12 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:08] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:08,500 INFO werkzeug Thread-13 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:08] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:08,501 INFO werkzeug Thread-14 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:08] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:08,505 INFO werkzeug Thread-15 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:08] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:08,516 INFO werkzeug Thread-17 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:08] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 11:46:08,522 INFO werkzeug Thread-18 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:08] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:08,523 INFO werkzeug Thread-19 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:08] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:08,614 INFO werkzeug Thread-16 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:08] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:46:08,776 INFO werkzeug Thread-20 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:08] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 11:46:13,031 INFO werkzeug Thread-21 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:13] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:46:15,947 DEBUG urllib3.connectionpool Thread-22 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 11:46:16,345 DEBUG urllib3.connectionpool Thread-22 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B33774112819&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+contest%C3%A9e+par+khalil.mzoughi%40jinnov-insa.fr HTTP/11" 200 128
+2025-03-15 11:46:16,362 INFO werkzeug Thread-22 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:16] "POST /api/tasks/3/dispute HTTP/1.1" 200 -
+2025-03-15 11:46:16,462 INFO werkzeug Thread-23 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:16] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:46:21,811 INFO werkzeug Thread-25 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:21] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 11:46:21,898 INFO werkzeug Thread-24 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:21] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:21,935 INFO werkzeug Thread-26 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:21] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:21,936 INFO werkzeug Thread-27 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:21] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:21,959 INFO werkzeug Thread-28 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:21] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:21,961 INFO werkzeug Thread-29 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:21] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 11:46:21,978 INFO werkzeug Thread-30 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:21] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:22,084 INFO werkzeug Thread-33 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:22] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:22,084 INFO werkzeug Thread-32 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:22] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:22,086 INFO werkzeug Thread-31 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:22] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:22,114 INFO werkzeug Thread-35 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:22] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 11:46:22,126 INFO werkzeug Thread-37 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:22] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:22,127 INFO werkzeug Thread-38 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:22] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:22,132 INFO werkzeug Thread-36 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:22] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:22,209 INFO werkzeug Thread-34 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:22] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:46:22,267 INFO werkzeug Thread-40 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:22] "[36mGET /static/assets/img/logos/favicon.png HTTP/1.1[0m" 304 -
+2025-03-15 11:46:22,326 INFO werkzeug Thread-39 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:22] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 11:46:23,809 INFO werkzeug Thread-41 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:23] "POST /api/tasks/3/reject-dispute HTTP/1.1" 200 -
+2025-03-15 11:46:23,916 INFO werkzeug Thread-42 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:23] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:46:25,512 INFO werkzeug Thread-43 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:25] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:46:28,702 INFO werkzeug Thread-44 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:28] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 11:46:28,736 INFO werkzeug Thread-49 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:28] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 11:46:28,737 INFO werkzeug Thread-45 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:28] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:28,737 INFO werkzeug Thread-50 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:28] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:28,738 INFO werkzeug Thread-46 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:28] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:28,738 INFO werkzeug Thread-48 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:28] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:28,741 INFO werkzeug Thread-47 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:28] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:28,747 INFO werkzeug Thread-51 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:28] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:28,750 INFO werkzeug Thread-52 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:28] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:28,754 INFO werkzeug Thread-53 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:28] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:28,763 INFO werkzeug Thread-55 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:28] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:28,765 INFO werkzeug Thread-54 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:28] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:28,771 INFO werkzeug Thread-57 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:28] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 11:46:28,777 INFO werkzeug Thread-58 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:28] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:28,840 INFO werkzeug Thread-60 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:28] "[36mGET /static/assets/img/logos/favicon.png HTTP/1.1[0m" 304 -
+2025-03-15 11:46:28,857 INFO werkzeug Thread-56 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:28] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:46:28,907 INFO werkzeug Thread-59 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:28] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 11:46:30,431 INFO werkzeug Thread-61 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:30] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 11:46:30,460 INFO werkzeug Thread-65 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:30] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:30,461 INFO werkzeug Thread-62 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:30] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:30,461 INFO werkzeug Thread-63 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:30] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:30,462 INFO werkzeug Thread-64 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:30] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:30,463 INFO werkzeug Thread-66 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:30] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 11:46:30,464 INFO werkzeug Thread-67 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:30] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:30,477 INFO werkzeug Thread-69 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:30] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:30,477 INFO werkzeug Thread-70 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:30] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:30,478 INFO werkzeug Thread-68 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:30] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:30,492 INFO werkzeug Thread-72 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:30] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 11:46:30,500 INFO werkzeug Thread-73 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:30] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:30,502 INFO werkzeug Thread-74 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:30] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:30,502 INFO werkzeug Thread-75 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:30] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:30,528 INFO werkzeug Thread-76 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:30] "[36mGET /static/assets/img/logos/favicon.png HTTP/1.1[0m" 304 -
+2025-03-15 11:46:30,591 INFO werkzeug Thread-71 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:30] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:46:30,610 INFO werkzeug Thread-77 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:30] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 11:46:31,264 INFO werkzeug Thread-78 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:31] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 11:46:31,293 INFO werkzeug Thread-80 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:31] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:31,294 INFO werkzeug Thread-82 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:31] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:31,294 INFO werkzeug Thread-83 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:31] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 11:46:31,297 INFO werkzeug Thread-81 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:31] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:31,300 INFO werkzeug Thread-84 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:31] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:31,302 INFO werkzeug Thread-85 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:31] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:31,304 INFO werkzeug Thread-79 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:31] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:31,308 INFO werkzeug Thread-86 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:31] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:31,312 INFO werkzeug Thread-87 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:31] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:31,317 INFO werkzeug Thread-88 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:31] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:31,322 INFO werkzeug Thread-89 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:31] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:31,323 INFO werkzeug Thread-90 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:31] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:31,333 INFO werkzeug Thread-92 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:31] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 11:46:31,367 INFO werkzeug Thread-93 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:31] "[36mGET /static/assets/img/logos/favicon.png HTTP/1.1[0m" 304 -
+2025-03-15 11:46:31,419 INFO werkzeug Thread-91 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:31] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:46:31,428 INFO werkzeug Thread-94 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:31] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 11:46:33,368 DEBUG urllib3.connectionpool Thread-95 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 11:46:33,765 DEBUG urllib3.connectionpool Thread-95 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B33774112819&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+est+pr%C3%AAte+%C3%A0+%C3%AAtre+valid%C3%A9e+par+khalil.mzoughi%40jinnov-insa.fr HTTP/11" 200 128
+2025-03-15 11:46:33,789 INFO werkzeug Thread-95 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:33] "POST /api/tasks/3/validate HTTP/1.1" 200 -
+2025-03-15 11:46:33,896 INFO werkzeug Thread-96 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:33] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:46:46,946 INFO werkzeug Thread-97 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:46] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 11:46:47,031 INFO werkzeug Thread-98 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:47] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:47,031 INFO werkzeug Thread-99 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:47] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:47,032 INFO werkzeug Thread-100 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:47] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:47,032 INFO werkzeug Thread-101 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:47] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:47,033 INFO werkzeug Thread-102 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:47] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 11:46:47,034 INFO werkzeug Thread-103 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:47] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:47,051 INFO werkzeug Thread-104 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:47] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:47,052 INFO werkzeug Thread-105 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:47] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:47,053 INFO werkzeug Thread-106 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:47] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:47,067 INFO werkzeug Thread-108 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:47] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 11:46:47,075 INFO werkzeug Thread-109 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:47] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:46:47,075 INFO werkzeug Thread-110 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:47] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:47,076 INFO werkzeug Thread-111 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:47] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:46:47,157 INFO werkzeug Thread-107 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:46:47,225 INFO werkzeug Thread-112 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:47] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 11:46:50,590 INFO werkzeug Thread-113 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:46:50] "[33mPOST /api/tasks/3/reject-validation HTTP/1.1[0m" 404 -
+2025-03-15 11:47:01,424 INFO werkzeug Thread-114 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:47:01] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:47:09,887 INFO werkzeug Thread-115 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:47:09] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 11:47:09,887 INFO werkzeug Thread-117 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:47:09] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 11:47:09,888 INFO werkzeug Thread-116 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:47:09] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:47:09,889 INFO werkzeug Thread-118 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:47:09] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 11:47:09,895 INFO werkzeug Thread-119 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:47:09] "[33mGET /static/assets/js/_site_dashboard_free/assets/js/dashboard-free.js.map HTTP/1.1[0m" 404 -
+2025-03-15 11:47:17,173 INFO werkzeug Thread-120 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:47:17] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:47:32,077 INFO werkzeug Thread-121 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:47:32] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:47:36,540 INFO werkzeug Thread-122 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:47:36] "[33mGET /api/tasks/3/reject-validation HTTP/1.1[0m" 404 -
+2025-03-15 11:47:36,908 INFO werkzeug Thread-123 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:47:36] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-03-15 11:47:48,098 INFO werkzeug Thread-124 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:47:48] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:48:02,078 INFO werkzeug Thread-125 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:48:02] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:48:18,078 INFO werkzeug Thread-126 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:48:18] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:48:32,078 INFO werkzeug Thread-127 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:48:32] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:48:48,079 INFO werkzeug Thread-128 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:48:48] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:49:02,078 INFO werkzeug Thread-129 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:49:02] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:49:31,432 INFO werkzeug Thread-130 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:49:31] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:49:47,074 INFO werkzeug Thread-131 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:49:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:50:01,438 INFO werkzeug Thread-132 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:50:01] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:50:31,442 INFO werkzeug Thread-133 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:50:31] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:50:47,080 INFO werkzeug Thread-134 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:50:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:51:01,433 INFO werkzeug Thread-135 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:51:01] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:51:31,432 INFO werkzeug Thread-136 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:51:31] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:51:47,079 INFO werkzeug Thread-137 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:51:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:52:01,431 INFO werkzeug Thread-138 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:52:01] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:52:03,879 DEBUG urllib3.connectionpool Thread-139 (process_request_thread) : Starting new HTTPS connection (1): api.geca.fr:443
+2025-03-15 11:52:31,428 INFO werkzeug Thread-140 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:52:31] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:52:45,986 INFO werkzeug Thread-139 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:52:45] "POST /api/tasks/3/cancel-validation HTTP/1.1" 200 -
+2025-03-15 11:52:46,089 INFO werkzeug Thread-141 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:52:46] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:52:47,084 INFO werkzeug Thread-142 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:52:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:53:01,441 INFO werkzeug Thread-143 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:53:01] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:53:32,072 INFO werkzeug Thread-144 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:53:32] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:53:47,077 INFO werkzeug Thread-145 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:53:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:54:02,077 INFO werkzeug Thread-146 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:02] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:54:18,928 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\main.py', reloading
+2025-03-15 11:54:19,050 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\main.py', reloading
+2025-03-15 11:54:19,159 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 11:54:19,287 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 11:54:20,744 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 11:54:20,748 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 11:54:21,106 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 11:54:21,109 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 11:54:47,079 INFO werkzeug Thread-2 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:54:47,194 INFO werkzeug Thread-3 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:54:51,969 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\entities\\task.py', reloading
+2025-03-15 11:54:52,093 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\entities\\task.py', reloading
+2025-03-15 11:54:52,243 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 11:54:52,360 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 11:54:53,857 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 11:54:53,860 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 11:54:54,263 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 11:54:54,267 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 11:54:54,947 INFO werkzeug Thread-2 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:54] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 11:54:55,212 INFO werkzeug Thread-3 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:55] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 11:54:55,214 INFO werkzeug Thread-4 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:55] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:54:55,219 INFO werkzeug Thread-6 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:55] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 11:54:55,219 INFO werkzeug Thread-5 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:55] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 11:54:55,222 INFO werkzeug Thread-7 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:55] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 11:54:55,222 INFO werkzeug Thread-8 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:55] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:54:55,234 INFO werkzeug Thread-9 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:55] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:54:55,238 INFO werkzeug Thread-11 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:55] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:54:55,242 INFO werkzeug Thread-10 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:55] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:54:55,254 INFO werkzeug Thread-13 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:55] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 11:54:55,263 INFO werkzeug Thread-15 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:55] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:54:55,263 INFO werkzeug Thread-14 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:55] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:54:55,264 INFO werkzeug Thread-16 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:55] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:54:55,348 INFO werkzeug Thread-12 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:55] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:54:55,659 INFO werkzeug Thread-17 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:55] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 11:54:59,495 INFO werkzeug Thread-18 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:59] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 11:54:59,530 INFO werkzeug Thread-19 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:59] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 11:54:59,531 INFO werkzeug Thread-21 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:59] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 11:54:59,531 INFO werkzeug Thread-23 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:59] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 11:54:59,531 INFO werkzeug Thread-24 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:59] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:54:59,532 INFO werkzeug Thread-20 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:59] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:54:59,534 INFO werkzeug Thread-22 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:59] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 11:54:59,541 INFO werkzeug Thread-25 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:59] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:54:59,541 INFO werkzeug Thread-26 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:59] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:54:59,548 INFO werkzeug Thread-28 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:59] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:54:59,549 INFO werkzeug Thread-27 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:59] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:54:59,555 INFO werkzeug Thread-29 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:59] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:54:59,609 INFO werkzeug Thread-30 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:59] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:54:59,632 INFO werkzeug Thread-32 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:59] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 11:54:59,722 INFO werkzeug Thread-31 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:59] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:54:59,846 INFO werkzeug Thread-33 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:54:59] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 11:55:00,884 DEBUG urllib3.connectionpool Thread-34 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 11:55:01,286 DEBUG urllib3.connectionpool Thread-34 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B33774112819&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+contest%C3%A9e+par+khalil.mzoughi%40jinnov-insa.fr HTTP/11" 200 128
+2025-03-15 11:55:01,302 INFO werkzeug Thread-34 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:01] "POST /api/tasks/3/dispute HTTP/1.1" 200 -
+2025-03-15 11:55:01,421 INFO werkzeug Thread-35 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:01] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:55:10,063 INFO werkzeug Thread-36 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:10] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 11:55:10,150 INFO werkzeug Thread-37 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:10] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:10,150 INFO werkzeug Thread-38 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:10] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:10,151 INFO werkzeug Thread-39 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:10] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:10,152 INFO werkzeug Thread-40 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:10] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:10,154 INFO werkzeug Thread-42 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:10] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:10,155 INFO werkzeug Thread-41 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:10] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 11:55:10,167 INFO werkzeug Thread-43 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:10] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:10,170 INFO werkzeug Thread-44 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:10] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:10,171 INFO werkzeug Thread-45 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:10] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:10,183 INFO werkzeug Thread-47 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:10] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 11:55:10,191 INFO werkzeug Thread-49 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:10] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:10,191 INFO werkzeug Thread-50 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:10] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:10,192 INFO werkzeug Thread-48 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:10] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:10,282 INFO werkzeug Thread-46 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:10] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:55:10,361 INFO werkzeug Thread-51 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:10] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 11:55:12,306 DEBUG urllib3.connectionpool Thread-52 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 11:55:12,720 DEBUG urllib3.connectionpool Thread-52 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=La+contestation+de+la+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+rejet%C3%A9e+par+khalil.mzoughikm%40gmail.com HTTP/11" 200 116
+2025-03-15 11:55:12,739 INFO werkzeug Thread-52 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:12] "POST /api/tasks/3/reject-dispute HTTP/1.1" 200 -
+2025-03-15 11:55:12,838 INFO werkzeug Thread-53 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:12] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:55:14,900 INFO werkzeug Thread-54 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:14] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 11:55:14,936 INFO werkzeug Thread-55 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:14] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:14,938 INFO werkzeug Thread-56 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:14] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:14,938 INFO werkzeug Thread-58 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:14] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:14,939 INFO werkzeug Thread-59 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:14] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 11:55:14,940 INFO werkzeug Thread-57 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:14] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:14,943 INFO werkzeug Thread-60 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:14] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:14,953 INFO werkzeug Thread-61 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:14] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:14,957 INFO werkzeug Thread-62 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:14] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:14,958 INFO werkzeug Thread-63 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:14] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:14,964 INFO werkzeug Thread-64 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:14] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:14,972 INFO werkzeug Thread-66 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:14] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 11:55:14,979 INFO werkzeug Thread-68 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:14] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:14,981 INFO werkzeug Thread-67 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:14] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:15,056 INFO werkzeug Thread-65 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:15] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:55:15,067 INFO werkzeug Thread-69 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:15] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 11:55:17,129 DEBUG urllib3.connectionpool Thread-70 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 11:55:17,163 DEBUG urllib3.connectionpool Thread-70 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B33774112819&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+est+pr%C3%AAte+%C3%A0+%C3%AAtre+valid%C3%A9e+par+khalil.mzoughi%40jinnov-insa.fr HTTP/11" 200 267
+2025-03-15 11:55:17,179 INFO werkzeug Thread-70 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:17] "POST /api/tasks/3/validate HTTP/1.1" 200 -
+2025-03-15 11:55:17,273 INFO werkzeug Thread-71 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:17] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:55:18,863 INFO werkzeug Thread-72 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:18] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 11:55:19,962 DEBUG urllib3.connectionpool Thread-73 (process_request_thread) : Starting new HTTPS connection (1): api.geca.fr:443
+2025-03-15 11:55:29,095 INFO werkzeug Thread-74 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:29] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 11:55:30,024 INFO werkzeug Thread-75 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:30] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:30,025 INFO werkzeug Thread-76 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:30] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:30,026 INFO werkzeug Thread-77 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:30] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:30,027 INFO werkzeug Thread-78 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:30] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:30,029 INFO werkzeug Thread-80 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:30] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:30,031 INFO werkzeug Thread-79 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:30] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 11:55:30,041 INFO werkzeug Thread-81 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:30] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:30,046 INFO werkzeug Thread-82 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:30] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:30,048 INFO werkzeug Thread-83 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:30] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:30,059 INFO werkzeug Thread-85 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:30] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:30,059 INFO werkzeug Thread-86 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:30] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:30,060 INFO werkzeug Thread-87 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:30] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:30,071 INFO werkzeug Thread-88 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:30] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 11:55:30,148 INFO werkzeug Thread-84 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:30] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:55:30,263 INFO werkzeug Thread-89 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:30] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 11:55:33,542 DEBUG urllib3.connectionpool Thread-90 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 11:55:33,907 DEBUG urllib3.connectionpool Thread-90 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B33774112819&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+est+pr%C3%AAte+%C3%A0+%C3%AAtre+valid%C3%A9e+par+khalil.mzoughi%40jinnov-insa.fr HTTP/11" 200 128
+2025-03-15 11:55:33,924 INFO werkzeug Thread-90 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:33] "POST /api/tasks/3/validate HTTP/1.1" 200 -
+2025-03-15 11:55:34,020 INFO werkzeug Thread-91 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:34] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:55:36,120 INFO werkzeug Thread-92 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:36] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 11:55:36,196 INFO werkzeug Thread-93 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:36] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:36,207 INFO werkzeug Thread-95 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:36] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:36,207 INFO werkzeug Thread-94 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:36] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:36,208 INFO werkzeug Thread-98 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:36] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:36,208 INFO werkzeug Thread-97 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:36] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 11:55:36,209 INFO werkzeug Thread-96 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:36] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:36,223 INFO werkzeug Thread-99 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:36] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:36,223 INFO werkzeug Thread-100 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:36] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:36,226 INFO werkzeug Thread-101 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:36] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:36,237 INFO werkzeug Thread-103 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:36] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 11:55:36,245 INFO werkzeug Thread-104 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:36] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:36,245 INFO werkzeug Thread-106 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:36] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:36,246 INFO werkzeug Thread-105 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:36] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:36,326 INFO werkzeug Thread-102 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:36] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:55:36,394 INFO werkzeug Thread-107 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:36] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 11:55:38,553 DEBUG urllib3.connectionpool Thread-108 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 11:55:38,582 DEBUG urllib3.connectionpool Thread-108 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=La+demande+de+validation+pour+la+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+rejet%C3%A9e+par+khalil.mzoughikm%40gmail.com HTTP/11" 200 267
+2025-03-15 11:55:38,599 INFO werkzeug Thread-108 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:38] "POST /api/tasks/3/reject-validation HTTP/1.1" 200 -
+2025-03-15 11:55:38,697 INFO werkzeug Thread-109 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:38] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:55:40,548 INFO werkzeug Thread-110 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:40] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 11:55:40,582 INFO werkzeug Thread-112 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:40] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:40,583 INFO werkzeug Thread-114 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:40] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:40,584 INFO werkzeug Thread-115 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:40] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 11:55:40,584 INFO werkzeug Thread-111 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:40] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:40,586 INFO werkzeug Thread-113 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:40] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:40,589 INFO werkzeug Thread-116 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:40] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:40,593 INFO werkzeug Thread-117 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:40] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:40,598 INFO werkzeug Thread-118 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:40] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:40,604 INFO werkzeug Thread-119 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:40] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:40,605 INFO werkzeug Thread-120 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:40] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:40,613 INFO werkzeug Thread-122 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:40] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 11:55:40,620 INFO werkzeug Thread-123 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:40] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:40,622 INFO werkzeug Thread-124 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:40] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:40,704 INFO werkzeug Thread-121 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:40] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:55:40,752 INFO werkzeug Thread-125 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:40] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 11:55:42,121 DEBUG urllib3.connectionpool Thread-126 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 11:55:42,483 DEBUG urllib3.connectionpool Thread-126 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B33774112819&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+est+pr%C3%AAte+%C3%A0+%C3%AAtre+valid%C3%A9e+par+khalil.mzoughi%40jinnov-insa.fr HTTP/11" 200 128
+2025-03-15 11:55:42,502 INFO werkzeug Thread-126 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:42] "POST /api/tasks/3/validate HTTP/1.1" 200 -
+2025-03-15 11:55:42,597 INFO werkzeug Thread-127 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:42] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:55:55,643 INFO werkzeug Thread-128 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:55] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 11:55:55,723 INFO werkzeug Thread-129 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:55] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:55,725 INFO werkzeug Thread-130 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:55] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:55,734 INFO werkzeug Thread-131 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:55] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:55,735 INFO werkzeug Thread-132 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:55] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:55,736 INFO werkzeug Thread-134 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:55] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:55,736 INFO werkzeug Thread-133 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:55] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 11:55:55,755 INFO werkzeug Thread-135 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:55] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:55,755 INFO werkzeug Thread-137 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:55] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:55,757 INFO werkzeug Thread-136 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:55] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:55,772 INFO werkzeug Thread-139 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:55] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 11:55:55,780 INFO werkzeug Thread-142 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:55] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:55,782 INFO werkzeug Thread-141 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:55] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:55:55,784 INFO werkzeug Thread-140 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:55] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:55:55,860 INFO werkzeug Thread-138 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:55] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:55:55,930 INFO werkzeug Thread-143 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:55] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 11:55:59,974 INFO werkzeug Thread-144 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:55:59] "POST /api/tasks/3/complete HTTP/1.1" 200 -
+2025-03-15 11:56:00,071 INFO werkzeug Thread-145 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:00] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:56:01,872 DEBUG urllib3.connectionpool Thread-146 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 11:56:02,084 INFO werkzeug Thread-73 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:02] "POST /api/tasks/3/cancel-validation HTTP/1.1" 200 -
+2025-03-15 11:56:02,251 DEBUG urllib3.connectionpool Thread-146 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+rouverte+par+khalil.mzoughikm%40gmail.com HTTP/11" 200 116
+2025-03-15 11:56:02,268 INFO werkzeug Thread-146 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:02] "POST /api/tasks/3/reopen HTTP/1.1" 200 -
+2025-03-15 11:56:02,370 INFO werkzeug Thread-147 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:02] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:56:06,579 INFO werkzeug Thread-148 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:06] "POST /api/tasks/3/complete HTTP/1.1" 200 -
+2025-03-15 11:56:06,679 INFO werkzeug Thread-149 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:06] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:56:10,710 INFO werkzeug Thread-150 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:10] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:56:25,294 DEBUG urllib3.connectionpool Thread-151 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 11:56:25,681 DEBUG urllib3.connectionpool Thread-151 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+rouverte+par+khalil.mzoughikm%40gmail.com HTTP/11" 200 116
+2025-03-15 11:56:25,697 INFO werkzeug Thread-151 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:25] "POST /api/tasks/3/reopen HTTP/1.1" 200 -
+2025-03-15 11:56:25,797 INFO werkzeug Thread-152 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:25] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:56:25,892 INFO werkzeug Thread-153 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:25] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:56:30,837 INFO werkzeug Thread-154 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:30] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 11:56:30,872 INFO werkzeug Thread-155 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:30] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 11:56:30,872 INFO werkzeug Thread-157 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:30] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 11:56:30,873 INFO werkzeug Thread-159 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:30] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 11:56:30,875 INFO werkzeug Thread-160 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:30] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:56:30,876 INFO werkzeug Thread-158 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:30] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 11:56:30,877 INFO werkzeug Thread-156 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:30] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:56:30,888 INFO werkzeug Thread-161 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:30] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:56:30,894 INFO werkzeug Thread-163 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:30] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:56:30,895 INFO werkzeug Thread-162 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:30] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:56:30,903 INFO werkzeug Thread-164 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:30] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 11:56:30,904 INFO werkzeug Thread-165 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:30] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:56:30,913 INFO werkzeug Thread-167 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:30] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 11:56:30,918 INFO werkzeug Thread-168 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:30] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 11:56:30,992 INFO werkzeug Thread-166 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:30] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:56:31,081 INFO werkzeug Thread-169 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:31] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 11:56:32,989 DEBUG urllib3.connectionpool Thread-170 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 11:56:33,372 DEBUG urllib3.connectionpool Thread-170 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B33774112819&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+est+pr%C3%AAte+%C3%A0+%C3%AAtre+valid%C3%A9e+par+khalil.mzoughi%40jinnov-insa.fr HTTP/11" 200 128
+2025-03-15 11:56:33,389 INFO werkzeug Thread-170 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:33] "POST /api/tasks/3/validate HTTP/1.1" 200 -
+2025-03-15 11:56:33,488 INFO werkzeug Thread-171 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:33] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:56:34,524 DEBUG urllib3.connectionpool Thread-172 (process_request_thread) : Starting new HTTPS connection (1): api.geca.fr:443
+2025-03-15 11:56:45,110 INFO werkzeug Thread-173 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:45] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 11:56:56,076 INFO werkzeug Thread-174 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:56:56] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:57:01,068 INFO werkzeug Thread-175 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:57:01] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:57:16,650 INFO werkzeug Thread-172 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:57:16] "POST /api/tasks/3/cancel-validation HTTP/1.1" 200 -
+2025-03-15 11:57:16,753 INFO werkzeug Thread-176 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:57:16] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:57:26,066 INFO werkzeug Thread-177 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:57:26] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:57:31,065 INFO werkzeug Thread-178 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:57:31] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:57:56,073 INFO werkzeug Thread-179 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:57:56] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:58:01,069 INFO werkzeug Thread-180 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:58:01] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:58:31,075 INFO werkzeug Thread-181 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:58:31] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:58:46,875 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\entities\\task.py', reloading
+2025-03-15 11:58:47,285 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 11:58:47,675 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\entities\\task.py', reloading
+2025-03-15 11:58:48,039 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 11:58:49,104 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 11:58:49,107 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 11:58:49,245 INFO werkzeug Thread-2 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:58:49] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:58:49,922 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 11:58:49,925 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 11:59:47,084 INFO werkzeug Thread-3 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:59:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 11:59:47,181 INFO werkzeug Thread-4 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 11:59:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:00:47,077 INFO werkzeug Thread-6 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:00:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:00:47,078 INFO werkzeug Thread-5 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:00:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:01:20,543 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\entities\\task.py', reloading
+2025-03-15 12:01:20,771 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\entities\\task.py', reloading
+2025-03-15 12:01:20,865 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:01:21,000 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:01:22,693 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:01:22,697 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:01:22,750 INFO werkzeug Thread-3 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:22] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:01:22,845 INFO werkzeug Thread-2 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:22] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:01:22,859 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:01:22,864 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:01:23,021 INFO werkzeug Thread-6 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:23] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:01:23,024 INFO werkzeug Thread-5 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:23] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:01:23,024 INFO werkzeug Thread-7 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:23] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:01:23,030 INFO werkzeug Thread-4 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:23] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:01:23,030 INFO werkzeug Thread-8 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:23] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:01:23,031 INFO werkzeug Thread-9 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:23] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:01:23,047 INFO werkzeug Thread-10 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:23] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:01:23,047 INFO werkzeug Thread-11 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:23] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:01:23,049 INFO werkzeug Thread-12 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:23] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:01:23,062 INFO werkzeug Thread-14 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:23] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:01:23,063 INFO werkzeug Thread-15 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:23] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:01:23,063 INFO werkzeug Thread-16 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:23] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:01:23,080 INFO werkzeug Thread-17 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:23] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:01:23,162 INFO werkzeug Thread-13 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:23] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:01:23,347 INFO werkzeug Thread-18 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:23] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:01:29,205 INFO werkzeug Thread-19 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:29] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:01:30,819 INFO werkzeug Thread-20 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:30] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:01:30,851 INFO werkzeug Thread-21 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:30] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:01:30,852 INFO werkzeug Thread-23 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:30] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:01:30,853 INFO werkzeug Thread-22 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:30] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:01:30,853 INFO werkzeug Thread-25 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:30] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:01:30,853 INFO werkzeug Thread-24 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:30] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:01:30,854 INFO werkzeug Thread-26 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:30] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:01:30,868 INFO werkzeug Thread-27 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:30] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:01:30,870 INFO werkzeug Thread-28 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:30] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:01:30,873 INFO werkzeug Thread-29 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:30] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:01:30,883 INFO werkzeug Thread-31 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:30] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:01:30,891 INFO werkzeug Thread-32 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:30] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:01:30,891 INFO werkzeug Thread-33 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:30] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:01:30,893 INFO werkzeug Thread-34 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:30] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:01:30,967 INFO werkzeug Thread-30 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:30] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:01:31,105 INFO werkzeug Thread-35 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:31] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:01:33,526 DEBUG urllib3.connectionpool Thread-36 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:01:33,920 DEBUG urllib3.connectionpool Thread-36 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B33774112819&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+contest%C3%A9e+par+khalil.mzoughi%40jinnov-insa.fr HTTP/11" 200 128
+2025-03-15 12:01:33,936 INFO werkzeug Thread-36 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:33] "POST /api/tasks/3/dispute HTTP/1.1" 200 -
+2025-03-15 12:01:34,032 INFO werkzeug Thread-37 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:34] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:01:40,278 INFO werkzeug Thread-38 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:40] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:01:40,365 INFO werkzeug Thread-39 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:40] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:01:40,374 INFO werkzeug Thread-40 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:40] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:01:40,374 INFO werkzeug Thread-42 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:40] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:01:40,375 INFO werkzeug Thread-43 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:40] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:01:40,375 INFO werkzeug Thread-44 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:40] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:01:40,375 INFO werkzeug Thread-41 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:40] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:01:40,394 INFO werkzeug Thread-45 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:40] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:01:40,394 INFO werkzeug Thread-47 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:40] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:01:40,395 INFO werkzeug Thread-46 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:40] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:01:40,412 INFO werkzeug Thread-49 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:40] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:01:40,421 INFO werkzeug Thread-52 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:40] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:01:40,421 INFO werkzeug Thread-51 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:40] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:01:40,424 INFO werkzeug Thread-50 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:40] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:01:40,504 INFO werkzeug Thread-48 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:40] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:01:40,569 INFO werkzeug Thread-53 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:40] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:01:42,860 DEBUG urllib3.connectionpool Thread-54 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:01:43,240 DEBUG urllib3.connectionpool Thread-54 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=La+contestation+de+la+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+rejet%C3%A9e+par+khalil.mzoughikm%40gmail.com HTTP/11" 200 116
+2025-03-15 12:01:43,256 INFO werkzeug Thread-54 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:43] "POST /api/tasks/3/reject-dispute HTTP/1.1" 200 -
+2025-03-15 12:01:43,356 INFO werkzeug Thread-55 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:01:43] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:02:01,078 INFO werkzeug Thread-56 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:02:01] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:02:10,501 INFO werkzeug Thread-57 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:02:10] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:02:14,901 DEBUG urllib3.connectionpool Thread-58 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:02:15,278 DEBUG urllib3.connectionpool Thread-58 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B33774112819&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+est+pr%C3%AAte+%C3%A0+%C3%AAtre+valid%C3%A9e+par+khalil.mzoughi%40jinnov-insa.fr HTTP/11" 200 128
+2025-03-15 12:02:15,296 INFO werkzeug Thread-58 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:02:15] "POST /api/tasks/3/validate HTTP/1.1" 200 -
+2025-03-15 12:02:15,389 INFO werkzeug Thread-59 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:02:15] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:02:17,792 DEBUG urllib3.connectionpool Thread-60 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:02:17,815 DEBUG urllib3.connectionpool Thread-60 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=La+demande+de+validation+pour+la+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+annul%C3%A9e HTTP/11" 200 267
+2025-03-15 12:02:17,830 INFO werkzeug Thread-60 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:02:17] "POST /api/tasks/3/cancel-validation HTTP/1.1" 200 -
+2025-03-15 12:02:17,929 INFO werkzeug Thread-61 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:02:17] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:02:21,849 DEBUG urllib3.connectionpool Thread-62 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:02:22,213 DEBUG urllib3.connectionpool Thread-62 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B33774112819&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+est+pr%C3%AAte+%C3%A0+%C3%AAtre+valid%C3%A9e+par+khalil.mzoughi%40jinnov-insa.fr HTTP/11" 200 128
+2025-03-15 12:02:22,230 INFO werkzeug Thread-62 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:02:22] "POST /api/tasks/3/validate HTTP/1.1" 200 -
+2025-03-15 12:02:22,324 INFO werkzeug Thread-63 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:02:22] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:02:30,984 INFO werkzeug Thread-64 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:02:30] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:02:40,512 INFO werkzeug Thread-65 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:02:40] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:03:00,976 INFO werkzeug Thread-66 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:03:00] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:03:11,066 INFO werkzeug Thread-67 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:03:11] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:03:30,978 INFO werkzeug Thread-68 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:03:30] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:03:41,070 INFO werkzeug Thread-69 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:03:41] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:04:00,977 INFO werkzeug Thread-70 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:04:00] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:04:31,070 INFO werkzeug Thread-71 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:04:31] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:04:47,073 INFO werkzeug Thread-72 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:04:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:05:01,064 INFO werkzeug Thread-73 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:05:01] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:05:47,075 INFO werkzeug Thread-74 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:05:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:05:47,076 INFO werkzeug Thread-75 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:05:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:06:47,103 INFO werkzeug Thread-76 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:06:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:06:47,103 INFO werkzeug Thread-77 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:06:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:07:25,233 INFO werkzeug Thread-78 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:25] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:07:41,087 INFO werkzeug Thread-79 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:41] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:07:43,871 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\entities\\task.py', reloading
+2025-03-15 12:07:44,262 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:07:44,704 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\entities\\task.py', reloading
+2025-03-15 12:07:45,005 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:07:46,044 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:07:46,048 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:07:46,096 INFO werkzeug Thread-2 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:46] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:07:46,360 INFO werkzeug Thread-3 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:46] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:07:46,365 INFO werkzeug Thread-5 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:46] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:07:46,368 INFO werkzeug Thread-6 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:46] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:07:46,371 INFO werkzeug Thread-4 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:46] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:07:46,372 INFO werkzeug Thread-8 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:46] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:07:46,373 INFO werkzeug Thread-7 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:46] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:07:46,388 INFO werkzeug Thread-10 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:46] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:07:46,388 INFO werkzeug Thread-9 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:46] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:07:46,390 INFO werkzeug Thread-11 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:46] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:07:46,405 INFO werkzeug Thread-13 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:46] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:07:46,418 INFO werkzeug Thread-15 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:46] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:07:46,418 INFO werkzeug Thread-14 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:46] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:07:46,419 INFO werkzeug Thread-16 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:46] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:07:46,511 INFO werkzeug Thread-12 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:46] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:07:46,610 INFO werkzeug Thread-17 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:46] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:07:47,022 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:07:47,025 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:07:47,079 INFO werkzeug Thread-18 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:07:50,504 INFO werkzeug Thread-19 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:50] "POST /api/tasks/3/complete HTTP/1.1" 200 -
+2025-03-15 12:07:50,607 INFO werkzeug Thread-20 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:07:50] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:08:16,503 INFO werkzeug Thread-21 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:08:16] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:08:27,458 DEBUG urllib3.connectionpool Thread-22 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:08:27,838 DEBUG urllib3.connectionpool Thread-22 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+rouverte+par+Khalil+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A08%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0ANutelle+crepe%0A%0ACette+t%C3%A2che+a+%C3%A9t%C3%A9+rouverte+et+n%C3%A9cessite+%C3%A0+nouveau+votre+attention. HTTP/11" 200 116
+2025-03-15 12:08:27,856 INFO werkzeug Thread-22 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:08:27] "POST /api/tasks/3/reopen HTTP/1.1" 200 -
+2025-03-15 12:08:27,958 INFO werkzeug Thread-23 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:08:27] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:08:38,741 INFO werkzeug Thread-24 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:08:38] "POST /api/tasks/3/complete HTTP/1.1" 200 -
+2025-03-15 12:08:38,848 INFO werkzeug Thread-25 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:08:38] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:08:46,505 INFO werkzeug Thread-26 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:08:46] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:08:47,082 INFO werkzeug Thread-27 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:08:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:09:16,513 INFO werkzeug Thread-28 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:16] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:09:38,557 INFO werkzeug Thread-29 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:38] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:09:38,654 INFO werkzeug Thread-30 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:38] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:09:38,661 INFO werkzeug Thread-34 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:38] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:09:38,661 INFO werkzeug Thread-32 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:38] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:09:38,662 INFO werkzeug Thread-35 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:38] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:09:38,663 INFO werkzeug Thread-31 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:38] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:09:38,667 INFO werkzeug Thread-33 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:38] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:09:38,675 INFO werkzeug Thread-36 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:38] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:09:38,676 INFO werkzeug Thread-37 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:38] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:09:38,687 INFO werkzeug Thread-39 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:38] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:09:38,689 INFO werkzeug Thread-38 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:38] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:09:38,697 INFO werkzeug Thread-40 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:38] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:09:38,813 INFO werkzeug Thread-41 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:38] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:09:38,831 INFO werkzeug Thread-43 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:38] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:09:38,923 INFO werkzeug Thread-42 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:38] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:09:39,067 INFO werkzeug Thread-44 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:39] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:09:41,386 INFO werkzeug Thread-45 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:41] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:09:42,829 DEBUG urllib3.connectionpool Thread-46 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:09:43,224 DEBUG urllib3.connectionpool Thread-46 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+rouverte+par+Khalil+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A09%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0ANutelle+crepe%0A%0ACette+t%C3%A2che+a+%C3%A9t%C3%A9+rouverte+et+n%C3%A9cessite+%C3%A0+nouveau+votre+attention. HTTP/11" 200 116
+2025-03-15 12:09:43,241 INFO werkzeug Thread-46 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:43] "POST /api/tasks/3/reopen HTTP/1.1" 200 -
+2025-03-15 12:09:43,346 INFO werkzeug Thread-47 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:43] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:09:47,406 INFO werkzeug Thread-48 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:47] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:09:47,440 INFO werkzeug Thread-49 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:47] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:09:47,441 INFO werkzeug Thread-50 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:47] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:09:47,442 INFO werkzeug Thread-52 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:47] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:09:47,443 INFO werkzeug Thread-53 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:47] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:09:47,444 INFO werkzeug Thread-54 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:47] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:09:47,445 INFO werkzeug Thread-51 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:47] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:09:47,452 INFO werkzeug Thread-56 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:47] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:09:47,454 INFO werkzeug Thread-55 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:47] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:09:47,458 INFO werkzeug Thread-57 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:47] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:09:47,461 INFO werkzeug Thread-58 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:47] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:09:47,466 INFO werkzeug Thread-59 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:47] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:09:47,475 INFO werkzeug Thread-60 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:47] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:09:47,493 INFO werkzeug Thread-62 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:47] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:09:47,580 INFO werkzeug Thread-61 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:09:47,696 INFO werkzeug Thread-63 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:47] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:09:49,519 DEBUG urllib3.connectionpool Thread-64 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:09:49,884 DEBUG urllib3.connectionpool Thread-64 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B33774112819&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+contest%C3%A9e+par+Chokri+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A09%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0ANutelle+crepe HTTP/11" 200 128
+2025-03-15 12:09:49,905 INFO werkzeug Thread-64 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:49] "POST /api/tasks/3/dispute HTTP/1.1" 200 -
+2025-03-15 12:09:50,006 INFO werkzeug Thread-65 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:09:50] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:10:02,358 INFO werkzeug Thread-66 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:02] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:10:02,441 INFO werkzeug Thread-68 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:02] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:10:02,442 INFO werkzeug Thread-70 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:02] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:10:02,444 INFO werkzeug Thread-69 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:02] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:10:02,444 INFO werkzeug Thread-67 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:02] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:10:02,445 INFO werkzeug Thread-72 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:02] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:10:02,445 INFO werkzeug Thread-71 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:02] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:10:02,461 INFO werkzeug Thread-75 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:02] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:10:02,461 INFO werkzeug Thread-74 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:02] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:10:02,463 INFO werkzeug Thread-73 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:02] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:10:02,478 INFO werkzeug Thread-77 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:02] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:10:02,486 INFO werkzeug Thread-78 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:02] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:10:02,486 INFO werkzeug Thread-79 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:02] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:10:02,487 INFO werkzeug Thread-80 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:02] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:10:02,579 INFO werkzeug Thread-76 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:02] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:10:02,661 INFO werkzeug Thread-81 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:02] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:10:04,637 DEBUG urllib3.connectionpool Thread-82 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:10:05,209 DEBUG urllib3.connectionpool Thread-82 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=La+contestation+de+la+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+rejet%C3%A9e+par+Khalil+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A10%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0ANutelle+crepe%0A%0AVous+devez+continuer+%C3%A0+travailler+sur+cette+t%C3%A2che+malgr%C3%A9+la+contestation. HTTP/11" 200 116
+2025-03-15 12:10:05,226 INFO werkzeug Thread-82 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:05] "POST /api/tasks/3/reject-dispute HTTP/1.1" 200 -
+2025-03-15 12:10:05,336 INFO werkzeug Thread-83 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:05] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:10:17,594 INFO werkzeug Thread-84 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:17] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:10:18,045 INFO werkzeug Thread-85 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:18] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:10:18,079 INFO werkzeug Thread-87 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:18] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:10:18,080 INFO werkzeug Thread-88 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:18] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:10:18,083 INFO werkzeug Thread-89 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:18] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:10:18,083 INFO werkzeug Thread-86 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:18] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:10:18,084 INFO werkzeug Thread-90 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:18] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:10:18,086 INFO werkzeug Thread-91 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:18] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:10:18,097 INFO werkzeug Thread-92 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:18] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:10:18,097 INFO werkzeug Thread-93 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:18] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:10:18,101 INFO werkzeug Thread-94 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:18] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:10:18,111 INFO werkzeug Thread-96 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:18] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:10:18,119 INFO werkzeug Thread-97 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:18] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:10:18,119 INFO werkzeug Thread-98 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:18] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:10:18,121 INFO werkzeug Thread-99 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:18] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:10:18,203 INFO werkzeug Thread-95 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:18] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:10:18,217 INFO werkzeug Thread-100 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:18] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:10:19,869 DEBUG urllib3.connectionpool Thread-101 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:10:20,246 DEBUG urllib3.connectionpool Thread-101 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B33774112819&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+marqu%C3%A9e+pr%C3%AAte+pour+validation+par+Chokri+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A10%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0ANutelle+crepe HTTP/11" 200 128
+2025-03-15 12:10:20,263 INFO werkzeug Thread-101 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:20] "POST /api/tasks/3/validate HTTP/1.1" 200 -
+2025-03-15 12:10:20,362 INFO werkzeug Thread-102 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:20] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:10:32,578 INFO werkzeug Thread-103 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:32] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:10:48,212 INFO werkzeug Thread-104 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:48] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:10:52,603 DEBUG urllib3.connectionpool Thread-105 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:10:54,365 DEBUG urllib3.connectionpool Thread-105 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=La+demande+de+validation+pour+la+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+annul%C3%A9e+par+Khalil+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A10%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0ANutelle+crepe%0A%0AVous+devez+continuer+%C3%A0+travailler+sur+cette+t%C3%A2che. HTTP/11" 200 116
+2025-03-15 12:10:54,384 INFO werkzeug Thread-105 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:54] "POST /api/tasks/3/cancel-validation HTTP/1.1" 200 -
+2025-03-15 12:10:54,492 INFO werkzeug Thread-106 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:10:54] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:11:02,576 INFO werkzeug Thread-107 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:02] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:11:10,251 DEBUG urllib3.connectionpool Thread-108 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:11:10,632 DEBUG urllib3.connectionpool Thread-108 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B33774112819&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+marqu%C3%A9e+pr%C3%AAte+pour+validation+par+Chokri+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A11%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0ANutelle+crepe HTTP/11" 200 128
+2025-03-15 12:11:10,650 INFO werkzeug Thread-108 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:10] "POST /api/tasks/3/validate HTTP/1.1" 200 -
+2025-03-15 12:11:10,750 INFO werkzeug Thread-109 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:10] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:11:12,503 INFO werkzeug Thread-110 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:12] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:11:12,613 INFO werkzeug Thread-111 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:12] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:11:12,615 INFO werkzeug Thread-113 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:12] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:11:12,616 INFO werkzeug Thread-112 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:12] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:11:12,616 INFO werkzeug Thread-114 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:12] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:11:12,619 INFO werkzeug Thread-115 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:12] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:11:12,620 INFO werkzeug Thread-116 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:12] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:11:12,631 INFO werkzeug Thread-117 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:12] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:11:12,632 INFO werkzeug Thread-118 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:12] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:11:12,644 INFO werkzeug Thread-119 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:12] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:11:12,644 INFO werkzeug Thread-120 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:12] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:11:12,654 INFO werkzeug Thread-121 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:12] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:11:12,744 INFO werkzeug Thread-122 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:12] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:11:12,766 INFO werkzeug Thread-124 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:12] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:11:12,853 INFO werkzeug Thread-123 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:12] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:11:12,945 INFO werkzeug Thread-125 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:12] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:11:15,927 DEBUG urllib3.connectionpool Thread-126 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:11:15,959 DEBUG urllib3.connectionpool Thread-126 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=La+validation+de+la+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+rejet%C3%A9e+par+Khalil+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A11%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0ANutelle+crepe%0A%0ALa+t%C3%A2che+n%27est+pas+consid%C3%A9r%C3%A9e+comme+termin%C3%A9e.+Veuillez+apporter+les+corrections+n%C3%A9cessaires. HTTP/11" 200 267
+2025-03-15 12:11:15,979 INFO werkzeug Thread-126 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:15] "POST /api/tasks/3/reject-validation HTTP/1.1" 200 -
+2025-03-15 12:11:16,087 INFO werkzeug Thread-127 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:16] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:11:18,203 INFO werkzeug Thread-128 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:18] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:11:25,911 DEBUG urllib3.connectionpool Thread-129 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:11:26,301 DEBUG urllib3.connectionpool Thread-129 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B33774112819&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+marqu%C3%A9e+pr%C3%AAte+pour+validation+par+Chokri+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A11%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0ANutelle+crepe HTTP/11" 200 128
+2025-03-15 12:11:26,318 INFO werkzeug Thread-129 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:26] "POST /api/tasks/3/validate HTTP/1.1" 200 -
+2025-03-15 12:11:26,416 INFO werkzeug Thread-130 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:26] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:11:29,127 INFO werkzeug Thread-131 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:29] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:11:29,235 INFO werkzeug Thread-132 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:29] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:11:29,266 INFO werkzeug Thread-133 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:29] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:11:29,271 INFO werkzeug Thread-134 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:29] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:11:29,308 INFO werkzeug Thread-136 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:29] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:11:29,309 INFO werkzeug Thread-135 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:29] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:11:29,326 INFO werkzeug Thread-137 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:29] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:11:29,334 INFO werkzeug Thread-138 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:29] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:11:29,352 INFO werkzeug Thread-139 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:29] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:11:29,397 INFO werkzeug Thread-141 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:29] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:11:29,402 INFO werkzeug Thread-142 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:29] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:11:29,404 INFO werkzeug Thread-143 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:29] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:11:29,406 INFO werkzeug Thread-144 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:29] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:11:29,411 INFO werkzeug Thread-145 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:29] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:11:29,478 INFO werkzeug Thread-140 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:29] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:11:29,719 INFO werkzeug Thread-146 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:29] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:11:32,011 INFO werkzeug Thread-147 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:32] "POST /api/tasks/3/complete HTTP/1.1" 200 -
+2025-03-15 12:11:32,134 INFO werkzeug Thread-148 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:32] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:11:48,222 INFO werkzeug Thread-149 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:11:48] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:12:00,077 INFO werkzeug Thread-150 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:12:00] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:12:18,217 INFO werkzeug Thread-151 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:12:18] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:12:30,084 INFO werkzeug Thread-152 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:12:30] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:12:48,206 INFO werkzeug Thread-153 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:12:48] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:13:00,105 INFO werkzeug Thread-154 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:13:00] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:13:18,211 INFO werkzeug Thread-155 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:13:18] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:13:30,074 INFO werkzeug Thread-156 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:13:30] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:13:48,204 INFO werkzeug Thread-157 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:13:48] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:14:19,075 INFO werkzeug Thread-158 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:19] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:14:27,681 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\entities\\task.py', reloading
+2025-03-15 12:14:27,792 INFO werkzeug Thread-159 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:27] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:14:28,047 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:14:28,666 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\entities\\task.py', reloading
+2025-03-15 12:14:28,872 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:14:30,033 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:14:30,036 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:14:30,480 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:14:30,483 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:14:30,535 INFO werkzeug Thread-2 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:30] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:14:30,627 INFO werkzeug Thread-3 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:30] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:14:30,797 INFO werkzeug Thread-6 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:30] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:14:30,805 INFO werkzeug Thread-7 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:30] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:14:30,807 INFO werkzeug Thread-5 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:30] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:14:30,810 INFO werkzeug Thread-4 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:30] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:14:30,811 INFO werkzeug Thread-9 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:30] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:14:30,811 INFO werkzeug Thread-8 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:30] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:14:30,824 INFO werkzeug Thread-10 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:30] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:14:30,826 INFO werkzeug Thread-11 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:30] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:14:30,829 INFO werkzeug Thread-12 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:30] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:14:30,839 INFO werkzeug Thread-14 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:30] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:14:30,839 INFO werkzeug Thread-16 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:30] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:14:30,841 INFO werkzeug Thread-15 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:30] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:14:30,849 INFO werkzeug Thread-17 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:30] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:14:30,926 INFO werkzeug Thread-13 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:30] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:14:32,113 INFO werkzeug Thread-18 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:32] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:14:32,669 DEBUG urllib3.connectionpool Thread-19 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:14:33,067 DEBUG urllib3.connectionpool Thread-19 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+rouverte+par+Khalil+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A14%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0ANutelle+crepe%0A%0ACette+t%C3%A2che+a+%C3%A9t%C3%A9+rouverte+et+n%C3%A9cessite+%C3%A0+nouveau+votre+attention. HTTP/11" 200 116
+2025-03-15 12:14:33,085 INFO werkzeug Thread-19 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:33] "POST /api/tasks/3/reopen HTTP/1.1" 200 -
+2025-03-15 12:14:33,181 INFO werkzeug Thread-20 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:33] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:14:39,154 INFO werkzeug Thread-21 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:39] "POST /api/tasks/3/complete HTTP/1.1" 200 -
+2025-03-15 12:14:39,252 INFO werkzeug Thread-22 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:39] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:14:49,070 INFO werkzeug Thread-23 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:49] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:14:55,586 INFO werkzeug Thread-24 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:55] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:14:55,662 INFO werkzeug Thread-25 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:55] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:14:55,662 INFO werkzeug Thread-26 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:55] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:14:55,665 INFO werkzeug Thread-28 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:55] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:14:55,665 INFO werkzeug Thread-29 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:55] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:14:55,666 INFO werkzeug Thread-27 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:55] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:14:55,667 INFO werkzeug Thread-30 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:55] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:14:55,682 INFO werkzeug Thread-33 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:55] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:14:55,685 INFO werkzeug Thread-32 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:55] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:14:55,686 INFO werkzeug Thread-31 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:55] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:14:55,696 INFO werkzeug Thread-34 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:55] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:14:55,705 INFO werkzeug Thread-36 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:55] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:14:55,712 INFO werkzeug Thread-37 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:55] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:14:55,715 INFO werkzeug Thread-38 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:55] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:14:55,785 INFO werkzeug Thread-35 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:55] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:14:55,888 INFO werkzeug Thread-39 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:55] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:14:57,010 DEBUG urllib3.connectionpool Thread-40 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:14:57,541 DEBUG urllib3.connectionpool Thread-40 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+rouverte+par+Khalil+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A14%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0ANutelle+crepe%0A%0ACette+t%C3%A2che+a+%C3%A9t%C3%A9+rouverte+et+n%C3%A9cessite+%C3%A0+nouveau+votre+attention. HTTP/11" 200 116
+2025-03-15 12:14:57,558 INFO werkzeug Thread-40 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:57] "POST /api/tasks/3/reopen HTTP/1.1" 200 -
+2025-03-15 12:14:57,655 INFO werkzeug Thread-41 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:57] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:14:59,835 INFO werkzeug Thread-42 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:59] "POST /api/tasks/3/complete HTTP/1.1" 200 -
+2025-03-15 12:14:59,937 INFO werkzeug Thread-43 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:14:59] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:15:10,570 INFO werkzeug Thread-44 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:10] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:15:10,604 INFO werkzeug Thread-48 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:10] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:15:10,604 INFO werkzeug Thread-49 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:10] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:15:10,605 INFO werkzeug Thread-45 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:10] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:15:10,607 INFO werkzeug Thread-47 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:10] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:15:10,609 INFO werkzeug Thread-46 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:10] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:15:10,614 INFO werkzeug Thread-50 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:10] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:15:10,615 INFO werkzeug Thread-51 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:10] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:15:10,620 INFO werkzeug Thread-52 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:10] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:15:10,625 INFO werkzeug Thread-53 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:10] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:15:10,636 INFO werkzeug Thread-55 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:10] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:15:10,644 INFO werkzeug Thread-56 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:10] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:15:10,644 INFO werkzeug Thread-57 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:10] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:15:10,645 INFO werkzeug Thread-58 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:10] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:15:10,718 INFO werkzeug Thread-54 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:10] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:15:10,803 INFO werkzeug Thread-59 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:10] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:15:12,657 DEBUG urllib3.connectionpool Thread-60 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:15:13,036 DEBUG urllib3.connectionpool Thread-60 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+rouverte+par+Khalil+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A15%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0ANutelle+crepe%0A%0ACette+t%C3%A2che+a+%C3%A9t%C3%A9+rouverte+et+n%C3%A9cessite+%C3%A0+nouveau+votre+attention. HTTP/11" 200 116
+2025-03-15 12:15:13,053 INFO werkzeug Thread-60 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:13] "POST /api/tasks/3/reopen HTTP/1.1" 200 -
+2025-03-15 12:15:13,168 INFO werkzeug Thread-61 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:13] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:15:18,745 INFO werkzeug Thread-62 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:18] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:15:18,778 INFO werkzeug Thread-63 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:18] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:15:18,779 INFO werkzeug Thread-64 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:18] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:15:18,779 INFO werkzeug Thread-66 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:18] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:15:18,780 INFO werkzeug Thread-65 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:18] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:15:18,783 INFO werkzeug Thread-68 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:18] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:15:18,783 INFO werkzeug Thread-67 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:18] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:15:18,792 INFO werkzeug Thread-69 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:18] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:15:18,797 INFO werkzeug Thread-71 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:18] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:15:18,801 INFO werkzeug Thread-70 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:18] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:15:18,807 INFO werkzeug Thread-73 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:18] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:15:18,815 INFO werkzeug Thread-74 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:18] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:15:18,815 INFO werkzeug Thread-75 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:18] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:15:18,817 INFO werkzeug Thread-76 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:18] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:15:18,889 INFO werkzeug Thread-72 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:18] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:15:19,011 INFO werkzeug Thread-77 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:19] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:15:20,330 DEBUG urllib3.connectionpool Thread-78 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:15:20,722 DEBUG urllib3.connectionpool Thread-78 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B33774112819&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+marqu%C3%A9e+pr%C3%AAte+pour+validation+par+Chokri+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A15%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0ANutelle+crepe HTTP/11" 200 128
+2025-03-15 12:15:20,739 INFO werkzeug Thread-78 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:20] "POST /api/tasks/3/validate HTTP/1.1" 200 -
+2025-03-15 12:15:20,834 INFO werkzeug Thread-79 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:20] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:15:21,727 DEBUG urllib3.connectionpool Thread-80 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:15:21,752 DEBUG urllib3.connectionpool Thread-80 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=La+demande+de+validation+pour+la+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+annul%C3%A9e+par+Khalil+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A15%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0ANutelle+crepe%0A%0AVous+devez+continuer+%C3%A0+travailler+sur+cette+t%C3%A2che. HTTP/11" 200 267
+2025-03-15 12:15:21,768 INFO werkzeug Thread-80 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:21] "POST /api/tasks/3/cancel-validation HTTP/1.1" 200 -
+2025-03-15 12:15:21,879 INFO werkzeug Thread-81 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:21] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:15:25,792 INFO werkzeug Thread-82 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:25] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:15:30,288 DEBUG urllib3.connectionpool Thread-83 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:15:30,659 DEBUG urllib3.connectionpool Thread-83 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B33774112819&apikey=UDvABgmTtdWC&text=La+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+marqu%C3%A9e+pr%C3%AAte+pour+validation+par+Chokri+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A15%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0ANutelle+crepe HTTP/11" 200 128
+2025-03-15 12:15:30,676 INFO werkzeug Thread-83 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:30] "POST /api/tasks/3/validate HTTP/1.1" 200 -
+2025-03-15 12:15:30,776 INFO werkzeug Thread-84 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:30] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:15:36,956 DEBUG urllib3.connectionpool Thread-85 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:15:37,325 DEBUG urllib3.connectionpool Thread-85 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=La+demande+de+validation+pour+la+t%C3%A2che+%27Faire+des+couses%27+a+%C3%A9t%C3%A9+annul%C3%A9e+par+Khalil+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A15%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0ANutelle+crepe%0A%0AVous+devez+continuer+%C3%A0+travailler+sur+cette+t%C3%A2che. HTTP/11" 200 116
+2025-03-15 12:15:37,342 INFO werkzeug Thread-85 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:37] "POST /api/tasks/3/cancel-validation HTTP/1.1" 200 -
+2025-03-15 12:15:37,437 INFO werkzeug Thread-86 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:37] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:15:49,084 INFO werkzeug Thread-87 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:49] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:15:56,077 INFO werkzeug Thread-88 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:15:56] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:16:19,087 INFO werkzeug Thread-89 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:19] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:16:26,066 INFO werkzeug Thread-90 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:26] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:16:49,080 INFO werkzeug Thread-91 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:49] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:16:53,459 INFO werkzeug MainThread : [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.181:5000
+2025-03-15 12:16:53,459 INFO werkzeug MainThread : [33mPress CTRL+C to quit[0m
+2025-03-15 12:16:53,460 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:16:54,986 INFO werkzeug Thread-92 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:54] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:16:55,082 INFO werkzeug Thread-94 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:55] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:16:55,083 INFO werkzeug Thread-96 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:55] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:16:55,083 INFO werkzeug Thread-97 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:55] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:16:55,084 INFO werkzeug Thread-98 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:55] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:16:55,084 INFO werkzeug Thread-93 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:55] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:16:55,086 INFO werkzeug Thread-95 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:55] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:16:55,097 INFO werkzeug Thread-99 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:55] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:16:55,098 INFO werkzeug Thread-100 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:55] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:16:55,108 INFO werkzeug Thread-102 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:55] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:16:55,110 INFO werkzeug Thread-101 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:55] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:16:55,117 INFO werkzeug Thread-103 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:55] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:16:55,220 INFO werkzeug Thread-104 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:55] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:16:55,240 INFO werkzeug Thread-106 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:55] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:16:55,320 INFO werkzeug Thread-105 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:55] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:16:55,392 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:16:55,395 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:16:55,428 INFO werkzeug Thread-107 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:55] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:16:56,819 INFO werkzeug Thread-108 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:56] "POST /api/tasks/3/complete HTTP/1.1" 200 -
+2025-03-15 12:16:56,924 INFO werkzeug Thread-109 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:16:56] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:17:17,831 INFO werkzeug Thread-110 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:17:17] "POST /api/tasks/3/delete HTTP/1.1" 200 -
+2025-03-15 12:17:17,923 INFO werkzeug Thread-111 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:17:17] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:17:19,059 INFO werkzeug Thread-112 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:17:19] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:17:25,312 INFO werkzeug Thread-113 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:17:25] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:17:56,052 INFO werkzeug Thread-114 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:17:56] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:18:26,074 INFO werkzeug Thread-115 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:18:26] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:18:47,064 INFO werkzeug Thread-116 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:18:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:18:56,068 INFO werkzeug Thread-117 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:18:56] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:19:47,052 INFO werkzeug Thread-118 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:19:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:19:47,055 INFO werkzeug Thread-119 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:19:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:20:47,062 INFO werkzeug Thread-120 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:20:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:20:47,069 INFO werkzeug Thread-121 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:20:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:21:47,049 INFO werkzeug Thread-122 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:21:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:21:47,056 INFO werkzeug Thread-123 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:21:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:22:10,870 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\entities\\task.py', reloading
+2025-03-15 12:22:10,956 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\entities\\task.py', reloading
+2025-03-15 12:22:11,224 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:22:11,358 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:22:13,143 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:22:13,148 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:22:13,563 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:22:13,568 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:22:47,060 INFO werkzeug Thread-2 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:22:47] "[35m[1mGET /api/tasks HTTP/1.1[0m" 500 -
+2025-03-15 12:22:47,154 INFO werkzeug Thread-3 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:22:47] "[35m[1mGET /api/tasks HTTP/1.1[0m" 500 -
+2025-03-15 12:23:47,040 INFO werkzeug Thread-4 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:23:47] "[35m[1mGET /api/tasks HTTP/1.1[0m" 500 -
+2025-03-15 12:23:47,051 INFO werkzeug Thread-5 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:23:47] "[35m[1mGET /api/tasks HTTP/1.1[0m" 500 -
+2025-03-15 12:24:47,069 INFO werkzeug Thread-7 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:24:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:24:47,069 INFO werkzeug Thread-6 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:24:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:25:47,065 INFO werkzeug Thread-8 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:25:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:25:47,065 INFO werkzeug Thread-9 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:25:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:26:12,418 INFO werkzeug Thread-10 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:26:12] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:26:25,327 INFO werkzeug Thread-11 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:26:25] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:26:47,051 INFO werkzeug Thread-12 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:26:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:26:55,321 INFO werkzeug Thread-13 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:26:55] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:27:09,039 INFO werkzeug Thread-14 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:09] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:27:09,283 INFO werkzeug Thread-15 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:09] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:27:09,288 INFO werkzeug Thread-16 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:09] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:27:09,292 INFO werkzeug Thread-17 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:09] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:27:09,294 INFO werkzeug Thread-18 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:09] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:27:09,296 INFO werkzeug Thread-19 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:09] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:27:09,298 INFO werkzeug Thread-20 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:09] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:27:09,309 INFO werkzeug Thread-21 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:09] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:27:09,314 INFO werkzeug Thread-22 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:09] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:27:09,315 INFO werkzeug Thread-23 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:09] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:27:09,328 INFO werkzeug Thread-25 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:09] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:27:09,336 INFO werkzeug Thread-26 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:09] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:27:09,336 INFO werkzeug Thread-28 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:09] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:27:09,337 INFO werkzeug Thread-27 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:09] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:27:09,417 INFO werkzeug Thread-24 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:09] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:27:10,664 INFO werkzeug Thread-29 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:10] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:27:23,374 INFO werkzeug Thread-30 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:23] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:27:25,286 INFO werkzeug Thread-31 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:25] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:27:25,324 INFO werkzeug Thread-32 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:25] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:27:25,324 INFO werkzeug Thread-33 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:25] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:27:25,325 INFO werkzeug Thread-34 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:25] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:27:25,326 INFO werkzeug Thread-37 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:25] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:27:25,328 INFO werkzeug Thread-36 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:25] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:27:25,329 INFO werkzeug Thread-35 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:25] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:27:25,336 INFO werkzeug Thread-38 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:25] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:27:25,338 INFO werkzeug Thread-39 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:25] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:27:25,346 INFO werkzeug Thread-41 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:25] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:27:25,347 INFO werkzeug Thread-40 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:25] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:27:25,353 INFO werkzeug Thread-42 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:25] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:27:26,370 INFO werkzeug Thread-43 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:26] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:27:26,387 INFO werkzeug Thread-45 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:26] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:27:26,488 INFO werkzeug Thread-44 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:26] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:27:26,513 INFO werkzeug Thread-46 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:26] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:27:32,943 INFO werkzeug Thread-47 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:32] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:27:36,021 INFO werkzeug Thread-48 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:36] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:27:38,432 INFO werkzeug Thread-49 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:38] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:27:39,420 INFO werkzeug Thread-50 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:39] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:27:41,069 INFO werkzeug Thread-51 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:41] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:27:43,808 INFO werkzeug Thread-52 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:43] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:27:56,506 INFO werkzeug Thread-53 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:27:56] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:28:10,081 INFO werkzeug Thread-54 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:28:10] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:28:26,479 INFO werkzeug Thread-55 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:28:26] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:28:40,081 INFO werkzeug Thread-56 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:28:40] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:28:56,481 INFO werkzeug Thread-57 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:28:56] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:29:10,069 INFO werkzeug Thread-58 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:29:10] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:29:26,487 INFO werkzeug Thread-59 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:29:26] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:29:47,079 INFO werkzeug Thread-60 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:29:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:29:57,071 INFO werkzeug Thread-61 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:29:57] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:30:27,084 INFO werkzeug Thread-62 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:30:27] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:30:47,074 INFO werkzeug Thread-63 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:30:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:31:34,436 INFO werkzeug Thread-64 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:31:34] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:31:39,444 INFO werkzeug Thread-65 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:31:39] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:31:47,073 INFO werkzeug Thread-66 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:31:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:32:10,096 INFO werkzeug Thread-67 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:32:10] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:32:37,382 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\main.py', reloading
+2025-03-15 12:32:37,748 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\main.py', reloading
+2025-03-15 12:32:37,823 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:32:38,021 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:32:39,963 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:32:39,967 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:32:40,135 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:32:40,138 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:32:47,083 INFO werkzeug Thread-2 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:32:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:32:47,192 INFO werkzeug Thread-3 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:32:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:32:55,395 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\main.py', reloading
+2025-03-15 12:32:55,653 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:32:55,877 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\main.py', reloading
+2025-03-15 12:32:56,055 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:32:57,678 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:32:57,682 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:32:57,768 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:32:57,771 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:33:21,767 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\main.py', reloading
+2025-03-15 12:33:21,955 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:33:22,112 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\main.py', reloading
+2025-03-15 12:33:22,402 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:33:23,720 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:33:23,723 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:33:24,382 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:33:24,384 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:33:47,080 INFO werkzeug Thread-2 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:33:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:33:47,192 INFO werkzeug Thread-3 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:33:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:34:32,221 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\main.py', reloading
+2025-03-15 12:34:32,299 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\main.py', reloading
+2025-03-15 12:34:32,403 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:34:32,563 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:34:34,098 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:34:34,102 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:34:34,477 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:34:34,480 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:34:47,085 INFO werkzeug Thread-2 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:34:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:34:47,174 INFO werkzeug Thread-3 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:34:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:34:51,584 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\main.py', reloading
+2025-03-15 12:34:51,821 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\main.py', reloading
+2025-03-15 12:34:51,832 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:34:51,999 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:34:53,639 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:34:53,643 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:34:53,786 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:34:53,791 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:35:16,050 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\main.py', reloading
+2025-03-15 12:35:16,287 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:35:16,526 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\main.py', reloading
+2025-03-15 12:35:16,695 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:35:18,189 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:35:18,193 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:35:18,302 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:35:18,306 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:35:36,115 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\main.py', reloading
+2025-03-15 12:35:36,335 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:35:36,368 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\main.py', reloading
+2025-03-15 12:35:36,615 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:35:37,992 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:35:37,995 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:35:38,491 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:35:38,494 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:35:47,083 INFO werkzeug Thread-2 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:35:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:35:47,172 INFO werkzeug Thread-3 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:35:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:35:49,219 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\main.py', reloading
+2025-03-15 12:35:49,469 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:35:49,490 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\main.py', reloading
+2025-03-15 12:35:49,653 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:36:02,103 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:36:22,790 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:36:36,211 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:36:54,711 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:37:49,550 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:37:51,154 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:37:51,158 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:37:51,211 INFO werkzeug Thread-2 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:51] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:37:51,447 INFO werkzeug Thread-4 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:51] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:37:51,451 INFO werkzeug Thread-5 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:51] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:37:51,452 INFO werkzeug Thread-8 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:51] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:37:51,453 INFO werkzeug Thread-9 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:51] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:37:51,455 INFO werkzeug Thread-6 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:51] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:37:51,456 INFO werkzeug Thread-7 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:51] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:37:51,462 INFO werkzeug Thread-10 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:51] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:37:51,467 INFO werkzeug Thread-11 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:51] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:37:51,469 INFO werkzeug Thread-12 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:51] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:37:51,476 INFO werkzeug Thread-13 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:51] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:37:51,489 INFO werkzeug Thread-15 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:51] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:37:51,497 INFO werkzeug Thread-16 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:51] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:37:51,498 INFO werkzeug Thread-17 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:51] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:37:51,597 INFO werkzeug Thread-14 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:51] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:37:51,898 INFO werkzeug Thread-18 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:51] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:37:58,717 INFO werkzeug Thread-19 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:58] "GET /createTask HTTP/1.1" 200 -
+2025-03-15 12:37:58,800 INFO werkzeug Thread-20 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:58] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:37:58,806 INFO werkzeug Thread-22 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:58] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:37:58,807 INFO werkzeug Thread-21 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:58] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:37:58,807 INFO werkzeug Thread-24 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:58] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:37:58,808 INFO werkzeug Thread-25 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:58] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:37:58,809 INFO werkzeug Thread-23 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:58] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:37:58,826 INFO werkzeug Thread-27 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:58] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:37:58,826 INFO werkzeug Thread-26 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:58] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:37:58,827 INFO werkzeug Thread-28 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:58] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:37:58,846 INFO werkzeug Thread-29 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:58] "[36mGET /static/assets/img/money.png HTTP/1.1[0m" 304 -
+2025-03-15 12:37:58,872 INFO werkzeug Thread-30 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:58] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:37:58,872 INFO werkzeug Thread-32 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:58] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:37:58,874 INFO werkzeug Thread-31 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:58] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:37:59,091 INFO werkzeug Thread-33 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:37:59] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:38:35,795 DEBUG urllib3.connectionpool Thread-34 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:38:36,198 DEBUG urllib3.connectionpool Thread-34 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=%F0%9F%94%B4+La+t%C3%A2che+%27Faire+le+taxi%27+vous+a+%C3%A9t%C3%A9+assign%C3%A9e+par+Khalil+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A38%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0Aje+deconne%0A%0APriorit%C3%A9%3A+Haute%0ATemps+restant%3A+1+jour+22+heures+58+minutes+%E2%9A%A0%EF%B8%8F+URGENT%0A%0ADate+d%27%C3%A9ch%C3%A9ance%3A+17%2F03%2F2025+%C3%A0+11%3A37 HTTP/11" 200 116
+2025-03-15 12:38:36,215 INFO werkzeug Thread-34 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:36] "POST /api/createTask HTTP/1.1" 200 -
+2025-03-15 12:38:36,229 INFO werkzeug Thread-35 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:36] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:38:36,350 INFO werkzeug Thread-36 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:36] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:38:36,355 INFO werkzeug Thread-38 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:36] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:38:36,355 INFO werkzeug Thread-40 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:36] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:38:36,357 INFO werkzeug Thread-41 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:36] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:38:36,359 INFO werkzeug Thread-39 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:36] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:38:36,359 INFO werkzeug Thread-37 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:36] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:38:36,375 INFO werkzeug Thread-42 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:36] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:38:36,385 INFO werkzeug Thread-43 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:36] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:38:36,387 INFO werkzeug Thread-44 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:36] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:38:36,391 INFO werkzeug Thread-45 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:36] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:38:36,398 INFO werkzeug Thread-47 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:36] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:38:36,407 INFO werkzeug Thread-48 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:36] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:38:36,408 INFO werkzeug Thread-49 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:36] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:38:36,505 INFO werkzeug Thread-46 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:36] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:38:36,645 INFO werkzeug Thread-50 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:36] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:38:47,088 INFO werkzeug Thread-51 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:38:54,232 DEBUG urllib3.connectionpool Thread-52 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:38:54,638 DEBUG urllib3.connectionpool Thread-52 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=%F0%9F%9F%A0+La+priorit%C3%A9+de+la+t%C3%A2che+%27Faire+le+taxi%27+a+%C3%A9t%C3%A9+chang%C3%A9e+%C3%A0+Moyenne+par+Khalil+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A38%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0Aje+deconne%0ATemps+restant%3A+1+jour+22+heures+58+minutes HTTP/11" 200 116
+2025-03-15 12:38:54,655 INFO werkzeug Thread-52 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:54] "POST /api/tasks/4/priority HTTP/1.1" 200 -
+2025-03-15 12:38:54,782 INFO werkzeug Thread-53 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:38:54] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:39:06,517 INFO werkzeug Thread-54 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:06] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:39:14,111 INFO werkzeug Thread-55 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:14] "GET /tasks HTTP/1.1" 200 -
+2025-03-15 12:39:14,218 INFO werkzeug Thread-56 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:14] "[36mGET /static/assets/css/style-icons.css HTTP/1.1[0m" 304 -
+2025-03-15 12:39:14,219 INFO werkzeug Thread-59 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:14] "[36mGET /static/assets/css/style-general.css HTTP/1.1[0m" 304 -
+2025-03-15 12:39:14,219 INFO werkzeug Thread-57 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:14] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:39:14,220 INFO werkzeug Thread-58 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:14] "[36mGET /static/assets/css/timeline.css HTTP/1.1[0m" 304 -
+2025-03-15 12:39:14,221 INFO werkzeug Thread-61 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:14] "[36mGET /static/assets/js/core/popper.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:39:14,221 INFO werkzeug Thread-60 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:14] "[36mGET /static/assets/img/logos/insa.png HTTP/1.1[0m" 304 -
+2025-03-15 12:39:14,250 INFO werkzeug Thread-62 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:14] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:39:14,251 INFO werkzeug Thread-64 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:14] "[36mGET /static/assets/js/plugins/perfect-scrollbar.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:39:14,252 INFO werkzeug Thread-63 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:14] "[36mGET /static/assets/js/core/bootstrap.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:39:14,268 INFO werkzeug Thread-66 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:14] "[33mGET /static/assets/img/bg-task.jpg HTTP/1.1[0m" 404 -
+2025-03-15 12:39:14,279 INFO werkzeug Thread-67 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:14] "[36mGET /static/assets/css/style-svg.css HTTP/1.1[0m" 304 -
+2025-03-15 12:39:14,280 INFO werkzeug Thread-69 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:14] "[36mGET /static/assets/js/js-general.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:39:14,281 INFO werkzeug Thread-68 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:14] "[36mGET /static/assets/js/plugins/chartjs.min.js HTTP/1.1[0m" 304 -
+2025-03-15 12:39:14,377 INFO werkzeug Thread-65 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:14] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:39:14,532 INFO werkzeug Thread-70 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:14] "[35m[1mPOST /save-location HTTP/1.1[0m" 201 -
+2025-03-15 12:39:45,139 INFO werkzeug Thread-71 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:45] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:39:45,987 INFO werkzeug Thread-72 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:45] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:39:47,906 DEBUG urllib3.connectionpool Thread-73 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:39:48,289 DEBUG urllib3.connectionpool Thread-73 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B33774112819&apikey=UDvABgmTtdWC&text=%F0%9F%9F%A0+La+t%C3%A2che+%27Faire+le+taxi%27+a+%C3%A9t%C3%A9+marqu%C3%A9e+pr%C3%AAte+pour+validation+par+Chokri+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A39%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0Aje+deconne%0A%0APriorit%C3%A9%3A+Moyenne%0ATemps+restant%3A+1+jour+22+heures+57+minutes HTTP/11" 200 128
+2025-03-15 12:39:48,307 INFO werkzeug Thread-73 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:48] "POST /api/tasks/4/validate HTTP/1.1" 200 -
+2025-03-15 12:39:48,426 INFO werkzeug Thread-74 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:48] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:39:56,511 INFO werkzeug Thread-75 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:39:56] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:40:01,181 DEBUG urllib3.connectionpool Thread-76 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:40:01,568 DEBUG urllib3.connectionpool Thread-76 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=%F0%9F%9F%A0+La+demande+de+validation+pour+la+t%C3%A2che+%27Faire+le+taxi%27+a+%C3%A9t%C3%A9+annul%C3%A9e+par+Khalil+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A40%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0Aje+deconne%0A%0APriorit%C3%A9%3A+Moyenne%0ATemps+restant%3A+1+jour+22+heures+56+minutes%0A%0AVous+devez+continuer+%C3%A0+travailler+sur+cette+t%C3%A2che. HTTP/11" 200 116
+2025-03-15 12:40:01,585 INFO werkzeug Thread-76 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:40:01] "POST /api/tasks/4/cancel-validation HTTP/1.1" 200 -
+2025-03-15 12:40:01,697 INFO werkzeug Thread-77 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:40:01] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:40:14,263 DEBUG urllib3.connectionpool Thread-78 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:40:14,641 DEBUG urllib3.connectionpool Thread-78 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B33774112819&apikey=UDvABgmTtdWC&text=%F0%9F%9F%A0+La+t%C3%A2che+%27Faire+le+taxi%27+a+%C3%A9t%C3%A9+contest%C3%A9e+par+Chokri+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A40%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0Aje+deconne%0A%0APriorit%C3%A9%3A+Moyenne%0ATemps+restant%3A+1+jour+22+heures+56+minutes HTTP/11" 200 128
+2025-03-15 12:40:14,657 INFO werkzeug Thread-78 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:40:14] "POST /api/tasks/4/dispute HTTP/1.1" 200 -
+2025-03-15 12:40:14,772 INFO werkzeug Thread-79 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:40:14] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:40:15,111 INFO werkzeug Thread-80 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:40:15] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:40:25,291 DEBUG urllib3.connectionpool Thread-81 (process_request_thread) : Starting new HTTP connection (1): api.textmebot.com:80
+2025-03-15 12:40:25,679 DEBUG urllib3.connectionpool Thread-81 (process_request_thread) : http://api.textmebot.com:80 "GET /send.php?recipient=%2B21620802814&apikey=UDvABgmTtdWC&text=%F0%9F%9F%A0+La+contestation+de+la+t%C3%A2che+%27Faire+le+taxi%27+a+%C3%A9t%C3%A9+rejet%C3%A9e+par+Khalil+MZOUGHI+le+15%2F03%2F2025+%C3%A0+12%3A40%0AD%C3%A9tail+de+la+t%C3%A2che+%3A%0Aje+deconne%0A%0APriorit%C3%A9%3A+Moyenne%0ATemps+restant%3A+1+jour+22+heures+56+minutes%0A%0AVous+devez+continuer+%C3%A0+travailler+sur+cette+t%C3%A2che+malgr%C3%A9+la+contestation. HTTP/11" 200 116
+2025-03-15 12:40:25,697 INFO werkzeug Thread-81 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:40:25] "POST /api/tasks/4/reject-dispute HTTP/1.1" 200 -
+2025-03-15 12:40:25,812 INFO werkzeug Thread-82 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:40:25] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:40:26,505 INFO werkzeug Thread-83 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:40:26] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:40:45,098 INFO werkzeug Thread-84 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:40:45] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:40:56,510 INFO werkzeug Thread-85 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:40:56] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:41:15,098 INFO werkzeug Thread-86 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:41:15] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:41:24,504 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\entities\\task.py', reloading
+2025-03-15 12:41:24,706 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:41:26,360 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:41:26,364 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582
+2025-03-15 12:41:27,100 INFO werkzeug Thread-2 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:41:27] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:41:47,099 INFO werkzeug Thread-3 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:41:47] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:41:57,087 INFO werkzeug Thread-4 (process_request_thread) : 127.0.0.1 - - [15/Mar/2025 12:41:57] "GET /api/tasks HTTP/1.1" 200 -
+2025-03-15 12:42:06,720 INFO werkzeug MainThread :  * Detected change in 'W:\\geca-admin\\entities\\task.py', reloading
+2025-03-15 12:42:06,863 INFO werkzeug MainThread :  * Restarting with stat
+2025-03-15 12:42:08,421 WARNING werkzeug MainThread :  * Debugger is active!
+2025-03-15 12:42:08,426 INFO werkzeug MainThread :  * Debugger PIN: 200-379-582

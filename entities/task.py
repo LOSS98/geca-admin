@@ -20,6 +20,25 @@ class TaskState(enum.Enum):
         return self.value
 
 
+class TaskPriority(enum.Enum):
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+
+    def __str__(self):
+        return self.value
+
+    @staticmethod
+    def get_display_name(priority):
+        if priority == TaskPriority.LOW:
+            return "Faible"
+        elif priority == TaskPriority.MEDIUM:
+            return "Moyenne"
+        elif priority == TaskPriority.HIGH:
+            return "Haute"
+        return "Non définie"
+
+
 # Association table for many-to-many relationship between Task and User
 task_user_association = db.Table(
     'task_user_association',
@@ -38,6 +57,7 @@ class Task(db.Model):
     subject = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=True)
     state = db.Column(db.Enum(TaskState), nullable=False, default=TaskState.ASSIGNED)
+    priority = db.Column(db.Enum(TaskPriority), nullable=False, default=TaskPriority.MEDIUM)
 
     # Relationships
     assigner = db.relationship('User', foreign_keys=[assigned_by], backref='assigned_tasks')
@@ -52,7 +72,18 @@ class Task(db.Model):
         self.description = data.get('description')
         self.state = TaskState.ASSIGNED
 
+        # Définir la priorité (par défaut: MEDIUM)
+        priority_str = data.get('priority', 'medium').lower()
+        if priority_str == 'low' or priority_str == 'faible':
+            self.priority = TaskPriority.LOW
+        elif priority_str == 'high' or priority_str == 'haute':
+            self.priority = TaskPriority.HIGH
+        else:
+            self.priority = TaskPriority.MEDIUM
+
     def to_dict(self):
+        time_info = self.get_time_info()
+
         return {
             'id': self.id,
             'assigned_by': self.assigned_by,
@@ -62,9 +93,29 @@ class Task(db.Model):
             'subject': self.subject,
             'description': self.description,
             'state': str(self.state.value) if isinstance(self.state, TaskState) else str(self.state),
+            'priority': str(self.priority.value) if isinstance(self.priority, TaskPriority) else str(self.priority),
+            'priority_display': TaskPriority.get_display_name(self.priority),
             'assignees': [user.email for user in self.assignees],
-            'delay': self.calculate_delay() if self.due_date and self.due_date < datetime.now() and self.state != TaskState.DONE else None
+            'delay': self.calculate_delay() if self.due_date and self.due_date < datetime.now() and self.state != TaskState.DONE else None,
+            'time_info': time_info
         }
+
+    def set_priority(self, priority_str):
+        """Update the priority of the task"""
+        priority_str = priority_str.lower()
+        if priority_str == 'low' or priority_str == 'faible':
+            self.priority = TaskPriority.LOW
+        elif priority_str == 'high' or priority_str == 'haute':
+            self.priority = TaskPriority.HIGH
+        elif priority_str == 'medium' or priority_str == 'moyenne':
+            self.priority = TaskPriority.MEDIUM
+        else:
+            # Par défaut, on garde la priorité actuelle
+            return False
+
+        db.session.commit()
+        self.notify_priority_change()
+        return True
 
     def calculate_delay(self):
         """Calculate the delay in days, hours, and minutes if the task is overdue"""
@@ -82,6 +133,120 @@ class Task(db.Model):
             'minutes': minutes,
             'total_minutes': days * 24 * 60 + hours * 60 + minutes
         }
+
+    def get_time_info(self):
+        """Get information about time remaining or delay"""
+        now = datetime.now()
+
+        # Si la tâche est terminée, pas besoin d'information sur le temps
+        if self.state == TaskState.DONE or self.state == TaskState.DELETED:
+            return {
+                'status': 'completed',
+                'message': 'Tâche terminée'
+            }
+
+        # Si la date d'échéance est passée, calculer le retard
+        if self.due_date < now:
+            delay = now - self.due_date
+            days = delay.days
+            hours, remainder = divmod(delay.seconds, 3600)
+            minutes, _ = divmod(remainder, 60)
+
+            delay_str = ""
+            if days > 0:
+                delay_str += f"{days} jour{'s' if days > 1 else ''} "
+            if hours > 0 or days > 0:  # Inclure les heures si on a des jours ou des heures
+                delay_str += f"{hours} heure{'s' if hours > 1 else ''} "
+            delay_str += f"{minutes} minute{'s' if minutes > 1 else ''}"
+
+            return {
+                'status': 'overdue',
+                'delay': {
+                    'days': days,
+                    'hours': hours,
+                    'minutes': minutes,
+                    'total_minutes': days * 24 * 60 + hours * 60 + minutes
+                },
+                'message': f"Retard de {delay_str}"
+            }
+
+        # Sinon, calculer le temps restant
+        time_remaining = self.due_date - now
+        days = time_remaining.days
+        hours, remainder = divmod(time_remaining.seconds, 3600)
+        minutes, _ = divmod(remainder, 60)
+
+        time_str = ""
+        if days > 0:
+            time_str += f"{days} jour{'s' if days > 1 else ''} "
+        if hours > 0 or days > 0:  # Inclure les heures si on a des jours ou des heures
+            time_str += f"{hours} heure{'s' if hours > 1 else ''} "
+        time_str += f"{minutes} minute{'s' if minutes > 1 else ''}"
+
+        # Définir l'urgence en fonction du temps restant et de la priorité
+        total_minutes = days * 24 * 60 + hours * 60 + minutes
+        urgency = 'low'  # Par défaut
+
+        # Ajuster l'urgence en fonction de la priorité de la tâche
+        if self.priority == TaskPriority.HIGH:
+            if total_minutes <= 24 * 60 * 2:  # Moins de 2 jours pour une tâche haute priorité
+                urgency = 'critical'
+            elif total_minutes <= 24 * 60 * 5:  # Moins de 5 jours pour une tâche haute priorité
+                urgency = 'high'
+            else:
+                urgency = 'medium'
+        elif self.priority == TaskPriority.MEDIUM:
+            if total_minutes <= 60:  # Moins d'une heure
+                urgency = 'critical'
+            elif total_minutes <= 24 * 60:  # Moins d'un jour
+                urgency = 'high'
+            elif total_minutes <= 3 * 24 * 60:  # Moins de 3 jours
+                urgency = 'medium'
+        else:  # LOW priority
+            if total_minutes <= 24 * 60 / 2:  # Moins de 12 heures
+                urgency = 'critical'
+            elif total_minutes <= 24 * 60 / 4 * 3:  # Moins de 18 heures
+                urgency = 'high'
+            elif total_minutes <= 24 * 60:  # Moins d'un jour
+                urgency = 'medium'
+
+        return {
+            'status': 'upcoming',
+            'remaining': {
+                'days': days,
+                'hours': hours,
+                'minutes': minutes,
+                'total_minutes': total_minutes
+            },
+            'urgency': urgency,
+            'message': f"Temps restant: {time_str}"
+        }
+
+    def format_time_remaining(self):
+        """Format time remaining or delay for human readability"""
+        time_info = self.get_time_info()
+
+        if time_info['status'] == 'completed':
+            return "Tâche terminée"
+        elif time_info['status'] == 'overdue':
+            return time_info['message']
+        else:
+            urgent_msg = ""
+            if time_info['urgency'] == 'critical':
+                urgent_msg = " ⚠️ URGENT"
+            elif time_info['urgency'] == 'high':
+                urgent_msg = " ⚠️ Prioritaire"
+
+            return f"{time_info['message']}{urgent_msg}"
+
+    def get_priority_icon(self):
+        """Get icon for priority level"""
+        if self.priority == TaskPriority.HIGH:
+            return "🔴"  # Rouge pour haute priorité
+        elif self.priority == TaskPriority.MEDIUM:
+            return "🟠"  # Orange pour priorité moyenne
+        else:
+            return "🟢"  # Vert pour faible priorité
 
     def assign_to_users(self, user_emails: List[str]):
         """Assign the task to multiple users"""
@@ -121,11 +286,13 @@ class Task(db.Model):
         """Mark the task as done"""
         self.state = TaskState.DONE
         db.session.commit()
+        self.notify_task_completed()
 
     def delete_task(self):
         """Mark the task as deleted"""
         self.state = TaskState.DELETED
         db.session.commit()
+        self.notify_task_deleted()
 
     def remove_assignee(self, user_email: str):
         """Remove a specific assignee from the task"""
@@ -146,47 +313,132 @@ class Task(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def _get_api_details(self):
+        """Get API details from environment variables"""
+        api_key = os.getenv('WHATSAPP_API_KEY', 'UDvABgmTtdWC')  # Fallback to hardcoded value if not set
+        api_url = os.getenv('WHATSAPP_API_URL', 'http://api.textmebot.com/send.php')
+        return api_key, api_url
+
+    def _send_notification(self, recipient_phone, message):
+        """Send notification via TextMeBot API"""
+        api_key, api_url = self._get_api_details()
+
+        # Format phone number (ensure it has country code)
+        if not recipient_phone.startswith('+'):
+            # Add French country code if missing
+            recipient_phone = '+33' + recipient_phone.lstrip('0')
+
+        try:
+            # Construct URL with parameters
+            params = {
+                'recipient': recipient_phone,
+                'apikey': api_key,
+                'text': message
+            }
+
+            # Make GET request
+            response = requests.get(api_url, params=params)
+
+            # Check response
+            if response.status_code != 200:
+                print(f"Error sending SMS notification: {response.text}")
+                return False
+            return True
+        except Exception as e:
+            print(f"Error sending notification: {str(e)}")
+            return False
+
+    def _get_user_full_name(self, email):
+        """Get the full name of a user by email"""
+        from entities.user import User
+        user = User.query.filter_by(email=email).first()
+        if user:
+            return f"{user.fname} {user.lname}"
+        return email
+
+    def _format_message(self, message_type, actor_email, additional_info=None):
+        """Format a notification message based on the specific message type"""
+        current_time = datetime.now().strftime("%d/%m/%Y à %H:%M")
+        actor_name = self._get_user_full_name(actor_email)
+
+        # Récupérer les informations de temps pour les inclure dans les notifications
+        time_info_str = self.format_time_remaining()
+
+        # Récupérer l'icône de priorité
+        priority_icon = self.get_priority_icon()
+        priority_text = TaskPriority.get_display_name(self.priority)
+
+        # Construire le début du message en fonction du type
+        if message_type == "assignment":
+            message = f"{priority_icon} La tâche '{self.subject}' vous a été assignée par {actor_name} le {current_time}"
+        elif message_type == "dispute":
+            message = f"{priority_icon} La tâche '{self.subject}' a été contestée par {actor_name} le {current_time}"
+        elif message_type == "validation_request":
+            message = f"{priority_icon} La tâche '{self.subject}' a été marquée prête pour validation par {actor_name} le {current_time}"
+        elif message_type == "task_reopened":
+            message = f"{priority_icon} La tâche '{self.subject}' a été rouverte par {actor_name} le {current_time}"
+        elif message_type == "validation_cancelled":
+            message = f"{priority_icon} La demande de validation pour la tâche '{self.subject}' a été annulée par {actor_name} le {current_time}"
+        elif message_type == "dispute_rejected":
+            message = f"{priority_icon} La contestation de la tâche '{self.subject}' a été rejetée par {actor_name} le {current_time}"
+        elif message_type == "validation_rejected":
+            message = f"{priority_icon} La validation de la tâche '{self.subject}' a été rejetée par {actor_name} le {current_time}"
+        elif message_type == "task_completed":
+            message = f"{priority_icon} La tâche '{self.subject}' a été marquée comme terminée par {actor_name} le {current_time}"
+        elif message_type == "task_deleted":
+            message = f"{priority_icon} La tâche '{self.subject}' a été supprimée par {actor_name} le {current_time}"
+        elif message_type == "task_validated":
+            message = f"{priority_icon} La tâche '{self.subject}' a été validée par {actor_name} le {current_time}"
+        elif message_type == "priority_changed":
+            message = f"{priority_icon} La priorité de la tâche '{self.subject}' a été changée à {priority_text} par {actor_name} le {current_time}"
+        else:
+            # Message générique au cas où
+            message = f"{priority_icon} Mise à jour de la tâche '{self.subject}' par {actor_name} le {current_time}"
+
+        # Ajouter les détails de la tâche
+        message += "\nDétail de la tâche :\n"
+        message += f"{self.description or 'Aucune description fournie'}"
+
+        # Ajouter l'information de priorité sauf pour le changement de priorité
+        if message_type != "priority_changed":
+            message += f"\n\nPriorité: {priority_text}"
+
+        # Ajouter l'information de temps si ce n'est pas une tâche terminée ou supprimée
+        if message_type not in ["task_completed", "task_deleted", "task_validated"]:
+            message += f"\n{time_info_str}"
+
+        # Ajouter des informations supplémentaires si fournies
+        if additional_info:
+            message += f"\n\n{additional_info}"
+
+        return message
+
     def notify_assignment(self):
         """Notify all assignees about the new task"""
-        api_key = "UDvABgmTtdWC"
-        base_url = "http://api.textmebot.com/send.php"
-
-        message = f"Vous avez été assigné à une nouvelle tâche: {self.subject}"
-
         for user in self.assignees:
             # Skip if user has no phone
             if not hasattr(user, 'phone') or not user.phone:
                 print(f"User {user.email} has no phone number, skipping notification")
                 continue
 
-            # Format phone number (ensure it has country code)
-            phone = user.phone
-            if not phone.startswith('+'):
-                # Add French country code if missing
-                phone = '+33' + phone.lstrip('0')
+            # Information supplémentaire : date d'échéance
+            additional_info = f"Date d'échéance: {self.due_date.strftime('%d/%m/%Y à %H:%M')}"
+            message = self._format_message("assignment", self.assigned_by, additional_info)
+            self._send_notification(user.phone, message)
 
-            try:
-                # Construct URL with parameters
-                params = {
-                    'recipient': phone,
-                    'apikey': api_key,
-                    'text': message
-                }
+    def notify_priority_change(self):
+        """Notify all assignees about priority change"""
+        for user in self.assignees:
+            # Skip if user has no phone
+            if not hasattr(user, 'phone') or not user.phone:
+                print(f"User {user.email} has no phone number, skipping notification")
+                continue
 
-                # Make GET request
-                response = requests.get(base_url, params=params)
-
-                # Check response
-                if response.status_code != 200:
-                    print(f"Error sending SMS notification: {response.text}")
-            except Exception as e:
-                print(f"Error sending notification: {str(e)}")
+            message = self._format_message("priority_changed", self.assigned_by)
+            self._send_notification(user.phone, message)
 
     def notify_dispute(self, user_email: str):
         """Notify the assigner about a disputed task"""
-        api_key = "UDvABgmTtdWC"
-        base_url = "http://api.textmebot.com/send.php"
-
         # Get the assigner
         from entities.user import User
         assigner = User.query.filter_by(email=self.assigned_by).first()
@@ -194,32 +446,11 @@ class Task(db.Model):
             print(f"Assigner {self.assigned_by} has no phone number, skipping notification")
             return
 
-        # Format phone number
-        phone = assigner.phone
-        if not phone.startswith('+'):
-            phone = '+33' + phone.lstrip('0')
-
-        message = f"La tâche '{self.subject}' a été contestée par {user_email}"
-
-        try:
-            params = {
-                'recipient': phone,
-                'apikey': api_key,
-                'text': message
-            }
-
-            response = requests.get(base_url, params=params)
-
-            if response.status_code != 200:
-                print(f"Error sending SMS notification: {response.text}")
-        except Exception as e:
-            print(f"Error sending notification: {str(e)}")
+        message = self._format_message("dispute", user_email)
+        self._send_notification(assigner.phone, message)
 
     def notify_to_validate(self, user_email: str):
         """Notify the assigner that a task is ready to be validated"""
-        api_key = "UDvABgmTtdWC"
-        base_url = "http://api.textmebot.com/send.php"
-
         # Get the assigner
         from entities.user import User
         assigner = User.query.filter_by(email=self.assigned_by).first()
@@ -227,26 +458,8 @@ class Task(db.Model):
             print(f"Assigner {self.assigned_by} has no phone number, skipping notification")
             return
 
-        # Format phone number
-        phone = assigner.phone
-        if not phone.startswith('+'):
-            phone = '+33' + phone.lstrip('0')
-
-        message = f"La tâche '{self.subject}' est prête à être validée par {user_email}"
-
-        try:
-            params = {
-                'recipient': phone,
-                'apikey': api_key,
-                'text': message
-            }
-
-            response = requests.get(base_url, params=params)
-
-            if response.status_code != 200:
-                print(f"Error sending SMS notification: {response.text}")
-        except Exception as e:
-            print(f"Error sending notification: {str(e)}")
+        message = self._format_message("validation_request", user_email)
+        self._send_notification(assigner.phone, message)
 
     def reopen_task(self):
         """Reopen a completed task (set it back to assigned)"""
@@ -262,20 +475,24 @@ class Task(db.Model):
             db.session.commit()
             self.notify_validation_cancelled()
 
+    def validate_task(self, user_email: str):
+        """Validate a task and mark it as done"""
+        if self.state == TaskState.TO_VALIDATED:
+            self.state = TaskState.DONE
+            db.session.commit()
+            self.notify_task_validated(user_email)
+
     def notify_task_reopened(self):
         """Notify all assignees that a task has been reopened"""
-        api_url = os.getenv('NOTIFICATION_API_URL', 'https://api.geca.fr/send')
-        message = f"La tâche '{self.subject}' a été réouverte par {self.assigned_by}"
+        for user in self.assignees:
+            # Skip if user has no phone
+            if not hasattr(user, 'phone') or not user.phone:
+                print(f"User {user.email} has no phone number, skipping notification")
+                continue
 
-        assignee_emails = [user.email for user in self.assignees]
-
-        try:
-            requests.post(api_url, json={
-                'message': message,
-                'users': assignee_emails
-            })
-        except Exception as e:
-            print(f"Error sending notification: {str(e)}")
+            additional_info = "Cette tâche a été rouverte et nécessite à nouveau votre attention."
+            message = self._format_message("task_reopened", self.assigned_by, additional_info)
+            self._send_notification(user.phone, message)
 
     def reject_validation(self):
         """Reject a validation request and set the task back to assigned state"""
@@ -284,21 +501,79 @@ class Task(db.Model):
             db.session.commit()
             self.notify_validation_rejected()
 
+    def notify_validation_cancelled(self):
+        """Notify all assignees that validation has been cancelled"""
+        for user in self.assignees:
+            # Skip if user has no phone
+            if not hasattr(user, 'phone') or not user.phone:
+                print(f"User {user.email} has no phone number, skipping notification")
+                continue
+
+            additional_info = "Vous devez continuer à travailler sur cette tâche."
+            message = self._format_message("validation_cancelled", self.assigned_by, additional_info)
+            self._send_notification(user.phone, message)
+
+    def notify_dispute_rejected(self):
+        """Notifier tous les assignés que leur contestation a été rejetée"""
+        for user in self.assignees:
+            # Skip if user has no phone
+            if not hasattr(user, 'phone') or not user.phone:
+                print(f"User {user.email} has no phone number, skipping notification")
+                continue
+
+            additional_info = "Vous devez continuer à travailler sur cette tâche malgré la contestation."
+            message = self._format_message("dispute_rejected", self.assigned_by, additional_info)
+            self._send_notification(user.phone, message)
+
     def notify_validation_rejected(self):
-        """Notify all assignees that their validation request was rejected"""
-        api_url = os.getenv('NOTIFICATION_API_URL', 'https://api.geca.fr/send')
-        message = f"La demande de validation pour la tâche '{self.subject}' a été refusée par {self.assigned_by}"
+        """Notifier tous les assignés que leur demande de validation a été rejetée"""
+        for user in self.assignees:
+            # Skip if user has no phone
+            if not hasattr(user, 'phone') or not user.phone:
+                print(f"User {user.email} has no phone number, skipping notification")
+                continue
 
-        assignee_emails = [user.email for user in self.assignees]
+            additional_info = "La tâche n'est pas considérée comme terminée. Veuillez apporter les corrections nécessaires."
+            message = self._format_message("validation_rejected", self.assigned_by, additional_info)
+            self._send_notification(user.phone, message)
 
-        try:
-            requests.post(api_url, json={
-                'message': message,
-                'users': assignee_emails
-            })
-        except Exception as e:
-            print(f"Error sending notification: {str(e)}")
+    def notify_task_completed(self):
+        """Notifier tous les assignés que la tâche a été marquée comme terminée"""
+        for user in self.assignees:
+            # Skip if user has no phone
+            if not hasattr(user, 'phone') or not user.phone:
+                print(f"User {user.email} has no phone number, skipping notification")
+                continue
 
+            additional_info = "Félicitations ! Cette tâche a été clôturée avec succès."
+            message = self._format_message("task_completed", self.assigned_by, additional_info)
+            self._send_notification(user.phone, message)
+
+    def notify_task_deleted(self):
+        """Notifier tous les assignés que la tâche a été supprimée"""
+        for user in self.assignees:
+            # Skip if user has no phone
+            if not hasattr(user, 'phone') or not user.phone:
+                print(f"User {user.email} has no phone number, skipping notification")
+                continue
+
+            additional_info = "Cette tâche a été supprimée et ne nécessite plus votre attention."
+            message = self._format_message("task_deleted", self.assigned_by, additional_info)
+            self._send_notification(user.phone, message)
+
+    def notify_task_validated(self, validator_email):
+        """Notifier tous les assignés que la tâche a été validée"""
+        for user in self.assignees:
+            # Skip if user has no phone
+            if not hasattr(user, 'phone') or not user.phone:
+                print(f"User {user.email} has no phone number, skipping notification")
+                continue
+
+            additional_info = "Félicitations ! Votre travail sur cette tâche a été validé."
+            message = self._format_message("task_validated", validator_email, additional_info)
+            self._send_notification(user.phone, message)
+
+    @staticmethod
     def get_tasks_for_user(user_email: str):
         """Get all non-deleted tasks assigned to a user"""
         from entities.user import User
@@ -317,21 +592,7 @@ class Task(db.Model):
 
         return tasks
 
-    def notify_validation_cancelled(self):
-        """Notify all assignees that validation has been cancelled"""
-        api_url = os.getenv('NOTIFICATION_API_URL', 'https://api.geca.fr/send')
-        message = f"La demande de validation pour la tâche '{self.subject}' a été annulée"
-
-        assignee_emails = [user.email for user in self.assignees]
-
-        try:
-            requests.post(api_url, json={
-                'message': message,
-                'users': assignee_emails
-            })
-        except Exception as e:
-            print(f"Error sending notification: {str(e)}")
-
+    @staticmethod
     def get_assigned_tasks_by_user(user_email: str):
         """Get all tasks assigned by a specific user"""
         return Task.query.filter_by(assigned_by=user_email).filter(Task.state != TaskState.DELETED).all()

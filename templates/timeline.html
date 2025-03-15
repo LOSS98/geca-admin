@@ -76,6 +76,65 @@
     font-style: italic;
     color: #777;
   }
+
+  /* Styles pour les priorités */
+  .priority-high {
+    border-left: 5px solid #e74c3c;
+  }
+  .priority-medium {
+    border-left: 5px solid #f39c12;
+  }
+  .priority-low {
+    border-left: 5px solid #2ecc71;
+  }
+
+  .priority-badge {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
+  .priority-badge-high {
+    background-color: #e74c3c;
+    color: white;
+  }
+  .priority-badge-medium {
+    background-color: #f39c12;
+    color: white;
+  }
+  .priority-badge-low {
+    background-color: #2ecc71;
+    color: white;
+  }
+
+  /* Styles pour les informations de temps */
+  .time-info {
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+  .time-overdue {
+    color: #e74c3c;
+    font-weight: bold;
+  }
+  .time-critical {
+    color: #e74c3c;
+  }
+  .time-high {
+    color: #f39c12;
+  }
+  .time-medium {
+    color: #3498db;
+  }
+  .time-low {
+    color: #2ecc71;
+  }
+
+  /* Style pour le menu de priorité */
+  .priority-menu {
+    display: inline-block;
+  }
 </style>
 {% endblock %}
 
@@ -113,9 +172,9 @@
               <h6 class="mb-0">Liste des tâches</h6>
             </div>
             <div class="col-md-6 d-flex justify-content-end">
-              <div class="dropdown">
+              <div class="dropdown me-2">
                 <button class="btn bg-gradient-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="fa fa-filter me-2"></i> Filtrer
+                  <i class="fa fa-filter me-2"></i> Filtrer par état
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="filterDropdown">
                   <li><a class="dropdown-item filter-option" data-filter="all" href="#">Toutes les tâches</a></li>
@@ -123,6 +182,17 @@
                   <li><a class="dropdown-item filter-option" data-filter="disputed" href="#">Contestées</a></li>
                   <li><a class="dropdown-item filter-option" data-filter="to_validated" href="#">À valider</a></li>
                   <li><a class="dropdown-item filter-option" data-filter="done" href="#">Terminées</a></li>
+                </ul>
+              </div>
+              <div class="dropdown">
+                <button class="btn bg-gradient-info dropdown-toggle" type="button" id="priorityFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa fa-sort-amount-down me-2"></i> Filtrer par priorité
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="priorityFilterDropdown">
+                  <li><a class="dropdown-item priority-filter-option" data-priority="all" href="#">Toutes les priorités</a></li>
+                  <li><a class="dropdown-item priority-filter-option" data-priority="high" href="#">Haute</a></li>
+                  <li><a class="dropdown-item priority-filter-option" data-priority="medium" href="#">Moyenne</a></li>
+                  <li><a class="dropdown-item priority-filter-option" data-priority="low" href="#">Faible</a></li>
                 </ul>
               </div>
             </div>
@@ -146,6 +216,44 @@
   <i class="fa fa-plus"></i>
 </a>
 
+<!-- Modal pour changer la priorité -->
+<div class="modal fade" id="priorityModal" tabindex="-1" aria-labelledby="priorityModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="priorityModalLabel">Changer la priorité</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Choisissez la nouvelle priorité pour cette tâche :</p>
+        <input type="hidden" id="taskIdForPriority" value="">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="taskPriority" id="priorityHigh" value="high">
+          <label class="form-check-label" for="priorityHigh">
+            <span class="priority-badge priority-badge-high">Haute</span>
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="taskPriority" id="priorityMedium" value="medium" checked>
+          <label class="form-check-label" for="priorityMedium">
+            <span class="priority-badge priority-badge-medium">Moyenne</span>
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="taskPriority" id="priorityLow" value="low">
+          <label class="form-check-label" for="priorityLow">
+            <span class="priority-badge priority-badge-low">Faible</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-primary" id="savePriorityBtn">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   // Task state translations
   const stateTranslations = {
@@ -154,6 +262,13 @@
     'to_validated': 'En attente de validation',
     'done': 'Terminée',
     'deleted': 'Supprimée'
+  };
+
+  // Task priority translations
+  const priorityTranslations = {
+    'high': 'Haute',
+    'medium': 'Moyenne',
+    'low': 'Faible'
   };
 
   // Get state badge class
@@ -194,6 +309,29 @@
       delayText += `${delay.minutes} minute${delay.minutes > 1 ? 's' : ''} `;
     }
     return delayText.trim();
+  }
+
+  // Get time info class
+  function getTimeInfoClass(timeInfo) {
+    if (!timeInfo) return '';
+
+    if (timeInfo.status === 'overdue') {
+      return 'time-overdue';
+    } else if (timeInfo.status === 'upcoming') {
+      switch (timeInfo.urgency) {
+        case 'critical': return 'time-critical';
+        case 'high': return 'time-high';
+        case 'medium': return 'time-medium';
+        default: return 'time-low';
+      }
+    }
+    return '';
+  }
+
+  // Get priority badge
+  function getPriorityBadge(priority) {
+    const priorityText = priorityTranslations[priority] || 'Moyenne';
+    return `<span class="priority-badge priority-badge-${priority}">${priorityText}</span>`;
   }
 
   // Get current user's role
@@ -265,6 +403,66 @@
     });
   }
 
+  // Handle change priority
+  function openPriorityModal(taskId, currentPriority) {
+    document.getElementById('taskIdForPriority').value = taskId;
+
+    // Select the current priority radio
+    document.querySelectorAll('input[name="taskPriority"]').forEach(radio => {
+      radio.checked = (radio.value === currentPriority);
+    });
+
+    // Show the modal
+    const priorityModal = new bootstrap.Modal(document.getElementById('priorityModal'));
+    priorityModal.show();
+  }
+
+  // Save priority changes
+  document.getElementById('savePriorityBtn').addEventListener('click', function() {
+    const taskId = document.getElementById('taskIdForPriority').value;
+    const selectedPriority = document.querySelector('input[name="taskPriority"]:checked').value;
+
+    // Disable the button to prevent double clicks
+    this.disabled = true;
+    this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enregistrement...';
+
+    // Make API call to change priority
+    fetch(`/api/tasks/${taskId}/priority`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        priority: selectedPriority
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Hide the modal
+        const priorityModal = bootstrap.Modal.getInstance(document.getElementById('priorityModal'));
+        priorityModal.hide();
+
+        // Refresh tasks
+        fetchTasks();
+      } else {
+        alert(`Erreur: ${data.error || 'Une erreur est survenue'}`);
+
+        // Re-enable the button
+        this.disabled = false;
+        this.innerHTML = 'Enregistrer';
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert(`Une erreur est survenue: ${error.message}`);
+
+      // Re-enable the button
+      this.disabled = false;
+      this.innerHTML = 'Enregistrer';
+    });
+  });
+
   // Create task card HTML
   function createTaskCard(task) {
     const isTaskAssigner = task.is_assigner;
@@ -275,9 +473,11 @@
     console.log(`Creating card for task ${task.id}:`, {
       subject: task.subject,
       state: task.state,
+      priority: task.priority,
       is_assigner: isTaskAssigner,
       can_manage: canManageTask,
-      is_assignee: isAssignee
+      is_assignee: isAssignee,
+      time_info: task.time_info
     });
 
     let actionButtons = '';
@@ -332,12 +532,20 @@
       `;
     }
 
-    // Format delay info
-    let delayHTML = '';
-    if (task.delay && task.state !== 'done') {
-      delayHTML = `
-        <div class="delay-info text-danger mt-2">
-          <i class="fa fa-exclamation-circle"></i> Retard: ${formatDelay(task.delay)}
+    // Add priority change button for admin/assigners
+    if (canManageTask) {
+      actionButtons += `
+        <button onclick="openPriorityModal(${task.id}, '${task.priority}')" class="btn btn-info btn-sm">Changer la priorité</button>
+      `;
+    }
+
+    // Format time info
+    let timeInfoHTML = '';
+    if (task.time_info) {
+      const timeInfoClass = getTimeInfoClass(task.time_info);
+      timeInfoHTML = `
+        <div class="time-info ${timeInfoClass}">
+          <i class="fa fa-clock"></i> ${task.time_info.message}
         </div>
       `;
     }
@@ -356,15 +564,18 @@
       : '';
 
     return `
-      <div class="task-card card" data-task-state="${task.state}">
+      <div class="task-card card priority-${task.priority}" data-task-state="${task.state}" data-task-priority="${task.priority}">
         <div class="card-body">
           <div class="float-right text-muted small">Attribuée par: ${task.assigned_by}</div>
           ${assigneesText}
           <div class="float-right text-muted small">Début: ${formatDate(task.start_date)}</div>
           <div class="float-right text-muted small">Fin: ${formatDate(task.due_date)}</div>
-          ${delayHTML}
-          <span class="task-badge ${getStateBadgeClass(task.state)}">${stateTranslations[task.state]}</span>
-          ${roleBadgeHtml}
+          ${timeInfoHTML}
+          <div class="mb-2">
+            <span class="task-badge ${getStateBadgeClass(task.state)}">${stateTranslations[task.state]}</span>
+            ${getPriorityBadge(task.priority)}
+            ${roleBadgeHtml}
+          </div>
           <h4 class="card-title">${task.subject}</h4>
           <p class="card-text">${task.description || 'Pas de description'}</p>
           <div class="task-actions">
@@ -376,7 +587,9 @@
   }
 
   // Fetch tasks from API
-  let currentFilter = 'all';
+  let currentStateFilter = 'all';
+  let currentPriorityFilter = 'all';
+
   function fetchTasks() {
     const tasksContainer = document.getElementById('tasks-container');
     tasksContainer.innerHTML = `
@@ -397,15 +610,22 @@
             </div>
           `;
         } else {
-          // Filter tasks based on current filter
-          const filteredTasks = currentFilter === 'all'
-            ? tasks
-            : tasks.filter(task => task.state === currentFilter);
+          // Filter tasks based on current state filter
+          let filteredTasks = tasks;
+
+          if (currentStateFilter !== 'all') {
+            filteredTasks = filteredTasks.filter(task => task.state === currentStateFilter);
+          }
+
+          // Filter by priority if needed
+          if (currentPriorityFilter !== 'all') {
+            filteredTasks = filteredTasks.filter(task => task.priority === currentPriorityFilter);
+          }
 
           if (filteredTasks.length === 0) {
             tasksContainer.innerHTML = `
               <div class="no-tasks">
-                <p>Aucune tâche ne correspond au filtre sélectionné</p>
+                <p>Aucune tâche ne correspond aux filtres sélectionnés</p>
               </div>
             `;
           } else {
@@ -431,12 +651,23 @@
   // Set up automatic refresh every 30 seconds
   setInterval(fetchTasks, 30000);
 
-  // Set up filter options
+  // Set up filter options for task state
   document.querySelectorAll('.filter-option').forEach(option => {
     option.addEventListener('click', function(e) {
       e.preventDefault();
-      currentFilter = this.dataset.filter;
+      currentStateFilter = this.dataset.filter;
       document.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('active'));
+      this.classList.add('active');
+      fetchTasks();
+    });
+  });
+
+  // Set up filter options for task priority
+  document.querySelectorAll('.priority-filter-option').forEach(option => {
+    option.addEventListener('click', function(e) {
+      e.preventDefault();
+      currentPriorityFilter = this.dataset.priority;
+      document.querySelectorAll('.priority-filter-option').forEach(opt => opt.classList.remove('active'));
       this.classList.add('active');
       fetchTasks();
     });
