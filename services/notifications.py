@@ -168,7 +168,7 @@ class NotificationService:
 
         message += f"\nAjouté par {actor} le {current_time}"
 
-        return message
+        return "⚠️ Vérifie dans le Gsheet tréso des membres ⚠️\n"+message
 
     def notify_financial_transaction(self,
                                      transaction_type: str,
