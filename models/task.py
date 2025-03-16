@@ -607,6 +607,7 @@ class Task(db.Model):
             db.session.commit()
             self.notify_validation_rejected()
 
+    # Méthodes de notification
     def notify_assignment(self):
         """Notify all assignees about the new task"""
         phones = []
@@ -615,48 +616,14 @@ class Task(db.Model):
                 phones.append(user.phone)
 
         if phones:
-            additional_info = f"Date d'échéance: {self.due_date.strftime('%d/%m/%Y à %H:%M')}"
+            formatted_message = self._format_message("assignment", self.assigned_by)
+
             notification_service.send_task_notification(
                 phones=phones,
                 task_subject=self.subject,
                 task_type="assignment",
                 actor_name=self._get_user_full_name(self.assigned_by),
-                additional_info=additional_info
-            )
-
-    def notify_task_taken(self, user_email: str):
-        """Notify the task creator that someone has taken the task"""
-        from models.user import User
-        assigner = User.query.filter_by(email=self.assigned_by).first()
-        taker = User.query.filter_by(email=user_email).first()
-
-        if not assigner or not hasattr(assigner, 'phone') or not assigner.phone:
-            return
-
-        taker_name = f"{taker.fname} {taker.lname}" if taker else user_email
-
-        notification_service.send_task_notification(
-            phones=[assigner.phone],
-            task_subject=self.subject,
-            task_type="task_taken",
-            actor_name=taker_name,
-            additional_info=f"La tâche a été prise par {taker_name}"
-        )
-
-    def notify_priority_change(self):
-        """Notify all assignees about priority change"""
-        phones = []
-        for user in self.assignees:
-            if hasattr(user, 'phone') and user.phone:
-                phones.append(user.phone)
-
-        if phones:
-            notification_service.send_task_notification(
-                phones=phones,
-                task_subject=self.subject,
-                task_type="priority",
-                actor_name=self._get_user_full_name(self.assigned_by),
-                additional_info=f"La priorité a été changée à {TaskPriority.get_display_name(self.priority)}"
+                additional_info=formatted_message
             )
 
     def notify_dispute(self, user_email: str):
@@ -666,11 +633,14 @@ class Task(db.Model):
         if not assigner or not hasattr(assigner, 'phone') or not assigner.phone:
             return
 
+        formatted_message = self._format_message("dispute", user_email)
+
         notification_service.send_task_notification(
             phones=[assigner.phone],
             task_subject=self.subject,
             task_type="dispute",
-            actor_name=self._get_user_full_name(user_email)
+            actor_name=self._get_user_full_name(user_email),
+            additional_info=formatted_message
         )
 
     def notify_to_validate(self, user_email: str):
@@ -680,11 +650,14 @@ class Task(db.Model):
         if not assigner or not hasattr(assigner, 'phone') or not assigner.phone:
             return
 
+        formatted_message = self._format_message("validation_request", user_email)
+
         notification_service.send_task_notification(
             phones=[assigner.phone],
             task_subject=self.subject,
             task_type="validation",
-            actor_name=self._get_user_full_name(user_email)
+            actor_name=self._get_user_full_name(user_email),
+            additional_info=formatted_message
         )
 
     def notify_task_reopened(self):
@@ -695,12 +668,15 @@ class Task(db.Model):
                 phones.append(user.phone)
 
         if phones:
+            formatted_message = self._format_message("task_reopened", self.assigned_by,
+                                                     "Cette tâche a été rouverte et nécessite à nouveau votre attention.")
+
             notification_service.send_task_notification(
                 phones=phones,
                 task_subject=self.subject,
                 task_type="assignment",
                 actor_name=self._get_user_full_name(self.assigned_by),
-                additional_info="Cette tâche a été rouverte et nécessite à nouveau votre attention."
+                additional_info=formatted_message
             )
 
     def notify_validation_cancelled(self):
@@ -711,12 +687,15 @@ class Task(db.Model):
                 phones.append(user.phone)
 
         if phones:
+            formatted_message = self._format_message("validation_cancelled", self.assigned_by,
+                                                     "Vous devez continuer à travailler sur cette tâche.")
+
             notification_service.send_task_notification(
                 phones=phones,
                 task_subject=self.subject,
                 task_type="validation",
                 actor_name=self._get_user_full_name(self.assigned_by),
-                additional_info="Vous devez continuer à travailler sur cette tâche."
+                additional_info=formatted_message
             )
 
     def notify_dispute_rejected(self):
@@ -727,12 +706,15 @@ class Task(db.Model):
                 phones.append(user.phone)
 
         if phones:
+            formatted_message = self._format_message("dispute_rejected", self.assigned_by,
+                                                     "Vous devez continuer à travailler sur cette tâche malgré la contestation.")
+
             notification_service.send_task_notification(
                 phones=phones,
                 task_subject=self.subject,
                 task_type="dispute",
                 actor_name=self._get_user_full_name(self.assigned_by),
-                additional_info="Vous devez continuer à travailler sur cette tâche malgré la contestation."
+                additional_info=formatted_message
             )
 
     def notify_validation_rejected(self):
@@ -743,12 +725,15 @@ class Task(db.Model):
                 phones.append(user.phone)
 
         if phones:
+            formatted_message = self._format_message("validation_rejected", self.assigned_by,
+                                                     "La tâche n'est pas considérée comme terminée. Veuillez apporter les corrections nécessaires.")
+
             notification_service.send_task_notification(
                 phones=phones,
                 task_subject=self.subject,
                 task_type="validation",
                 actor_name=self._get_user_full_name(self.assigned_by),
-                additional_info="La tâche n'est pas considérée comme terminée. Veuillez apporter les corrections nécessaires."
+                additional_info=formatted_message
             )
 
     def notify_task_completed(self):
@@ -759,12 +744,15 @@ class Task(db.Model):
                 phones.append(user.phone)
 
         if phones:
+            formatted_message = self._format_message("task_completed", self.assigned_by,
+                                                     "Félicitations ! Cette tâche a été clôturée avec succès.")
+
             notification_service.send_task_notification(
                 phones=phones,
                 task_subject=self.subject,
                 task_type="completed",
                 actor_name=self._get_user_full_name(self.assigned_by),
-                additional_info="Félicitations ! Cette tâche a été clôturée avec succès."
+                additional_info=formatted_message
             )
 
     def notify_task_deleted(self):
@@ -772,51 +760,40 @@ class Task(db.Model):
         phones = []
         for user in self.assignees:
             if hasattr(user, 'phone') and user.phone:
-                phones.append(user.phone)
+                phones = []
+                for user in self.assignees:
+                    if hasattr(user, 'phone') and user.phone:
+                        phones.append(user.phone)
 
-        if phones:
-            notification_service.send_task_notification(
-                phones=phones,
-                task_subject=self.subject,
-                task_type="deleted",
-                actor_name=self._get_user_full_name(self.assigned_by),
-                additional_info="Cette tâche a été supprimée et ne nécessite plus votre attention."
-            )
+                if phones:
+                    formatted_message = self._format_message("task_deleted", self.assigned_by,
+                                                             "Cette tâche a été supprimée et ne nécessite plus votre attention.")
 
-    def notify_task_validated(self, validator_email):
-        """Notifier tous les assignés que la tâche a été validée"""
+                    notification_service.send_task_notification(
+                        phones=phones,
+                        task_subject=self.subject,
+                        task_type="deleted",
+                        actor_name=self._get_user_full_name(self.assigned_by),
+                        additional_info=formatted_message
+                    )
+
+    def notify_priority_change(self):
+        """Notify all assignees about priority change"""
         phones = []
         for user in self.assignees:
             if hasattr(user, 'phone') and user.phone:
                 phones.append(user.phone)
 
         if phones:
-            notification_service.send_task_notification(
-                phones=phones,
-                task_subject=self.subject,
-                task_type="completed",
-                actor_name=self._get_user_full_name(validator_email),
-                additional_info="Félicitations ! Votre travail sur cette tâche a été validé."
-            )
-
-    def send_reminder(self):
-        """Send a reminder to all assignees"""
-        phones = []
-        for user in self.assignees:
-            if hasattr(user, 'phone') and user.phone:
-                phones.append(user.phone)
-
-        if phones:
-            time_info_str = self.format_time_remaining()
-            due_date_str = self.due_date.strftime('%d/%m/%Y à %H:%M')
-            additional_info = f"{self.description or 'Aucune description fournie'}\n\n{time_info_str}\nDate d'échéance: {due_date_str}\n\nCe rappel a été envoyé par le créateur de la tâche."
+            formatted_message = self._format_message("priority_changed", self.assigned_by,
+                                                     f"La priorité a été changée à {TaskPriority.get_display_name(self.priority)}")
 
             notification_service.send_task_notification(
                 phones=phones,
                 task_subject=self.subject,
-                task_type="reminder",
+                task_type="priority",
                 actor_name=self._get_user_full_name(self.assigned_by),
-                additional_info=additional_info
+                additional_info=formatted_message
             )
 
     def notify_transfer_request(self, from_email: str, to_email: str):
@@ -831,14 +808,16 @@ class Task(db.Model):
 
         current_name = f"{current_user.fname} {current_user.lname}"
         new_name = f"{new_user.fname} {new_user.lname}"
-        additional_info = f"{current_name} souhaite céder cette tâche à {new_name}. Veuillez approuver ou rejeter cette demande."
+
+        formatted_message = self._format_message("transfer_request", from_email,
+                                                 f"{current_name} souhaite céder cette tâche à {new_name}. Veuillez approuver ou rejeter cette demande.")
 
         notification_service.send_task_notification(
             phones=[assigner.phone],
             task_subject=self.subject,
             task_type="transfer",
             actor_name=self._get_user_full_name(from_email),
-            additional_info=additional_info
+            additional_info=formatted_message
         )
 
     def notify_transfer_approved(self, from_email: str, to_email: str):
@@ -850,28 +829,30 @@ class Task(db.Model):
         if not current_user or not new_user:
             return
 
-        phones = []
-        recipient_info = {}
-
         if current_user.phone:
-            phones.append(current_user.phone)
             new_name = f"{new_user.fname} {new_user.lname}"
-            recipient_info[
-                current_user.phone] = f"Votre demande de céder cette tâche à {new_name} a été approuvée."
+            formatted_message = self._format_message("transfer_approved", self.assigned_by,
+                                                     f"Votre demande de céder cette tâche à {new_name} a été approuvée.")
 
-        if new_user.phone:
-            phones.append(new_user.phone)
-            current_name = f"{current_user.fname} {current_user.lname}"
-            recipient_info[
-                new_user.phone] = f"Vous avez reçu cette tâche de {current_name}. La cession a été approuvée."
-
-        for phone in phones:
             notification_service.send_task_notification(
-                phones=[phone],
+                phones=[current_user.phone],
                 task_subject=self.subject,
                 task_type="transfer",
                 actor_name=self._get_user_full_name(self.assigned_by),
-                additional_info=recipient_info[phone]
+                additional_info=formatted_message
+            )
+
+        if new_user.phone:
+            current_name = f"{current_user.fname} {current_user.lname}"
+            formatted_message = self._format_message("transfer_approved_new", self.assigned_by,
+                                                     f"Vous avez reçu cette tâche de {current_name}. La cession a été approuvée.")
+
+            notification_service.send_task_notification(
+                phones=[new_user.phone],
+                task_subject=self.subject,
+                task_type="transfer",
+                actor_name=self._get_user_full_name(self.assigned_by),
+                additional_info=formatted_message
             )
 
     def notify_transfer_rejected(self, from_email: str, to_email: str):
@@ -884,33 +865,54 @@ class Task(db.Model):
             return
 
         new_name = f"{new_user.fname} {new_user.lname}" if new_user else to_email
-        additional_info = f"Votre demande de céder cette tâche à {new_name} a été rejetée. Vous êtes toujours responsable de cette tâche."
+        formatted_message = self._format_message("transfer_rejected", self.assigned_by,
+                                                 f"Votre demande de céder cette tâche à {new_name} a été rejetée. Vous êtes toujours responsable de cette tâche.")
 
         notification_service.send_task_notification(
             phones=[current_user.phone],
             task_subject=self.subject,
             task_type="transfer",
             actor_name=self._get_user_full_name(self.assigned_by),
-            additional_info=additional_info
+            additional_info=formatted_message
         )
 
-    @staticmethod
-    def get_tasks_for_user(user_email: str):
-        """Get all non-deleted tasks assigned to a user"""
-        from models.user import User
-        user = User.query.filter_by(email=user_email).first()
-        if not user:
-            return []
+    def notify_task_validated(self, validator_email):
+        """Notifier tous les assignés que la tâche a été validée"""
+        phones = []
+        for user in self.assignees:
+            if hasattr(user, 'phone') and user.phone:
+                phones.append(user.phone)
 
-        tasks = Task.query.join(
-            task_user_association,
-            Task.id == task_user_association.c.task_id
-        ).filter(
-            task_user_association.c.user_email == user_email,
-            Task.state != TaskState.DELETED
-        ).all()
+        if phones:
+            formatted_message = self._format_message("task_validated", validator_email,
+                                                     "Félicitations ! Votre travail sur cette tâche a été validé.")
 
-        return tasks
+            notification_service.send_task_notification(
+                phones=phones,
+                task_subject=self.subject,
+                task_type="completed",
+                actor_name=self._get_user_full_name(validator_email),
+                additional_info=formatted_message
+            )
+
+    def send_reminder(self):
+        """Send a reminder to all assignees"""
+        phones = []
+        for user in self.assignees:
+            if hasattr(user, 'phone') and user.phone:
+                phones.append(user.phone)
+
+        if phones:
+            formatted_message = self._format_message("reminder", self.assigned_by,
+                                                     "Ce rappel a été envoyé par le créateur de la tâche.")
+
+            notification_service.send_task_notification(
+                phones=phones,
+                task_subject=self.subject,
+                task_type="reminder",
+                actor_name=self._get_user_full_name(self.assigned_by),
+                additional_info=formatted_message
+            )
 
     def notify_task_released(self, user_email):
         """Notifier le créateur de la tâche qu'un utilisateur a libéré la tâche"""
@@ -922,14 +924,15 @@ class Task(db.Model):
             return
 
         releaser_name = f"{releaser.fname} {releaser.lname}"
-        message = f"La tâche '{self.subject}' a été libérée par {releaser_name}. Elle est maintenant disponible pour d'autres personnes."
+        formatted_message = self._format_message("transfer", user_email,
+                                                 f"La tâche a été libérée par {releaser_name} et est maintenant disponible pour d'autres personnes.")
 
         notification_service.send_task_notification(
             phones=[creator.phone],
             task_subject=self.subject,
             task_type="transfer",
             actor_name=releaser_name,
-            additional_info=message
+            additional_info=formatted_message
         )
 
     def notify_task_reassigned(self, new_assignees):
@@ -940,14 +943,15 @@ class Task(db.Model):
                 phones.append(user.phone)
 
         if phones:
-            additional_info = f"Date d'échéance: {self.due_date.strftime('%d/%m/%Y à %H:%M')}\nVous avez été réassigné à cette tâche par le créateur."
+            formatted_message = self._format_message("assignment", self.assigned_by,
+                                                     "Vous avez été réassigné à cette tâche par le créateur.")
 
             notification_service.send_task_notification(
                 phones=phones,
                 task_subject=self.subject,
                 task_type="assignment",
                 actor_name=self._get_user_full_name(self.assigned_by),
-                additional_info=additional_info
+                additional_info=formatted_message
             )
 
     def notify_ownership_transfer(self, old_owner, new_owner_email):
@@ -957,14 +961,15 @@ class Task(db.Model):
         if not new_owner or not new_owner.phone:
             return
 
-        message = f"La propriété de la tâche '{self.subject}' vous a été transférée par {old_owner}. Vous êtes maintenant responsable de cette tâche et pouvez la gérer."
+        formatted_message = self._format_message("transfer", old_owner,
+                                                 f"La propriété de la tâche vous a été transférée par {old_owner}. Vous êtes maintenant responsable de cette tâche et pouvez la gérer.")
 
         notification_service.send_task_notification(
             phones=[new_owner.phone],
             task_subject=self.subject,
             task_type="transfer",
             actor_name=old_owner,
-            additional_info=message
+            additional_info=formatted_message
         )
 
     def notify_reassignment_by_peer(self, reassigner_email):
@@ -979,22 +984,16 @@ class Task(db.Model):
                 phones.append(user.phone)
 
         if phones:
-            time_info_str = self.format_time_remaining()
-            due_date_str = self.due_date.strftime('%d/%m/%Y à %H:%M')
-            additional_info = f"{self.description or 'Aucune description fournie'}\n\nDate d'échéance: {due_date_str}\n{time_info_str}"
+            formatted_message = self._format_message("assignment", reassigner_email,
+                                                     f"Cette tâche vous a été assignée par {reassigner_name}, qui était précédemment assigné à cette tâche.")
 
             notification_service.send_task_notification(
                 phones=phones,
                 task_subject=self.subject,
                 task_type="assignment",
                 actor_name=reassigner_name,
-                additional_info=additional_info
+                additional_info=formatted_message
             )
-
-    @staticmethod
-    def get_assigned_tasks_by_user(user_email: str):
-        """Get all tasks assigned by a specific user"""
-        return Task.query.filter_by(assigned_by=user_email).filter(Task.state != TaskState.DELETED).all()
 
     def _get_user_full_name(self, email):
         """Get the full name of a user by email"""
@@ -1003,3 +1002,99 @@ class Task(db.Model):
         if user:
             return f"{user.fname} {user.lname}"
         return email
+
+    def _format_message(self, message_type, actor_email, additional_info=None):
+        """Format a notification message based on the specific message type"""
+        current_time = datetime.now().strftime("%d/%m/%Y à %H:%M")
+        actor_name = self._get_user_full_name(actor_email)
+
+        # Récupérer les informations de temps pour les inclure dans les notifications
+        time_info_str = self.format_time_remaining()
+
+        # Récupérer l'icône de priorité
+        priority_icon = self.get_priority_icon()
+        priority_text = TaskPriority.get_display_name(self.priority)
+
+        # Construire le message complet
+        message = f"{priority_icon} La tâche '{self.subject}' "
+
+        if message_type == "assignment":
+            message += f"vous a été assignée par {actor_name} le {current_time}"
+        elif message_type == "dispute":
+            message += f"a été contestée par {actor_name} le {current_time}"
+        elif message_type == "validation_request":
+            message += f"a été marquée prête pour validation par {actor_name} le {current_time}"
+        elif message_type == "task_reopened":
+            message += f"a été rouverte par {actor_name} le {current_time}"
+        elif message_type == "validation_cancelled":
+            message += f"a eu sa demande de validation annulée par {actor_name} le {current_time}"
+        elif message_type == "dispute_rejected":
+            message += f"a eu sa contestation rejetée par {actor_name} le {current_time}"
+        elif message_type == "validation_rejected":
+            message += f"a eu sa validation rejetée par {actor_name} le {current_time}"
+        elif message_type == "task_completed":
+            message += f"a été marquée comme terminée par {actor_name} le {current_time}"
+        elif message_type == "task_deleted":
+            message += f"a été supprimée par {actor_name} le {current_time}"
+        elif message_type == "task_validated":
+            message += f"a été validée par {actor_name} le {current_time}"
+        elif message_type == "priority_changed":
+            message += f"a eu sa priorité changée à {priority_text} par {actor_name} le {current_time}"
+        elif message_type == "reminder":
+            message += f"requiert votre attention. {actor_name} vous a envoyé ce rappel le {current_time}"
+        elif message_type == "transfer_request":
+            message += f"est en attente de cession. {actor_name} a fait cette demande le {current_time}"
+        elif message_type == "transfer_approved":
+            message += f"a eu sa demande de cession approuvée par {actor_name} le {current_time}"
+        elif message_type == "transfer_approved_new":
+            message += f"vous a été cédée et approuvée par {actor_name} le {current_time}"
+        elif message_type == "transfer_rejected":
+            message += f"a eu sa demande de cession rejetée par {actor_name} le {current_time}"
+        elif message_type == "transfer":
+            message += f"a été transférée. {actor_name} est impliqué dans ce transfert le {current_time}"
+        else:
+            message += f"a été mise à jour par {actor_name} le {current_time}"
+
+        # Ajouter les détails de la tâche
+        message += f"\nDétail de la tâche :\n{self.description or 'Pas de description fournie'}"
+
+        # Ajouter l'information de priorité
+        message += f"\n\nPriorité: {priority_text}"
+
+        # Ajouter l'information de temps si ce n'est pas une tâche terminée ou supprimée
+        if message_type not in ["task_completed", "task_deleted", "task_validated"]:
+            message += f"\n{time_info_str}"
+
+        # Ajouter la date d'échéance
+        due_date_str = self.due_date.strftime("%d/%m/%Y à %H:%M") if self.due_date else "Non définie"
+        message += f"\n\nDate d'échéance: {due_date_str}"
+
+        # Ajouter des informations supplémentaires si fournies
+        if additional_info:
+            message += f"\n\n{additional_info}"
+
+        return message
+
+    @staticmethod
+    def get_tasks_for_user(user_email: str):
+        """Get all non-deleted tasks assigned to a user"""
+        from models.user import User
+        user = User.query.filter_by(email=user_email).first()
+        if not user:
+            return []
+
+        # Use a direct query with a join to ensure we get all tasks
+        tasks = Task.query.join(
+            task_user_association,
+            Task.id == task_user_association.c.task_id
+        ).filter(
+            task_user_association.c.user_email == user_email,
+            Task.state != TaskState.DELETED
+        ).all()
+
+        return tasks
+
+    @staticmethod
+    def get_assigned_tasks_by_user(user_email: str):
+        """Get all tasks assigned by a specific user"""
+        return Task.query.filter_by(assigned_by=user_email).filter(Task.state != TaskState.DELETED).all()

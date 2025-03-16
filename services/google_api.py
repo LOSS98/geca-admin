@@ -133,3 +133,19 @@ class GoogleAPIConnector:
         except Exception as e:
             print(f"Error sharing spreadsheet: {e}")
             return None
+
+    def test_connection(self):
+        """Test de connexion aux API Google pour vérifier la validité des credentials"""
+        try:
+            # Tester l'API OAuth2 (la plus légère)
+            user_info = self.service_oauth2.userinfo().get().execute()
+
+            # Tester l'API Sheets si possible
+            if os.getenv('SHEET_ID'):
+                sheets_service = googleapiclient.discovery.build('sheets', 'v4', credentials=self.credentials)
+                sheet_metadata = sheets_service.spreadsheets().get(spreadsheetId=os.getenv('SHEET_ID')).execute()
+
+            return True
+        except Exception as e:
+            print(f"Erreur lors du test de connexion: {e}")
+            return False

@@ -41,7 +41,7 @@ def create_task_page():
         error_message = request.args.get('error')
 
     members = User.get_all_names()
-    roles = ['admin', 'member', 'treasurer']  # Add all available roles
+    roles = ['admin', 'member', 'treasurer']
 
     return render_template('createTask.html', error=error_message, user_info=session['user_info'], members=members, roles=roles)
 
@@ -69,7 +69,7 @@ def timeline():
         error_message = request.args.get('error')
     return render_template('timeline old.html', error=error_message, user_info=session['user_info'])
 
-# API routes for tasks
+
 @tasks_bp.route('/api/tasks')
 def get_tasks():
     if is_not_connected():
@@ -84,21 +84,27 @@ def get_tasks():
         tasks_as_assigner = Task.get_assigned_tasks_by_user(user_email)
 
         all_tasks = []
-        task_ids = set()
 
-        for task in tasks_as_assignee + tasks_as_assigner:
-            if task.id not in task_ids:
-                all_tasks.append(task)
-                task_ids.add(task.id)
-
-        tasks_data = []
-        for task in all_tasks:
+        for task in tasks_as_assignee:
             task_dict = task.to_dict()
+            task_dict['is_assignee'] = True
             task_dict['is_assigner'] = (task.assigned_by == user_email)
+            task_dict['is_self_assigned'] = (task.assigned_by == user_email and user_email in task.assignees)
             task_dict['can_manage'] = (task.assigned_by == user_email) or (user_role == 'admin')
-            tasks_data.append(task_dict)
+            all_tasks.append(task_dict)
 
-        return jsonify(tasks_data)
+        assignee_task_ids = {task['id'] for task in all_tasks}
+
+        for task in tasks_as_assigner:
+            if task.id not in assignee_task_ids:
+                task_dict = task.to_dict()
+                task_dict['is_assignee'] = False
+                task_dict['is_assigner'] = True
+                task_dict['is_self_assigned'] = False
+                task_dict['can_manage'] = True
+                all_tasks.append(task_dict)
+
+        return jsonify(all_tasks)
     except Exception as e:
         print(f"Error getting tasks: {str(e)}")
         return jsonify({'error': str(e)}), 500
@@ -121,8 +127,8 @@ def create_task_api():
             'due_date': due_date,
             'subject': data['subject'],
             'description': data['description'],
-            'priority': data.get('priority', 'medium'),  # Default to medium priority
-            'target_roles': []  # Default à une liste vide
+            'priority': data.get('priority', 'medium'),
+            'target_roles': []
         }
 
         assignment_type = data.get('assignment_type')
@@ -489,8 +495,7 @@ def take_task(task_id):
         try:
             creator = User.query.filter_by(email=task.assigned_by).first()
             if creator and creator.phone:
-                message = f"Votre tâche '{task.subject}' a été prise par {user.fname} {user.lname}."
-                task._send_notification(creator.phone, message)
+                task.notify_task_taken(user_email)
         except Exception as e:
             print(f"Erreur lors de la notification: {str(e)}")
 
@@ -514,12 +519,7 @@ def remind_task(task_id):
 
         if task.assigned_by != user_email:
             return jsonify({'error': 'Non autorisé'}), 403
-
-        for user in task.assignees:
-            if hasattr(user, 'phone') and user.phone:
-                message = task._format_message("reminder", user_email,
-                                               "Ce rappel a été envoyé par le créateur de la tâche.")
-                task._send_notification(user.phone, message)
+        task.send_reminder()
 
         return jsonify({'success': True})
     except Exception as e:
@@ -528,7 +528,6 @@ def remind_task(task_id):
 
 @tasks_bp.route('/api/tasks/<int:task_id>/request-transfer', methods=['POST'])
 def request_task_transfer(task_id):
-    """API pour demander une cession de tâche"""
     if is_not_connected():
         return jsonify({'error': 'Not connected'}), 401
 
@@ -562,7 +561,6 @@ def request_task_transfer(task_id):
 
 @tasks_bp.route('/api/tasks/<int:task_id>/approve-transfer', methods=['POST'])
 def approve_task_transfer(task_id):
-    """API pour approuver une cession de tâche"""
     if is_not_connected():
         return jsonify({'error': 'Not connected'}), 401
 
@@ -586,7 +584,6 @@ def approve_task_transfer(task_id):
 
 @tasks_bp.route('/api/tasks/<int:task_id>/reject-transfer', methods=['POST'])
 def reject_task_transfer(task_id):
-    """API pour rejeter une cession de tâche"""
     if is_not_connected():
         return jsonify({'error': 'Not connected'}), 401
 
@@ -632,10 +629,7 @@ def release_task(task_id):
         db.session.commit()
 
         try:
-            creator = User.query.filter_by(email=task.assigned_by).first()
-            if creator and creator.phone:
-                message = f"La tâche '{task.subject}' a été libérée par {user.fname} {user.lname} et est maintenant disponible pour d'autres personnes."
-                task._send_notification(creator.phone, message)
+            task.notify_task_released(user_email)
         except Exception as e:
             print(f"Erreur d'envoi de notification: {str(e)}")
 
@@ -676,9 +670,7 @@ def transfer_task_ownership(task_id):
         db.session.commit()
 
         try:
-            if new_owner.phone:
-                message = f"La propriété de la tâche '{task.subject}' vous a été transférée par {user_email}. Vous êtes maintenant responsable de cette tâche."
-                task._send_notification(new_owner.phone, message)
+            task.notify_ownership_transfer(old_owner, new_owner_email)
         except Exception as e:
             print(f"Erreur d'envoi de notification: {str(e)}")
 
@@ -767,7 +759,6 @@ def reassign_task(task_id):
 
 @tasks_bp.route('/api/members/<string:email>/assigned-tasks', methods=['GET'])
 def get_member_assigned_tasks(email):
-    """API pour récupérer les tâches assignées à un membre"""
     if is_not_connected():
         return jsonify({'error': 'Not connected'}), 401
 
@@ -781,7 +772,6 @@ def get_member_assigned_tasks(email):
 
 @tasks_bp.route('/api/members/<string:email>/created-tasks', methods=['GET'])
 def get_member_created_tasks(email):
-    """API pour récupérer les tâches créées par un membre"""
     if is_not_connected():
         return jsonify({'error': 'Not connected'}), 401
 
@@ -795,12 +785,11 @@ def get_member_created_tasks(email):
 
 @tasks_bp.route('/api/users', methods=['GET'])
 def get_users():
-    """API pour récupérer la liste des utilisateurs (pour la sélection lors de la cession)"""
     if is_not_connected():
         return jsonify({'error': 'Not connected'}), 401
 
     try:
-        users = User.query.order_by(User.lname, User.fname).all()
+        users = User.query.order_by(User.fname, User.lname).all()
         users_data = [{'email': user.email, 'name': f"{user.lname} {user.fname}"} for user in users]
         return jsonify(users_data)
     except Exception as e:

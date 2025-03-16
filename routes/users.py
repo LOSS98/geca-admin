@@ -226,7 +226,7 @@ def get_members_management():
 
     try:
         from models.task import Task
-        users = User.query.order_by(User.lname, User.fname).all()
+        users = User.query.order_by(User.fname, User.lname).all()
 
         members_data = []
         for user in users:

@@ -21,6 +21,11 @@ def create_app():
     load_dotenv()
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '0'
 
+    os.makedirs(Config.SESSION_FILE_DIR, exist_ok=True)
+    import googleapiclient.discovery
+    googleapiclient.discovery.BUILD_HTTP_CACHE_DISCOVERY = False
+
+
     app = Flask(__name__, static_folder='static')
 
     app.config.from_object(Config)

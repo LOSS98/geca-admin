@@ -1,3 +1,6 @@
+# auth/routes.py
+import os
+from datetime import timedelta
 from flask import Blueprint, render_template, request, session, redirect, url_for, flash, jsonify
 import google.auth
 import google_auth_oauthlib.flow
@@ -14,12 +17,42 @@ from db import db
 
 auth_bp = Blueprint('auth', __name__)
 
+
 def is_credentials_valid(credentials):
-    creds = Credentials(**credentials)
-    return creds and creds.valid
+    try:
+        # Vérifier si tous les champs nécessaires sont présents
+        required_fields = ['token', 'refresh_token', 'token_uri', 'client_id', 'client_secret']
+        if not all(field in credentials for field in required_fields):
+            print("Champs manquants dans les credentials:", credentials.keys())
+            return False
+
+        creds = Credentials(**credentials)
+
+        if not creds.valid:
+            if creds.expired and creds.refresh_token:
+                try:
+                    creds.refresh(Request())
+                    # Mise à jour des credentials dans la session
+                    session['credentials'] = credentials_to_dict(creds)
+                except Exception as e:
+                    print(f"Erreur lors du rafraîchissement du token: {e}")
+                    return False
+            else:
+                return False
+
+        # Test simple avec l'API OAuth2
+        service = googleapiclient.discovery.build('oauth2', 'v2', credentials=creds)
+        user_info = service.userinfo().get().execute()
+
+        return True
+    except Exception as e:
+        print(f"Erreur de validation des credentials: {e}")
+        return False
+
 
 def is_not_connected():
     return 'credentials' not in session or not is_credentials_valid(session['credentials'])
+
 
 def credentials_to_dict(credentials):
     return {
@@ -40,11 +73,14 @@ def login():
 
         authorization_url, state = flow.authorization_url(
             access_type='offline',
-            include_granted_scopes='true')
+            include_granted_scopes='true',
+            prompt='consent'  # Force consent screen to always get refresh_token
+        )
 
         session['state'] = state
         return redirect(authorization_url)
     return render_template('login.html')
+
 
 @auth_bp.route('/callback')
 def callback():
@@ -63,10 +99,18 @@ def callback():
     credentials = flow.credentials
     session['credentials'] = credentials_to_dict(credentials)
 
+    # Définir la durée de la session
+    session.permanent = True
+    # Durée de 2 heures
+    session.permanent_session_lifetime = timedelta(hours=2)
+
     connector = GoogleAPIConnector(Config.CREDENTIALS_PATH)
     connector.authenticate(session['credentials'])
 
     user_info = connector.get_user_info()
+    if not user_info:
+        flash("Unable to get user information. Please try again.")
+        return redirect(url_for('auth.login'))
 
     allowed_people = User.get_all_emails()
     if user_info['email'] not in allowed_people:
@@ -96,7 +140,16 @@ def callback():
     flash(f"Welcome {user_info['email']}! You are logged in.")
     return redirect(url_for('tasks.index'))
 
+
 @auth_bp.route('/disconnect')
 def disconnect():
     session.clear()
     return redirect(url_for('auth.login'))
+
+
+@auth_bp.route('/check-session')
+def check_session():
+    """Route pour vérifier la validité de la session côté client"""
+    if is_not_connected():
+        return jsonify({'valid': False}), 401
+    return jsonify({'valid': True})

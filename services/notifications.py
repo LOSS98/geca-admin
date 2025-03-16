@@ -1,23 +1,61 @@
 import requests
 import os
 import logging
+import time
+import threading
+import queue
 from typing import List, Optional, Dict, Any, Union
-from models.user import User  # Importer User du bon package
+from datetime import datetime
+
+# File d'attente pour les notifications
+notification_queue = queue.Queue()
+# Verrou pour l'accès aux ressources partagées
+lock = threading.Lock()
 
 
 class NotificationService:
-
-
     def __init__(self):
         """Initialise le service de notification"""
-        self.api_key = os.getenv('WHATSAPP_API_KEY', 'UDvABgmTtdWC')
+        self.api_key = os.getenv('WHATSAPP_API_KEY', 'UDvABgmTtdWC')  # Clé API par défaut
         self.api_url = os.getenv('WHATSAPP_API_URL', 'http://api.textmebot.com/send.php')
-
         self.logger = logging.getLogger(__name__)
 
-    def send_sms(self, recipient_phone: str, message: str) -> bool:
+        # Démarrer le worker de traitement des notifications
+        self._start_notification_worker()
 
+    def _start_notification_worker(self):
+        """Démarre un thread qui traite les notifications en file d'attente"""
+
+        def worker():
+            while True:
+                try:
+                    # Récupérer la prochaine notification
+                    notification_data = notification_queue.get()
+                    if notification_data is None:  # Signal pour arrêter le thread
+                        break
+
+                    recipient, message = notification_data
+
+                    # Effectuer l'envoi réel
+                    self._perform_send(recipient, message)
+
+                    # Marquer la tâche comme terminée
+                    notification_queue.task_done()
+
+                    # Attendre 7 secondes avant de traiter la prochaine notification
+                    time.sleep(7)
+                except Exception as e:
+                    self.logger.error(f"Erreur dans le worker de notifications: {str(e)}")
+                    # Continuer malgré les erreurs
+
+        # Démarrer le thread en arrière-plan
+        notification_thread = threading.Thread(target=worker, daemon=True)
+        notification_thread.start()
+
+    def _perform_send(self, recipient_phone: str, message: str) -> bool:
+        """Effectue l'envoi réel du SMS via l'API"""
         if not recipient_phone.startswith('+'):
+            # Ajouter le code pays français si absent
             recipient_phone = '+33' + recipient_phone.lstrip('0')
 
         try:
@@ -30,17 +68,27 @@ class NotificationService:
             response = requests.get(self.api_url, params=params)
 
             if response.status_code != 200:
-                self.logger.error(f"Error sending SMS notification: {response.text}")
+                self.logger.error(f"Erreur lors de l'envoi de la notification: {response.text}")
                 return False
 
-            self.logger.info(f"SMS notification sent successfully to {recipient_phone}")
+            self.logger.info(f"Notification envoyée avec succès à {recipient_phone}")
             return True
         except Exception as e:
-            self.logger.error(f"Error sending notification: {str(e)}")
+            self.logger.error(f"Erreur lors de l'envoi de la notification: {str(e)}")
+            return False
+
+    def send_sms(self, recipient_phone: str, message: str) -> bool:
+        """Ajoute un SMS à la file d'attente"""
+        try:
+            # Ajouter la notification à la file d'attente
+            notification_queue.put((recipient_phone, message))
+            return True
+        except Exception as e:
+            self.logger.error(f"Erreur lors de l'ajout de la notification à la file d'attente: {str(e)}")
             return False
 
     def send_bulk_sms(self, recipient_phones: List[str], message: str) -> Dict[str, bool]:
-
+        """Envoie un SMS à plusieurs destinataires"""
         results = {}
 
         for phone in recipient_phones:
@@ -55,7 +103,7 @@ class NotificationService:
                                task_type: str,
                                actor_name: str,
                                additional_info: Optional[str] = None) -> Dict[str, bool]:
-
+        """Envoie une notification concernant une tâche"""
         emoji_map = {
             "assignment": "📋",
             "validation": "✅",
@@ -64,29 +112,33 @@ class NotificationService:
             "reminder": "⏰",
             "deleted": "🗑️",
             "priority": "🔄",
-            "transfer": "↔️"
+            "transfer": "↔️",
+            "task_taken": "👋"
         }
 
         emoji = emoji_map.get(task_type, "📌")
+        current_time = datetime.now().strftime("%d/%m/%Y à %H:%M")
 
         if task_type == "assignment":
-            message = f"{emoji} La tâche '{task_subject}' vous a été assignée par {actor_name}."
+            message = f"{emoji} La tâche '{task_subject}' vous a été assignée par {actor_name} le {current_time}"
         elif task_type == "validation":
-            message = f"{emoji} La tâche '{task_subject}' a été marquée comme prête pour validation par {actor_name}."
+            message = f"{emoji} La tâche '{task_subject}' a été marquée prête pour validation par {actor_name} le {current_time}"
         elif task_type == "dispute":
-            message = f"{emoji} La tâche '{task_subject}' a été contestée par {actor_name}."
+            message = f"{emoji} La tâche '{task_subject}' a été contestée par {actor_name} le {current_time}"
         elif task_type == "completed":
-            message = f"{emoji} La tâche '{task_subject}' a été marquée comme terminée par {actor_name}."
+            message = f"{emoji} La tâche '{task_subject}' a été marquée comme terminée par {actor_name} le {current_time}"
         elif task_type == "reminder":
-            message = f"{emoji} RAPPEL: La tâche '{task_subject}' requiert votre attention."
+            message = f"{emoji} RAPPEL: La tâche '{task_subject}' requiert votre attention. {actor_name} vous a envoyé ce rappel le {current_time}"
         elif task_type == "deleted":
-            message = f"{emoji} La tâche '{task_subject}' a été supprimée par {actor_name}."
+            message = f"{emoji} La tâche '{task_subject}' a été supprimée par {actor_name} le {current_time}"
         elif task_type == "priority":
-            message = f"{emoji} La priorité de la tâche '{task_subject}' a été modifiée par {actor_name}."
+            message = f"{emoji} La priorité de la tâche '{task_subject}' a été modifiée par {actor_name} le {current_time}"
         elif task_type == "transfer":
             message = f"{emoji} La tâche '{task_subject}' est en cours de transfert."
+        elif task_type == "task_taken":
+            message = f"{emoji} La tâche '{task_subject}' a été prise par {actor_name} le {current_time}"
         else:
-            message = f"{emoji} Mise à jour de la tâche '{task_subject}' par {actor_name}."
+            message = f"{emoji} Mise à jour de la tâche '{task_subject}' par {actor_name} le {current_time}"
 
         if additional_info:
             message += f"\n\n{additional_info}"
@@ -98,6 +150,8 @@ class NotificationService:
                                       amount: float,
                                       subject: str,
                                       actor: str) -> str:
+        """Formate une notification financière"""
+        current_time = datetime.now().strftime("%d/%m/%Y à %H:%M")
 
         if transaction_type == "income":
             emoji = "💰"
@@ -112,7 +166,7 @@ class NotificationService:
             emoji = "💶"
             message = f"{emoji} TRANSACTION: {amount:.2f}€ - {subject}"
 
-        message += f"\nAjouté par {actor}"
+        message += f"\nAjouté par {actor} le {current_time}"
 
         return message
 
@@ -122,12 +176,14 @@ class NotificationService:
                                      subject: str,
                                      actor: str,
                                      recipients: List[str]) -> Dict[str, bool]:
-
+        """Notifie une transaction financière"""
         message = self.format_financial_notification(transaction_type, amount, subject, actor)
         return self.send_bulk_sms(recipients, message)
 
-    def get_user_by_name(self, full_name: str) -> Optional[User]:
+    def get_user_by_name(self, full_name: str):
+        """Obtient un utilisateur par son nom complet"""
         try:
+            from models.user import User
             parts = full_name.split(' ', 1)
             if len(parts) == 2:
                 lname, fname = parts
@@ -136,14 +192,17 @@ class NotificationService:
             self.logger.error(f"Erreur lors de la recherche de l'utilisateur par nom: {e}")
         return None
 
-    def get_user_by_email(self, email: str) -> Optional[User]:
+    def get_user_by_email(self, email: str):
+        """Obtient un utilisateur par son email"""
         try:
+            from models.user import User
             return User.query.filter_by(email=email).first()
         except Exception as e:
             self.logger.error(f"Erreur lors de la recherche de l'utilisateur par email: {e}")
         return None
 
     def notify_income(self, income):
+        """Notifie une recette"""
         try:
             beneficiary_name = income.beneficiary
             added_by_email = income.added_by
@@ -171,6 +230,7 @@ class NotificationService:
             self.logger.error(f"Erreur lors de la notification de recette: {e}")
 
     def notify_expense(self, expense):
+        """Notifie une dépense"""
         try:
             debited_from_name = expense.debited_from  # Nom complet
             added_by_email = expense.added_by
@@ -198,6 +258,7 @@ class NotificationService:
             self.logger.error(f"Erreur lors de la notification de dépense: {e}")
 
     def notify_internal_transfer(self, expense, income):
+        """Notifie un transfert interne"""
         try:
             debited_from_name = expense.debited_from  # Nom complet
             beneficiary_name = income.beneficiary  # Nom complet
@@ -231,4 +292,5 @@ class NotificationService:
             self.logger.error(f"Erreur lors de la notification de transfert interne: {e}")
 
 
+# Instanciation du service de notification
 notification_service = NotificationService()

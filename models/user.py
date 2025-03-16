@@ -147,15 +147,15 @@ class User(db.Model):
 
     @staticmethod
     def get_all_names():
-        return [f'{user.lname} {user.fname}' for user in User.query.order_by(User.lname, User.fname).all()]
+        return [f'{user.fname} {user.lname}' for user in User.query.order_by(User.fname, User.lname).all()]
 
     @staticmethod
     def get_all_emails():
-        return [user.email for user in User.query.order_by(User.lname, User.fname).all()]
+        return [user.email for user in User.query.order_by(User.fname, User.lname).all()]
 
     @staticmethod
     def get_all_locations():
-        return [{'long': user.long, 'lat': user.lat, 'location_date': user.location_date} for user in User.query.order_by(User.lname, User.fname).all()]
+        return [{'long': user.long, 'lat': user.lat, 'location_date': user.location_date} for user in User.query.order_by(User.fname, User.lname).all()]
 
     @staticmethod
     def get_by_email(email):
