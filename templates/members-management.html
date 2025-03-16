@@ -1,0 +1,704 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<style>
+  .member-card {
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .member-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  .member-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .role-badge {
+    display: inline-block;
+    background-color: #5e72e4;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+  }
+  .role-badge .remove-role {
+    margin-left: 0.5rem;
+    cursor: pointer;
+    opacity: 0.7;
+  }
+  .role-badge .remove-role:hover {
+    opacity: 1;
+  }
+  .search-box {
+    margin-bottom: 1.5rem;
+  }
+  .member-avatar {
+    width: 50px;
+    height: 50px;
+    background-color: #f5f5f5;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #5e72e4;
+    margin-right: 1rem;
+  }
+  .member-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .location-info {
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    color: #6c757d;
+  }
+  .location-recent {
+    color: #2ecc71;
+  }
+  .location-old {
+    color: #e74c3c;
+  }
+  .task-counter {
+    background-color: #5e72e4;
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.75rem;
+    margin-left: 0.5rem;
+  }
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+  }
+  #membersList {
+    min-height: 200px;
+  }
+  .no-members {
+    text-align: center;
+    padding: 2rem;
+    font-style: italic;
+    color: #777;
+  }
+  .tabs-container .nav-tabs .nav-link {
+    color: #344767;
+    font-weight: 500;
+  }
+  .tabs-container .nav-tabs .nav-link.active {
+    color: #5e72e4;
+    font-weight: 600;
+    border-bottom: 2px solid #5e72e4;
+  }
+  .tab-pane {
+    padding: 1.5rem 0;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="page-header min-height-200 border-radius-xl mt-4" style="background-image: url('/static/assets/img/bg-user.jpg'); background-position-y: 50%;">
+  </div>
+  <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
+    <div class="row gx-4">
+      <div class="col-auto my-auto">
+        <div class="h-100">
+          <h5 class="mb-1">
+            Gestion des membres
+          </h5>
+          <p class="mb-0 font-weight-bold text-sm">
+            {% if error %}
+              {{ error }}
+            {% else %}
+              Gérez les utilisateurs, leurs rôles et leurs tâches
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header pb-0 p-3">
+          <div class="row">
+            <div class="col-md-6">
+              <h6 class="mb-0">Liste des membres</h6>
+            </div>
+            <div class="col-md-6 d-flex justify-content-end">
+              <button type="button" class="btn bg-gradient-primary" id="refreshBtn">
+                <i class="fa fa-refresh me-2"></i> Actualiser
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-3">
+          <div class="search-box">
+            <div class="input-group">
+              <span class="input-group-text" id="search-addon">
+                <i class="fa fa-search"></i>
+              </span>
+              <input type="text" class="form-control" id="searchInput" placeholder="Rechercher un membre par nom, prénom ou équipe..." aria-label="Search" aria-describedby="search-addon">
+            </div>
+          </div>
+
+          <div id="membersList">
+            <div class="loading-spinner">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Chargement...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal pour ajouter des rôles -->
+<div class="modal fade" id="roleModal" tabindex="-1" aria-labelledby="roleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="roleModalLabel">Gérer les rôles</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Modifier les rôles de <strong id="userNameInModal"></strong>:</p>
+        <input type="hidden" id="userEmailForRole" value="">
+
+        <div class="mb-3">
+          <div id="currentRoles" class="mt-2 mb-3">
+            <!-- Les rôles actuels seront affichés ici -->
+          </div>
+
+          <label class="form-label">Ajouter un rôle:</label>
+          <select class="form-select" id="roleSelect">
+            <option value="" disabled selected>Sélectionnez un rôle</option>
+            <option value="Team Bureau">Team Bureau</option>
+            <option value="Team Partenariat">Team Partenariat</option>
+            <option value="Team Com">Team Com</option>
+            <option value="Team BDA">Team BDA</option>
+            <option value="Team BDS">Team BDS</option>
+            <option value="Team Soirée">Team Soirée</option>
+            <option value="Team FISA">Team FISA</option>
+            <option value="Team Opé">Team Opé</option>
+            <option value="Team Argent">Team Argent</option>
+            <option value="Team Logistique">Team Logistique</option>
+            <option value="Team Orga">Team Orga</option>
+            <option value="Team Animation">Team Animation</option>
+            <option value="Team Sécu">Team Sécu</option>
+            <option value="Team Film">Team Film</option>
+            <option value="Team E-BDS">Team E-BDS</option>
+            <option value="Team Silencieuses">Team Silencieuses</option>
+            <option value="Team Standard">Team Standard</option>
+            <option value="Team Goodies">Team Goodies</option>
+            <option value="Team INFO">Team INFO</option>
+            <option value="Team A&C">Team A&C</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-primary" id="addRoleBtn">Ajouter le rôle</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal pour voir les tâches d'un membre -->
+<div class="modal fade" id="tasksModal" tabindex="-1" aria-labelledby="tasksModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tasksModalLabel">Tâches du membre</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="tabs-container">
+          <ul class="nav nav-tabs" id="memberTasksTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="assigned-tasks-tab" data-bs-toggle="tab" data-bs-target="#assigned-tasks" type="button" role="tab" aria-controls="assigned-tasks" aria-selected="true">Tâches assignées</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="created-tasks-tab" data-bs-toggle="tab" data-bs-target="#created-tasks" type="button" role="tab" aria-controls="created-tasks" aria-selected="false">Tâches créées</button>
+            </li>
+          </ul>
+          <div class="tab-content" id="memberTasksContent">
+            <div class="tab-pane fade show active" id="assigned-tasks" role="tabpanel" aria-labelledby="assigned-tasks-tab">
+              <div id="assignedTasksList" class="pt-3">
+                <div class="loading-spinner">
+                  <div class="spinner-border text-primary spinner-border-sm" role="status">
+                    <span class="visually-hidden">Chargement...</span>
+                  </div>
+                  <span class="ms-2">Chargement des tâches assignées...</span>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="created-tasks" role="tabpanel" aria-labelledby="created-tasks-tab">
+              <div id="createdTasksList" class="pt-3">
+                <div class="loading-spinner">
+                  <div class="spinner-border text-primary spinner-border-sm" role="status">
+                    <span class="visually-hidden">Chargement...</span>
+                  </div>
+                  <span class="ms-2">Chargement des tâches créées...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Objets pour stocker les données en cache
+  let allMembers = [];
+  let memberTasks = {};
+
+  // États de filtrage et de tri
+  let searchQuery = '';
+
+  // État du modal
+  let currentUserEmail = '';
+
+  // Formatage des dates
+  function formatDate(dateString) {
+    if (!dateString) return 'Jamais';
+
+    const date = new Date(dateString);
+    return date.toLocaleString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+  // Déterminer la classe pour l'info de localisation
+  function getLocationClass(dateString) {
+    if (!dateString) return '';
+
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const hoursDiff = diffMs / (1000 * 60 * 60);
+
+    return hoursDiff < 2 ? 'location-recent' : 'location-old';
+  }
+
+  // Créer une carte de membre
+  function createMemberCard(member) {
+    const userInitials = member.fname.charAt(0) + member.lname.charAt(0);
+    const locationDate = formatDate(member.location_date);
+    const locationClass = getLocationClass(member.location_date);
+
+    const rolesBadges = member.roles.map(role =>
+      `<span class="role-badge" data-role="${role}">${role}</span>`
+    ).join('');
+
+    return `
+      <div class="member-card card mb-4" data-email="${member.email}" data-name="${member.lname} ${member.fname}" data-roles="${member.roles.join(',')}">
+        <div class="card-body">
+          <div class="member-info">
+            <div class="member-avatar">
+              ${userInitials}
+            </div>
+            <div>
+              <h5 class="mb-0">${member.lname} ${member.fname}</h5>
+              <p class="text-muted mb-0">${member.email}</p>
+              <p class="text-sm mb-0">${member.phone ? `<a href="tel:${member.phone}" class="text-primary"><i class="fa fa-phone me-1"></i>${member.phone}</a>` : 'Pas de téléphone'}</p>
+            </div>
+          </div>
+
+          <div class="location-info ${locationClass}">
+            <i class="fa fa-map-marker"></i> Dernière position: ${locationDate}
+          </div>
+
+          <div class="mt-3 mb-3">
+            <strong>Équipes:</strong>
+            <div class="mt-2">
+              ${rolesBadges || '<span class="text-muted">Aucune équipe</span>'}
+            </div>
+          </div>
+
+          <div class="mt-3 member-actions">
+            <button class="btn btn-sm btn-primary manage-roles-btn" data-email="${member.email}" data-name="${member.lname} ${member.fname}">
+              <i class="fa fa-users"></i> Gérer les équipes
+            </button>
+            <button class="btn btn-sm btn-info view-tasks-btn" data-email="${member.email}" data-name="${member.lname} ${member.fname}">
+              <i class="fa fa-tasks"></i> Voir les tâches
+              ${member.task_count > 0 ? `<span class="task-counter">${member.task_count}</span>` : ''}
+            </button>
+            <button class="btn btn-sm btn-secondary" onclick="location.href='/users-map?focus=${member.email}'">
+              <i class="fa fa-map-marker"></i> Localiser
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Formatage des tâches
+  function formatTaskCard(task) {
+    const stateBadges = {
+      'assigned': '<span class="badge bg-primary">Assignée</span>',
+      'disputed': '<span class="badge bg-danger">Contestée</span>',
+      'to_validated': '<span class="badge bg-warning text-dark">À valider</span>',
+      'done': '<span class="badge bg-success">Terminée</span>',
+      'transfer_pending': '<span class="badge bg-info">Cession en attente</span>'
+    };
+
+    const priorityBadges = {
+      'high': '<span class="badge bg-danger">Haute</span>',
+      'medium': '<span class="badge bg-warning text-dark">Moyenne</span>',
+      'low': '<span class="badge bg-success">Faible</span>'
+    };
+
+    return `
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6 class="mb-0">${task.subject}</h6>
+            <div>
+              ${stateBadges[task.state] || ''}
+              ${priorityBadges[task.priority] || ''}
+            </div>
+          </div>
+          <p class="text-sm mb-2">${task.description || 'Pas de description'}</p>
+          <div class="d-flex justify-content-between text-xs text-muted">
+            <span>Début: ${formatDate(task.start_date)}</span>
+            <span>Échéance: ${formatDate(task.due_date)}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Filtrer les membres
+  function filterMembers() {
+    if (!searchQuery) {
+      return allMembers;
+    }
+
+    const query = searchQuery.toLowerCase();
+    return allMembers.filter(member => {
+      // Recherche dans nom, prénom, email
+      const nameMatch = `${member.lname} ${member.fname}`.toLowerCase().includes(query);
+      const emailMatch = member.email.toLowerCase().includes(query);
+
+      // Recherche dans les rôles
+      const roleMatch = member.roles.some(role =>
+        role.toLowerCase().includes(query)
+      );
+
+      return nameMatch || emailMatch || roleMatch;
+    });
+  }
+
+  // Afficher les membres
+  function displayMembers() {
+    const membersList = document.getElementById('membersList');
+    const filteredMembers = filterMembers();
+
+    if (filteredMembers.length === 0) {
+      membersList.innerHTML = `
+        <div class="no-members">
+          <p>Aucun membre ne correspond à votre recherche</p>
+        </div>
+      `;
+      return;
+    }
+
+    const membersHTML = filteredMembers.map(member => createMemberCard(member)).join('');
+    membersList.innerHTML = membersHTML;
+
+    // Attacher les événements
+    document.querySelectorAll('.manage-roles-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        openRoleModal(this.dataset.email, this.dataset.name);
+      });
+    });
+
+    document.querySelectorAll('.view-tasks-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        openTasksModal(this.dataset.email, this.dataset.name);
+      });
+    });
+  }
+
+  // Charger les membres
+  function fetchMembers() {
+    const membersList = document.getElementById('membersList');
+    membersList.innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+    `;
+
+    fetch('/api/members-management')
+      .then(response => response.json())
+      .then(data => {
+        allMembers = data;
+        displayMembers();
+      })
+      .catch(error => {
+        console.error('Error fetching members:', error);
+        membersList.innerHTML = `
+          <div class="alert alert-danger">
+            Une erreur est survenue lors du chargement des membres. Veuillez réessayer.
+          </div>
+        `;
+      });
+  }
+
+  // Ouvrir le modal de gestion des rôles
+  function openRoleModal(email, name) {
+    currentUserEmail = email;
+    document.getElementById('userEmailForRole').value = email;
+    document.getElementById('userNameInModal').textContent = name;
+
+    // Trouver le membre
+    const member = allMembers.find(m => m.email === email);
+    if (!member) return;
+
+    // Afficher les rôles actuels
+    const currentRolesDiv = document.getElementById('currentRoles');
+    if (member.roles.length === 0) {
+      currentRolesDiv.innerHTML = '<p class="text-muted">Aucun rôle attribué</p>';
+    } else {
+      currentRolesDiv.innerHTML = member.roles.map(role =>
+        `<span class="role-badge">${role} <span class="remove-role" data-role="${role}">✕</span></span>`
+      ).join('');
+
+      // Attacher les événements de suppression
+      document.querySelectorAll('.remove-role').forEach(elem => {
+        elem.addEventListener('click', function() {
+          removeRole(email, this.dataset.role);
+        });
+      });
+    }
+
+    // Afficher le modal
+    const roleModal = new bootstrap.Modal(document.getElementById('roleModal'));
+    roleModal.show();
+  }
+
+  // Supprimer un rôle
+  function removeRole(email, role) {
+    if (!confirm(`Êtes-vous sûr de vouloir supprimer le rôle "${role}" pour cet utilisateur ?`)) {
+      return;
+    }
+
+    fetch('/api/members/remove-role', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        role: role
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Mettre à jour les données locales
+        const member = allMembers.find(m => m.email === email);
+        if (member) {
+          member.roles = member.roles.filter(r => r !== role);
+        }
+
+        // Mettre à jour l'affichage du modal
+        openRoleModal(email, member ? `${member.lname} ${member.fname}` : 'Utilisateur');
+
+        // Mettre à jour l'affichage des membres
+        displayMembers();
+      } else {
+        alert(data.error || 'Une erreur est survenue');
+      }
+    })
+    .catch(error => {
+      console.error('Error removing role:', error);
+      alert('Une erreur est survenue lors de la suppression du rôle');
+    });
+  }
+
+  // Ajouter un rôle
+  function addRole(email, role) {
+    fetch('/api/members/add-role', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        role: role
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Mettre à jour les données locales
+        const member = allMembers.find(m => m.email === email);
+        if (member) {
+          if (!member.roles.includes(role)) {
+            member.roles.push(role);
+          }
+        }
+
+        // Mettre à jour l'affichage du modal
+        openRoleModal(email, member ? `${member.lname} ${member.fname}` : 'Utilisateur');
+
+        // Mettre à jour l'affichage des membres
+        displayMembers();
+
+        // Réinitialiser le select
+        document.getElementById('roleSelect').value = '';
+      } else {
+        alert(data.error || 'Une erreur est survenue');
+      }
+    })
+    .catch(error => {
+      console.error('Error adding role:', error);
+      alert('Une erreur est survenue lors de l\'ajout du rôle');
+    });
+  }
+
+  // Ouvrir le modal des tâches
+  function openTasksModal(email, name) {
+    // Mettre à jour le titre du modal
+    document.getElementById('tasksModalLabel').textContent = `Tâches de ${name}`;
+
+    // Réinitialiser les conteneurs de tâches
+    document.getElementById('assignedTasksList').innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner-border text-primary spinner-border-sm" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+        <span class="ms-2">Chargement des tâches assignées...</span>
+      </div>
+    `;
+
+    document.getElementById('createdTasksList').innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner-border text-primary spinner-border-sm" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+        <span class="ms-2">Chargement des tâches créées...</span>
+      </div>
+    `;
+
+    // Charger les tâches si elles ne sont pas déjà en cache
+    if (!memberTasks[email]) {
+      // Charger les tâches assignées
+      fetch(`/api/members/${email}/assigned-tasks`)
+        .then(response => response.json())
+        .then(data => {
+          if (!memberTasks[email]) memberTasks[email] = {};
+          memberTasks[email].assigned = data;
+          displayMemberTasks(email, 'assigned');
+        })
+        .catch(error => {
+          console.error('Error fetching assigned tasks:', error);
+          document.getElementById('assignedTasksList').innerHTML = `
+            <div class="alert alert-danger">
+              Une erreur est survenue lors du chargement des tâches assignées.
+            </div>
+          `;
+        });
+
+      // Charger les tâches créées
+      fetch(`/api/members/${email}/created-tasks`)
+        .then(response => response.json())
+        .then(data => {
+          if (!memberTasks[email]) memberTasks[email] = {};
+          memberTasks[email].created = data;
+          displayMemberTasks(email, 'created');
+        })
+        .catch(error => {
+          console.error('Error fetching created tasks:', error);
+          document.getElementById('createdTasksList').innerHTML = `
+            <div class="alert alert-danger">
+              Une erreur est survenue lors du chargement des tâches créées.
+            </div>
+          `;
+        });
+    } else {
+      // Utiliser les données en cache
+      displayMemberTasks(email, 'assigned');
+      displayMemberTasks(email, 'created');
+    }
+
+    // Afficher le modal
+    const tasksModal = new bootstrap.Modal(document.getElementById('tasksModal'));
+    tasksModal.show();
+  }
+
+  // Afficher les tâches d'un membre
+  function displayMemberTasks(email, type) {
+    if (!memberTasks[email] || !memberTasks[email][type]) return;
+
+    const tasks = memberTasks[email][type];
+    const containerId = type === 'assigned' ? 'assignedTasksList' : 'createdTasksList';
+    const container = document.getElementById(containerId);
+
+    if (tasks.length === 0) {
+      container.innerHTML = `<p class="text-muted">Aucune tâche ${type === 'assigned' ? 'assignée' : 'créée'}</p>`;
+      return;
+    }
+
+    container.innerHTML = tasks.map(task => formatTaskCard(task)).join('');
+  }
+
+  // Attacher les événements
+  document.addEventListener('DOMContentLoaded', function() {
+    // Charger les membres au chargement
+    fetchMembers();
+
+    // Attacher l'événement de recherche
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', function() {
+      searchQuery = this.value.trim();
+      displayMembers();
+    });
+
+    // Attacher l'événement de rafraîchissement
+    document.getElementById('refreshBtn').addEventListener('click', fetchMembers);
+
+    // Attacher l'événement d'ajout de rôle
+    document.getElementById('addRoleBtn').addEventListener('click', function() {
+      const role = document.getElementById('roleSelect').value;
+      const email = document.getElementById('userEmailForRole').value;
+
+      if (!role) {
+        alert('Veuillez sélectionner un rôle');
+        return;
+      }
+
+      addRole(email, role);
+    });
+  });
+</script>
+{% endblock %}

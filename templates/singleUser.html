@@ -1,5 +1,31 @@
 {% extends "layout.html" %}
 
+{% block head %}
+<style>
+  .role-badge {
+    display: inline-block;
+    background-color: #5e72e4;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+  }
+  .role-badge .remove-role {
+    margin-left: 0.5rem;
+    cursor: pointer;
+    opacity: 0.7;
+  }
+  .role-badge .remove-role:hover {
+    opacity: 1;
+  }
+  #userRoles {
+    margin-top: 1rem;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
     <div class="container-fluid">
         <div class="page-header min-height-200 border-radius-xl mt-4"
@@ -10,10 +36,10 @@
                 <div class="col-auto my-auto">
                     <div class="h-100">
                         <h5 class="mb-1">
-                            Khalil MZOUGHI
+                            {{ user.fname }} {{ user.lname }}
                         </h5>
                         <p class="mb-0 font-weight-bold text-sm">
-                            Bonjour me amor
+                            Bonjour !
                         </p>
                     </div>
                 </div>
@@ -21,33 +47,6 @@
         </div>
     </div>
     <div class="container-fluid py-4">
-    <div class="row">
-            <div class="col-12 col-xl-12">
-                <div class="card h-100">
-                    <div class="card-body p-3">
-                            <div class="row">
-                                <div class="col-6 col-xl-6">
-                                    <div class="mb-3">
-                                        <form role="form">
-                                            <input type="hidden" name="id" value="id">
-                                        <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Envoyer un SMS</button>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-xl-6">
-                                    <div class="mb-3">
-                                        <form role="form"></form>
-                                            <input type="hidden" name="id" value="id">
-                                        <button type="submit" class="btn bg-gradient-primary w-100 mt-4 mb-0">Révoquer l'accès</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="row mt-3">
             <div class="col-12 col-xl-6">
                 <div class="card h-100">
@@ -55,115 +54,227 @@
                         <h6 class="mb-0">Informations générales</h6>
                     </div>
                     <div class="card-body p-3">
-                        <form role="form">
-                            <label>ID</label>
-                            <div class="mb-3">
-                                <input type="text" name="id" value="jd5g8r-fjt5h98r" class="form-control"
-                                       placeholder="Titre"
-                                       aria-label="id"
-                                       aria-describedby="email-addon" disabled>
-                            </div>
-                            <label>Nom</label>
-                            <div class="mb-3">
-                                <input type="text" name="lname" class="form-control" placeholder="E-mail"
-                                       aria-label="nom"
-                                       aria-describedby="email-addon">
-                            </div>
-                            <label>Prénom</label>
-                            <div class="mb-3">
-                                <input type="text" name="fname" class="form-control" placeholder="Prénom"
-                                       aria-label="Prénom"
-                                       aria-describedby="email-addon">
-                            </div>
-                            <label>E-mail</label>
-                            <div class="mb-3">
-                                <input type="email" name="email" class="form-control" placeholder="E-mail"
-                                       aria-label="Email"
-                                       aria-describedby="email-addon">
-                            </div>
-                            <label>Téléphone</label>
-                            <div class="mb-3">
-                                <input type="tel" name="tel" class="form-control" placeholder="Téléphone"
-                                       aria-label="Téléphone"
-                                       aria-describedby="email-addon">
-                            </div>
-                            <label>RIB</label>
-                            <div class="mb-3">
-                                <input type="RIB" name="rib" class="form-control" placeholder="RIB"
-                                       aria-label="Password"
-                                       aria-describedby="password-addon">
-                            </div>
-                            <label>Lydia</label>
-                            <div class="mb-3">
-                                <p class="text-sm">
-                                    Cette personne a-t-elle un compte Lydia ?
-                                </p>
-                                <select class="form-select" name="lydia" id="type">
-                                    <option disabled selected>Sélectionnez une valeur</option>
-                                    <option value="1">Oui</option>
-                                    <option value="0">Non</option>
-                                </select>
-                            </div>
-                            <div class="text-center">
-                                <button type="button" class="btn bg-gradient-primary w-100 mt-4 mb-0">Modifier</button>
-                            </div>
-                        </form>
+                        <div class="mb-3">
+                            <label class="font-weight-bold">Nom</label>
+                            <p>{{ user.lname }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="font-weight-bold">Prénom</label>
+                            <p>{{ user.fname }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="font-weight-bold">E-mail</label>
+                            <p>{{ user.email }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="font-weight-bold">Téléphone</label>
+                            <p>{{ user.phone }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-12 col-xl-6">
                 <div class="card h-100">
                     <div class="card-header pb-0 p-3">
-                        <h6 class="mb-0">Rôles</h6>
+                        <h6 class="mb-0">Mes équipes</h6>
                     </div>
                     <div class="card-body p-3">
-                        <form role="form">
-                            <label>Administrateur</label>
+                        <form role="form" id="roleForm">
                             <div class="mb-3">
-                                <select class="form-select" name="admin" id="type">
-                                    <option disabled selected>Sélectionnez une valeur</option>
-                                    <option value="1">Oui</option>
-                                    <option value="0">Nom</option>
+                                <label>Ajouter une équipe</label>
+                                <select class="form-select" id="roleSelect" name="role">
+                                    <option value="" disabled selected>Sélectionnez une équipe</option>
+                                    <option value="Team Bureau">Team Bureau</option>
+                                    <option value="Team Partenariat">Team Partenariat</option>
+                                    <option value="Team Com">Team Com</option>
+                                    <option value="Team BDA">Team BDA</option>
+                                    <option value="Team BDS">Team BDS</option>
+                                    <option value="Team Soirée">Team Soirée</option>
+                                    <option value="Team FISA">Team FISA</option>
+                                    <option value="Team Opé">Team Opé</option>
+                                    <option value="Team Argent">Team Argent</option>
+                                    <option value="Team Logistique">Team Logistique</option>
+                                    <option value="Team Orga">Team Orga</option>
+                                    <option value="Team Animation">Team Animation</option>
+                                    <option value="Team Sécu">Team Sécu</option>
+                                    <option value="Team Film">Team Film</option>
+                                    <option value="Team E-BDS">Team E-BDS</option>
+                                    <option value="Team Silencieuses">Team Silencieuses</option>
+                                    <option value="Team Standard">Team Standard</option>
+                                    <option value="Team Goodies">Team Goodies</option>
+                                    <option value="Team INFO">Team INFO</option>
+                                    <option value="Team A&C">Team A&C</option>
                                 </select>
-                            </div>
-                            <label>Trésorerie</label>
-                            <div class="mb-3">
-                                <select class="form-select" name="admin" id="type">
-                                    <option disabled selected>Sélectionnez une valeur</option>
-                                    <option value="1">Oui</option>
-                                    <option value="0">Nom</option>
-                                </select>
-                            </div>
-                            <label>Standard</label>
-                            <div class="mb-3">
-                                <select class="form-select" name="admin" id="type">
-                                    <option disabled selected>Sélectionnez une valeur</option>
-                                    <option value="1">Oui</option>
-                                    <option value="0">Nom</option>
-                                </select>
-                            </div>
-                            <label>Transactions</label>
-                            <div class="mb-3">
-                                <select class="form-select" name="admin" id="type">
-                                    <option disabled selected>Sélectionnez une valeur</option>
-                                    <option value="1">Oui</option>
-                                    <option value="0">Nom</option>
-                                </select>
-                            </div>
-                            <label>Membre</label>
-                            <div class="mb-3">
-                                <select class="form-select" name="admin" id="type">
-                                    <option disabled selected>Sélectionnez une valeur</option>
-                                    <option value="1">Oui</option>
-                                    <option value="0">Nom</option>
-                                </select>
+                                <div id="roleError" class="text-danger mt-2" style="display: none;"></div>
                             </div>
                             <div class="text-center">
-                                <button type="button" class="btn bg-gradient-primary w-100 mt-4 mb-0">Mettre à jour</button>
+                                <button type="submit" id="addRoleBtn" class="btn bg-gradient-primary w-100 mt-4 mb-0">Ajouter l'équipe</button>
                             </div>
                         </form>
+
+                        <div class="mt-4">
+                            <h6>Mes équipes actuelles</h6>
+                            <div id="userRoles">
+                                {% for role in user_roles %}
+                                <div class="role-badge" data-role="{{ role }}">
+                                    {{ role }}
+                                    <span class="remove-role" onclick="removeRole('{{ role }}')">✕</span>
+                                </div>
+                                {% endfor %}
+                                {% if not user_roles %}
+                                <p class="text-muted">Vous n'êtes membre d'aucune équipe pour le moment.</p>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle role form submission
+    const roleForm = document.getElementById('roleForm');
+    const addRoleBtn = document.getElementById('addRoleBtn');
+    const roleError = document.getElementById('roleError');
+    const userRolesDiv = document.getElementById('userRoles');
+
+    // Fonction pour mettre à jour l'affichage des rôles
+    function updateRolesDisplay(roles) {
+        userRolesDiv.innerHTML = '';
+
+        if (roles.length === 0) {
+            userRolesDiv.innerHTML = '<p class="text-muted">Vous n\'êtes membre d\'aucune équipe pour le moment.</p>';
+            return;
+        }
+
+        roles.forEach(role => {
+            const badge = document.createElement('div');
+            badge.className = 'role-badge';
+            badge.dataset.role = role;
+            badge.innerHTML = `${role} <span class="remove-role" onclick="removeRole('${role}')">✕</span>`;
+            userRolesDiv.appendChild(badge);
+        });
+    }
+
+    // Ajout d'un nouveau rôle
+    roleForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const role = document.getElementById('roleSelect').value;
+
+        if (!role) {
+            roleError.textContent = 'Veuillez sélectionner une équipe';
+            roleError.style.display = 'block';
+            return;
+        }
+
+        // Disable button and show loading state
+        addRoleBtn.disabled = true;
+        addRoleBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Ajout...';
+
+        // Make API call to add role
+        fetch('/api/addUserRole', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ role: role })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show success message
+                roleError.textContent = 'Équipe ajoutée avec succès !';
+                roleError.classList.remove('text-danger');
+                roleError.classList.add('text-success');
+                roleError.style.display = 'block';
+
+                // Update roles display
+                updateRolesDisplay(data.roles);
+
+                // Reset select
+                document.getElementById('roleSelect').value = '';
+
+                // Hide message after 3 seconds
+                setTimeout(() => {
+                    roleError.style.display = 'none';
+                }, 3000);
+            } else {
+                // Show error message
+                roleError.textContent = data.error || 'Une erreur est survenue';
+                roleError.classList.remove('text-success');
+                roleError.classList.add('text-danger');
+                roleError.style.display = 'block';
+            }
+
+            // Re-enable button
+            addRoleBtn.disabled = false;
+            addRoleBtn.innerHTML = 'Ajouter l\'équipe';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            roleError.textContent = 'Une erreur de communication est survenue';
+            roleError.classList.remove('text-success');
+            roleError.classList.add('text-danger');
+            roleError.style.display = 'block';
+
+            // Re-enable button
+            addRoleBtn.disabled = false;
+            addRoleBtn.innerHTML = 'Ajouter l\'équipe';
+        });
+    });
+});
+
+// Fonction pour supprimer un rôle
+function removeRole(role) {
+    if (!confirm(`Êtes-vous sûr de vouloir quitter l'équipe "${role}" ?`)) {
+        return;
+    }
+
+    // Make API call to remove role
+    fetch('/api/removeUserRole', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ role: role })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Remove role badge from display
+            const badge = document.querySelector(`.role-badge[data-role="${role}"]`);
+            if (badge) {
+                badge.remove();
+            }
+
+            // Check if there are no more roles
+            const userRolesDiv = document.getElementById('userRoles');
+            if (userRolesDiv.children.length === 0) {
+                userRolesDiv.innerHTML = '<p class="text-muted">Vous n\'êtes membre d\'aucune équipe pour le moment.</p>';
+            }
+
+            // Show success message
+            const roleError = document.getElementById('roleError');
+            roleError.textContent = 'Équipe supprimée avec succès !';
+            roleError.classList.remove('text-danger');
+            roleError.classList.add('text-success');
+            roleError.style.display = 'block';
+
+            // Hide message after 3 seconds
+            setTimeout(() => {
+                roleError.style.display = 'none';
+            }, 3000);
+        } else {
+            // Show error message
+            alert(data.error || 'Une erreur est survenue lors de la suppression de l\'équipe');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Une erreur de communication est survenue');
+    });
+}
+</script>
 {% endblock %}

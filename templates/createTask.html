@@ -1,0 +1,489 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<style>
+  .assignment-option {
+    margin-bottom: 1rem;
+  }
+  .assignment-section {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid #eee;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+  }
+  .active-section {
+    border-color: #5e72e4;
+    background-color: rgba(94, 114, 228, 0.05);
+  }
+  .date-time-group {
+    display: flex;
+    gap: 1rem;
+  }
+  .date-time-group .form-group {
+    flex: 1;
+  }
+
+  /* Styles pour les niveaux de priorité */
+  .priority-option {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  .priority-option.active {
+    border-color: #5e72e4;
+    background-color: rgba(94, 114, 228, 0.1);
+  }
+  .priority-high {
+    border-left: 4px solid #e74c3c;
+  }
+  .priority-medium {
+    border-left: 4px solid #f39c12;
+  }
+  .priority-low {
+    border-left: 4px solid #2ecc71;
+  }
+  .priority-icon {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+  }
+  .priority-high .priority-icon {
+    color: #e74c3c;
+  }
+  .priority-medium .priority-icon {
+    color: #f39c12;
+  }
+  .priority-low .priority-icon {
+    color: #2ecc71;
+  }
+  .selected-item-badge {
+    display: inline-block;
+    background-color: #5e72e4;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="page-header min-height-200 border-radius-xl mt-4" style="background-image: url('/static/assets/img/money.png'); background-position-y: 50%;">
+  </div>
+  <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
+    <div class="row gx-4">
+      <div class="col-auto my-auto">
+        <div class="h-100">
+          <h5 class="mb-1">
+            Créer une nouvelle tâche
+          </h5>
+          <p class="mb-0 font-weight-bold text-danger text-sm">
+            {% if error %}
+              {{ error }}
+            {% else %}
+              Veuillez remplir tous les champs nécessaires
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card h-100">
+        <div class="card-header pb-0 p-3">
+          <h6 class="mb-0">Détails de la tâche</h6>
+        </div>
+        <div class="card-body p-3">
+          <form id="taskForm">
+            <div class="row">
+              <div class="col-12 col-xl-12">
+                <label>Sujet</label>
+                <div class="mb-3">
+                  <input type="text" id="subject" name="subject" class="form-control" placeholder="Sujet de la tâche" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 col-xl-12">
+                <label>Description</label>
+                <div class="mb-3">
+                  <textarea id="description" name="description" class="form-control" placeholder="Description détaillée de la tâche" rows="4" required></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <label>Date et heure de début</label>
+                <div class="mb-3">
+                  <input type="datetime-local" id="startDate" name="startDate" class="form-control" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label>Date et heure d'échéance</label>
+                <div class="mb-3">
+                  <input type="datetime-local" id="dueDate" name="dueDate" class="form-control" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12">
+                <label>Priorité de la tâche</label>
+                <div class="priority-options mt-2">
+                  <div class="priority-option priority-high" data-priority="high">
+                    <span class="priority-icon">🔴</span> <strong>Haute</strong> - Tâche urgente nécessitant une attention immédiate
+                    <input type="radio" name="priority" value="high" style="display:none">
+                  </div>
+                  <div class="priority-option priority-medium active" data-priority="medium">
+                    <span class="priority-icon">🟠</span> <strong>Moyenne</strong> - Tâche régulière avec échéance standard
+                    <input type="radio" name="priority" value="medium" checked style="display:none">
+                  </div>
+                  <div class="priority-option priority-low" data-priority="low">
+                    <span class="priority-icon">🟢</span> <strong>Faible</strong> - Tâche de faible importance, peut être reportée
+                    <input type="radio" name="priority" value="low" style="display:none">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-12">
+                <label>Attribution de la tâche</label>
+                <div class="assignment-option">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="assignmentType" id="assignToUsers" value="users" checked>
+                    <label class="form-check-label" for="assignToUsers">
+                      Attribuer à des utilisateurs spécifiques
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="assignmentType" id="assignToRole" value="role">
+                    <label class="form-check-label" for="assignToRole">
+                      Attribuer à des équipes
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="assignmentType" id="assignToAll" value="all">
+                    <label class="form-check-label" for="assignToAll">
+                      Tâche ouverte (accessible à tous)
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-12">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="allowReassignment" checked>
+                  <label class="form-check-label" for="allowReassignment">Permettre la réassignation (le créateur pourra réassigner cette tâche)</label>
+                </div>
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="allowTransfer" checked>
+                  <label class="form-check-label" for="allowTransfer">Permettre le transfert de propriété (le créateur pourra transférer cette tâche)</label>
+                </div>
+              </div>
+            </div>
+
+
+
+            <div id="usersSection" class="assignment-section active-section">
+              <div class="row">
+                <div class="col-12">
+                  <label>Sélectionner les utilisateurs</label>
+                  <div class="mb-3">
+                    <select class="form-control" id="userSelect" multiple>
+                      {% for member in members %}
+                      <option value="{{ member }}">{{ member }}</option>
+                      {% endfor %}
+                    </select>
+                    <div class="form-text">Maintenez Ctrl (ou Cmd sur Mac) pour sélectionner plusieurs utilisateurs</div>
+                    <div id="selectedUsers" class="mt-2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="roleSection" class="assignment-section" style="display: none;">
+              <div class="row">
+                <div class="col-12">
+                  <label>Sélectionner des équipes</label>
+                  <div class="mb-3">
+                    <select class="form-control" id="roleSelect" multiple>
+                      <option value="Team Bureau">Team Bureau</option>
+                      <option value="Team Partenariat">Team Partenariat</option>
+                      <option value="Team Com">Team Com</option>
+                      <option value="Team BDA">Team BDA</option>
+                      <option value="Team BDS">Team BDS</option>
+                      <option value="Team Soirée">Team Soirée</option>
+                      <option value="Team FISA">Team FISA</option>
+                      <option value="Team Opé">Team Opé</option>
+                      <option value="Team Argent">Team Argent</option>
+                      <option value="Team Logistique">Team Logistique</option>
+                      <option value="Team Orga">Team Orga</option>
+                      <option value="Team Animation">Team Animation</option>
+                      <option value="Team Sécu">Team Sécu</option>
+                      <option value="Team Film">Team Film</option>
+                      <option value="Team E-BDS">Team E-BDS</option>
+                      <option value="Team Silencieuses">Team Silencieuses</option>
+                      <option value="Team Standard">Team Standard</option>
+                      <option value="Team Goodies">Team Goodies</option>
+                      <option value="Team INFO">Team INFO</option>
+                      <option value="Team A&C">Team A&C</option>
+                    </select>
+                    <div class="form-text">Maintenez Ctrl (ou Cmd sur Mac) pour sélectionner plusieurs équipes</div>
+                    <div id="selectedRoles" class="mt-2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="allUsersSection" class="assignment-section" style="display: none;">
+              <div class="row">
+                <div class="col-12">
+                  <div class="alert alert-info">
+                    <i class="fa fa-info-circle me-2"></i>
+                    Cette tâche sera visible pour tous les utilisateurs dans la section "Tâches disponibles". N'importe quel utilisateur pourra prendre cette tâche.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-12">
+                <div id="formError" class="alert alert-danger" style="display: none;"></div>
+                <button type="submit" id="submitBtn" class="btn bg-gradient-primary w-100">Créer la tâche</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Handle assignment type selection
+    const assignToUsers = document.getElementById('assignToUsers');
+    const assignToRole = document.getElementById('assignToRole');
+    const assignToAll = document.getElementById('assignToAll');
+    const usersSection = document.getElementById('usersSection');
+    const roleSection = document.getElementById('roleSection');
+    const allUsersSection = document.getElementById('allUsersSection');
+    const userSelect = document.getElementById('userSelect');
+    const selectedUsersDiv = document.getElementById('selectedUsers');
+    const roleSelect = document.getElementById('roleSelect');
+    const selectedRolesDiv = document.getElementById('selectedRoles');
+
+    // Update selected users display when selection changes
+    userSelect.addEventListener('change', function() {
+      const selectedOptions = Array.from(this.selectedOptions);
+      const selectedUsersHTML = selectedOptions.map(option =>
+        `<span class="selected-item-badge">${option.text}</span>`
+      ).join('');
+
+      selectedUsersDiv.innerHTML = selectedUsersHTML || '<em>Aucun utilisateur sélectionné</em>';
+    });
+
+    // Update selected roles display when selection changes
+    roleSelect.addEventListener('change', function() {
+      const selectedOptions = Array.from(this.selectedOptions);
+      const selectedRolesHTML = selectedOptions.map(option =>
+        `<span class="selected-item-badge">${option.text}</span>`
+      ).join('');
+
+      selectedRolesDiv.innerHTML = selectedRolesHTML || '<em>Aucune équipe sélectionnée</em>';
+    });
+
+    assignToUsers.addEventListener('change', function() {
+      if (this.checked) {
+        usersSection.style.display = 'block';
+        usersSection.classList.add('active-section');
+        roleSection.style.display = 'none';
+        roleSection.classList.remove('active-section');
+        allUsersSection.style.display = 'none';
+        allUsersSection.classList.remove('active-section');
+      }
+    });
+
+    assignToRole.addEventListener('change', function() {
+      if (this.checked) {
+        roleSection.style.display = 'block';
+        roleSection.classList.add('active-section');
+        usersSection.style.display = 'none';
+        usersSection.classList.remove('active-section');
+        allUsersSection.style.display = 'none';
+        allUsersSection.classList.remove('active-section');
+      }
+    });
+
+    assignToAll.addEventListener('change', function() {
+      if (this.checked) {
+        allUsersSection.style.display = 'block';
+        allUsersSection.classList.add('active-section');
+        usersSection.style.display = 'none';
+        usersSection.classList.remove('active-section');
+        roleSection.style.display = 'none';
+        roleSection.classList.remove('active-section');
+      }
+    });
+
+    // Priority selection
+    const priorityOptions = document.querySelectorAll('.priority-option');
+    priorityOptions.forEach(option => {
+      option.addEventListener('click', function() {
+        // Remove active class from all options
+        priorityOptions.forEach(opt => opt.classList.remove('active'));
+
+        // Add active class to clicked option
+        this.classList.add('active');
+
+        // Update hidden input
+        const priorityValue = this.dataset.priority;
+        document.querySelector(`input[name="priority"][value="${priorityValue}"]`).checked = true;
+      });
+    });
+
+    // Set default dates
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    document.getElementById('startDate').value = formatDateTime(now);
+    document.getElementById('dueDate').value = formatDateTime(tomorrow);
+
+    // Form submission
+    const taskForm = document.getElementById('taskForm');
+    taskForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const subject = document.getElementById('subject').value;
+      const description = document.getElementById('description').value;
+      const startDate = document.getElementById('startDate').value;
+      const dueDate = document.getElementById('dueDate').value;
+      const assignmentType = document.querySelector('input[name="assignmentType"]:checked').value;
+      const priority = document.querySelector('input[name="priority"]:checked').value;
+      const allowReassignment = document.getElementById('allowReassignment').checked;
+      const allowTransfer = document.getElementById('allowTransfer').checked;
+
+
+
+      // Validation
+      if (!subject || !startDate || !dueDate) {
+        showError('Veuillez remplir tous les champs obligatoires.');
+        return;
+      }
+
+      if (new Date(startDate) >= new Date(dueDate)) {
+        showError('La date d\'échéance doit être postérieure à la date de début.');
+        return;
+      }
+
+      // Prepare data based on assignment type
+      let assignmentData = {};
+      if (assignmentType === 'users') {
+        const userSelect = document.getElementById('userSelect');
+        const selectedUsers = Array.from(userSelect.selectedOptions).map(option => option.value);
+
+        console.log("Selected users:", selectedUsers);
+
+        if (selectedUsers.length === 0) {
+          showError('Veuillez sélectionner au moins un utilisateur.');
+          return;
+        }
+
+        assignmentData = {
+          assignment_type: 'users',
+          assignees: selectedUsers
+        };
+      } else if (assignmentType === 'role') {
+        const roleSelect = document.getElementById('roleSelect');
+        const selectedRoles = Array.from(roleSelect.selectedOptions).map(option => option.value);
+
+        if (selectedRoles.length === 0) {
+          showError('Veuillez sélectionner au moins une équipe.');
+          return;
+        }
+
+        assignmentData = {
+          assignment_type: 'role',
+          target_roles: selectedRoles
+        };
+      } else { // assignment to all
+        assignmentData = {
+          assignment_type: 'all',
+          target_roles: []
+        };
+      }
+
+      // Prepare task data
+      const taskData = {
+        subject: subject,
+        description: description,
+        start_date: startDate,
+        due_date: dueDate,
+        priority: priority,
+        ...assignmentData
+      };
+      taskData.allow_reassignment = allowReassignment;
+      taskData.allow_transfer = allowTransfer;
+
+      // Submit task data
+      const submitBtn = document.getElementById('submitBtn');
+      const originalText = submitBtn.innerText;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Création en cours...';
+
+      fetch('/api/createTask', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(taskData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = '/tasks';
+        } else {
+          showError(data.error || 'Une erreur est survenue lors de la création de la tâche.');
+          submitBtn.disabled = false;
+          submitBtn.innerText = originalText;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showError('Une erreur est survenue lors de la communication avec le serveur.');
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalText;
+      });
+    });
+
+    // Helper functions
+    function showError(message) {
+      const errorElement = document.getElementById('formError');
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+      setTimeout(() => {
+        errorElement.style.display = 'none';
+      }, 5000);
+    }
+
+    function formatDateTime(date) {
+      return date.toISOString().slice(0, 16);
+    }
+  });
+</script>
+{% endblock %}

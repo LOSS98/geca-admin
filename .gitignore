@@ -1,6 +1,7 @@
 credentials.json
 venv/
 flask_session/
-.log
+app.log
 geca.sock
-.idea
+.env
+.idea/
