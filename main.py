@@ -34,7 +34,7 @@ def create_app():
     db.init_app(app)
     migrate = Migrate(app, db)
 
-    if 1 :
+    if 0 :
         logging.basicConfig(
             level=logging.DEBUG,
             format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s',
