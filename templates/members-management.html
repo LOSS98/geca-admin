@@ -349,7 +349,8 @@
               <i class="fa fa-tasks"></i> Voir les tâches
               ${member.task_count > 0 ? `<span class="task-counter">${member.task_count}</span>` : ''}
             </button>
-            <button class="btn btn-sm btn-secondary" onclick="location.href='/users-map?focus=${member.email}'">
+            {#<button class="btn btn-sm btn-secondary" onclick="location.href='/users-map?focus=${member.email}'">#}
+            <button class="btn btn-sm btn-secondary" onclick="alert('Stalker, la localisation fonctionne, mais sera accessible pendant la semaine des campagnes.')">
               <i class="fa fa-map-marker"></i> Localiser
             </button>
           </div>
