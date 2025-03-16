@@ -1071,7 +1071,7 @@ class Task(db.Model):
 
         # Ajouter l'information de temps si ce n'est pas une tâche terminée ou supprimée
         if message_type not in ["task_completed", "task_deleted", "task_validated"]:
-            message += f"\n{time_info_str}"
+            message += f"\n*{time_info_str}*"
 
         # Ajouter la date d'échéance
         due_date_str = self.due_date.strftime("%d/%m/%Y à %H:%M") if self.due_date else "Non définie"
