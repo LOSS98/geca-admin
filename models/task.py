@@ -1024,7 +1024,7 @@ class Task(db.Model):
         priority_text = TaskPriority.get_display_name(self.priority)
 
         # Construire le message complet
-        message = f"{priority_icon} La tâche '{self.subject}' "
+        message = f"{priority_icon} La tâche *'{self.subject}'* "
 
         if message_type == "assignment":
             message += f"vous a été assignée par {actor_name} le {current_time}"
