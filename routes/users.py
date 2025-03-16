@@ -226,8 +226,7 @@ def get_members_management():
 
     try:
         from models.task import Task
-        users = User.query.order_by(User.lname, User.lname).all()
-
+        users = User.query.order_by(User.fname, User.lname).all()
         members_data = []
         for user in users:
             task_count = len(Task.get_tasks_for_user(user.email))
