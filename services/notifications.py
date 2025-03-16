@@ -120,25 +120,25 @@ class NotificationService:
         current_time = datetime.now().strftime("%d/%m/%Y à %H:%M")
 
         if task_type == "assignment":
-            message = f"{emoji} La tâche '{task_subject}' vous a été assignée par {actor_name} le {current_time}"
+            message = f"*{emoji} Nouvelle tâche : '{task_subject}'*"
         elif task_type == "validation":
-            message = f"{emoji} La tâche '{task_subject}' a été marquée prête pour validation par {actor_name} le {current_time}"
+            message = f"*{emoji} À valider : '{task_subject}'*"
         elif task_type == "dispute":
-            message = f"{emoji} La tâche '{task_subject}' a été contestée par {actor_name} le {current_time}"
+            message = f"*{emoji} Contestation : '{task_subject}'*"
         elif task_type == "completed":
-            message = f"{emoji} La tâche '{task_subject}' a été marquée comme terminée par {actor_name} le {current_time}"
+            message = f"*{emoji} Terminée : '{task_subject}'*"
         elif task_type == "reminder":
-            message = f"{emoji} RAPPEL: La tâche '{task_subject}' requiert votre attention. {actor_name} vous a envoyé ce rappel le {current_time}"
+            message = f"*{emoji} RAPPEL : '{task_subject}'*"
         elif task_type == "deleted":
-            message = f"{emoji} La tâche '{task_subject}' a été supprimée par {actor_name} le {current_time}"
+            message = f"*{emoji} Supprimée : '{task_subject}'*"
         elif task_type == "priority":
-            message = f"{emoji} La priorité de la tâche '{task_subject}' a été modifiée par {actor_name} le {current_time}"
+            message = f"*{emoji} Changement de priorité : '{task_subject}'*"
         elif task_type == "transfer":
-            message = f"{emoji} La tâche '{task_subject}' est en cours de transfert."
+            message = f"*{emoji} Transferée : '{task_subject}'*"
         elif task_type == "task_taken":
-            message = f"{emoji} La tâche '{task_subject}' a été prise par {actor_name} le {current_time}"
+            message = f"*{emoji} Task prise : '{task_subject}'*"
         else:
-            message = f"{emoji} Mise à jour de la tâche '{task_subject}' par {actor_name} le {current_time}"
+            message = f"*{emoji} Mise à jour : '{task_subject}'*"
 
         if additional_info:
             message += f"\n\n{additional_info}"
@@ -155,16 +155,16 @@ class NotificationService:
 
         if transaction_type == "income":
             emoji = "💰"
-            message = f"{emoji} RECETTE: {amount:.2f}€ - {subject}"
+            message = f"*{emoji} RECETTE:* {amount:.2f}€ - {subject}"
         elif transaction_type == "expense":
             emoji = "💸"
-            message = f"{emoji} DÉPENSE: {amount:.2f}€ - {subject}"
+            message = f"*{emoji} DÉPENSE:* {amount:.2f}€ - {subject}"
         elif transaction_type == "transfer":
             emoji = "🔄"
-            message = f"{emoji} TRANSFERT INTERNE: {amount:.2f}€ - {subject}"
+            message = f"*{emoji} TRANSFERT INTERNE:* {amount:.2f}€ - {subject}"
         else:
             emoji = "💶"
-            message = f"{emoji} TRANSACTION: {amount:.2f}€ - {subject}"
+            message = f"*{emoji} TRANSACTION:* {amount:.2f}€ - {subject}"
 
         message += f"\nAjouté par {actor} le {current_time}"
 

@@ -79,35 +79,37 @@ def get_tasks():
         user_email = session['user_info']['email']
         user_role = session.get('role', 'member')
 
+        # Get tasks assigned to the current user
         tasks_as_assignee = Task.get_tasks_for_user(user_email)
 
+        # Log pour le débogage
+        print(f"Tasks assigned to user {user_email}: {len(tasks_as_assignee)}")
+        for task in tasks_as_assignee:
+            print(f"Task {task.id}: {task.subject}, assignees: {[user.email for user in task.assignees]}")
+
+        # Get tasks assigned by the current user (regardless of role)
         tasks_as_assigner = Task.get_assigned_tasks_by_user(user_email)
 
+        # Combine and remove duplicates
         all_tasks = []
+        task_ids = set()
 
-        for task in tasks_as_assignee:
+        for task in tasks_as_assignee + tasks_as_assigner:
+            if task.id not in task_ids:
+                all_tasks.append(task)
+                task_ids.add(task.id)
+
+        # Convert tasks to dictionaries with a flag indicating if the user is the assigner
+        tasks_data = []
+        for task in all_tasks:
             task_dict = task.to_dict()
-            task_dict['is_assignee'] = True
             task_dict['is_assigner'] = (task.assigned_by == user_email)
-            task_dict['is_self_assigned'] = (task.assigned_by == user_email and user_email in task.assignees)
             task_dict['can_manage'] = (task.assigned_by == user_email) or (user_role == 'admin')
-            all_tasks.append(task_dict)
+            tasks_data.append(task_dict)
 
-        assignee_task_ids = {task['id'] for task in all_tasks}
-
-        for task in tasks_as_assigner:
-            if task.id not in assignee_task_ids:
-                task_dict = task.to_dict()
-                task_dict['is_assignee'] = False
-                task_dict['is_assigner'] = True
-                task_dict['is_self_assigned'] = False
-                task_dict['can_manage'] = True
-                all_tasks.append(task_dict)
-
-        return jsonify(all_tasks)
+        return jsonify(tasks_data)
     except Exception as e:
         print(f"Error getting tasks: {str(e)}")
-        return jsonify({'error': str(e)}), 500
 
 @tasks_bp.route('/api/createTask', methods=['POST'])
 def create_task_api():
@@ -127,34 +129,45 @@ def create_task_api():
             'due_date': due_date,
             'subject': data['subject'],
             'description': data['description'],
-            'priority': data.get('priority', 'medium'),
-            'target_roles': []
+            'priority': data.get('priority', 'medium'),  # Default to medium priority
+            'target_roles': []  # Default à une liste vide
         }
 
+        # Handle different assignment types
         assignment_type = data.get('assignment_type')
 
         if assignment_type == 'role':
+            # Récupérer les rôles cibles de la tâche
             task_data['target_roles'] = data.get('target_roles', [])
 
+        # Créer la tâche en utilisant le constructeur
         task = Task(task_data)
 
+        # Sauvegarder la tâche en base de données
         task.save_to_db()
 
+        # Si la tâche est attribuée à des utilisateurs spécifiques
         if assignment_type == 'users':
+            # Get selected users
             assignees = data.get('assignees', [])
             print(f"Selected assignees: {assignees}")
             if assignees:
                 user_emails = []
+                from models.user import User
                 for assignee_name in assignees:
+                    # Find user by name (format: "lastname firstname")
                     parts = assignee_name.split(' ', 1)
                     if len(parts) == 2:
                         lname, fname = parts
-                        user = User.query.filter_by(lname=lname, fname=fname).first()
+                        user = User.query.filter_by(lname=fname, fname=lname).first()
                         if user:
                             user_emails.append(user.email)
 
                 if user_emails:
+                    # Utiliser la méthode assign_to_users pour associer les utilisateurs à la tâche
                     task.assign_to_users(user_emails)
+                    # Vérifier que l'assignation a bien été faite
+                    print(f"Users assigned to task: {[user.email for user in task.assignees]}")
 
         return jsonify({'success': True, 'task_id': task.id})
 

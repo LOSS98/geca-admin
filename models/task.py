@@ -448,9 +448,17 @@ class Task(db.Model):
             user = User.query.filter_by(email=email).first()
             if user and user not in self.assignees:
                 self.assignees.append(user)
+
+        # Assurez-vous que les changements sont enregistrés dans la base de données
         db.session.add(self)
         db.session.commit()
+
+        # Optionnel: Notifier les utilisateurs de l'assignation
         self.notify_assignment()
+
+        # Log pour le débogage
+        print(f"Task {self.id} assigned to users: {[user.email for user in self.assignees]}")
+        return True
 
     def assign_to_role(self, role: str):
         """Assign the task to all users with a specific role"""
@@ -1056,10 +1064,10 @@ class Task(db.Model):
             message += f"a été mise à jour par {actor_name} le {current_time}"
 
         # Ajouter les détails de la tâche
-        message += f"\nDétail de la tâche :\n{self.description or 'Pas de description fournie'}"
+        message += f"\n*Détail de la tâche :*\n{self.description or 'Pas de description fournie'}"
 
         # Ajouter l'information de priorité
-        message += f"\n\nPriorité: {priority_text}"
+        message += f"\n\n*Priorité:* {priority_text}"
 
         # Ajouter l'information de temps si ce n'est pas une tâche terminée ou supprimée
         if message_type not in ["task_completed", "task_deleted", "task_validated"]:
@@ -1067,7 +1075,7 @@ class Task(db.Model):
 
         # Ajouter la date d'échéance
         due_date_str = self.due_date.strftime("%d/%m/%Y à %H:%M") if self.due_date else "Non définie"
-        message += f"\n\nDate d'échéance: {due_date_str}"
+        message += f"\n\n*Date d'échéance:* {due_date_str}"
 
         # Ajouter des informations supplémentaires si fournies
         if additional_info:
@@ -1081,9 +1089,10 @@ class Task(db.Model):
         from models.user import User
         user = User.query.filter_by(email=user_email).first()
         if not user:
+            print(f"User with email {user_email} not found")
             return []
 
-        # Use a direct query with a join to ensure we get all tasks
+        # Utiliser une requête directe avec un join pour s'assurer de récupérer toutes les tâches
         tasks = Task.query.join(
             task_user_association,
             Task.id == task_user_association.c.task_id
@@ -1091,6 +1100,19 @@ class Task(db.Model):
             task_user_association.c.user_email == user_email,
             Task.state != TaskState.DELETED
         ).all()
+
+        # Log pour le débogage
+        print(f"Found {len(tasks)} tasks for user {user_email}")
+
+        # Alternative si la méthode ci-dessus ne fonctionne pas correctement
+        if not tasks:
+            print("Using alternative method to find tasks")
+            tasks = []
+            all_tasks = Task.query.filter(Task.state != TaskState.DELETED).all()
+            for task in all_tasks:
+                if user in task.assignees:
+                    tasks.append(task)
+            print(f"Alternative method found {len(tasks)} tasks")
 
         return tasks
 
