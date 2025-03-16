@@ -1,5 +1,6 @@
 credentials.json
 venv/
+gecavenv/
 flask_session/
 app.log
 geca.sock
