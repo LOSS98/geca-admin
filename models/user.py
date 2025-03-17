@@ -21,6 +21,9 @@ class User(db.Model):
     lat = db.Column(db.Float, nullable=True)
     location_date = db.Column(db.DateTime, nullable=True)
     notification_token = db.Column(db.String(255), nullable=True)
+    last_connection = db.Column(db.DateTime, nullable=True)
+    blocked = db.Column(db.Boolean, default=False)
+    is_admin = db.Column(db.Boolean, default=False)
 
     # Relation avec les rôles
     roles = db.relationship('Role', secondary=user_roles, backref=db.backref('users', lazy='dynamic'))
