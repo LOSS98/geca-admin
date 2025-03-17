@@ -228,22 +228,79 @@ def get_members_management():
         from models.task import Task
         users = User.query.order_by(User.fname, User.lname).all()
         members_data = []
+        i = 0
         for user in users:
-            task_count = len(Task.get_tasks_for_user(user.email))
+            if True : #user.fname in ('Mikael', 'Khalil'):
+                task_count = len(Task.get_tasks_for_user(user.email))
 
-            members_data.append({
-                'email': user.email,
-                'fname': user.fname,
-                'lname': user.lname,
-                'phone': user.phone,
-                'lat': user.lat,
-                'long': user.long,
-                'location_date': user.location_date.isoformat() if user.location_date else None,
-                'roles': user.get_roles(),
-                'task_count': task_count
-            })
+                members_data.append({
+                    'email': user.email,
+                    'fname': user.fname,
+                    'lname': user.lname,
+                    'phone': user.phone,
+                    'lat': user.lat,
+                    'long': user.long,
+                    'location_date': user.location_date.isoformat() if user.location_date else None,
+                    'roles': user.get_roles(),
+                    'task_count': task_count,
+                    'blocked': str(user.is_blocked()),
+                    'is_admin': str(user.is_admin_user()),
+                    'last_connection': user.last_connection.isoformat() if user.last_connection else None
+                })
+            i+=1
 
         return jsonify(members_data)
     except Exception as e:
         print(f"Error getting members data: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@users_bp.route('/api/members-management/block-user', methods=['POST'])
+def block_member():
+    """API pour bloquer un membre"""
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        data = request.json
+        email = data.get('email')
+
+        if not email:
+            return jsonify({'error': 'Email requis'}), 400
+
+        user = User.query.filter_by(email=email).first()
+
+        if not user:
+            return jsonify({'error': 'Utilisateur non trouvé'}), 404
+
+        user.block()
+
+
+        return jsonify({'success': True})
+    except Exception as e:
+        print(f"Error blocking member: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@users_bp.route('/api/members-management/unblock-user', methods=['POST'])
+def unblock_member():
+    """API pour débloquer un membre"""
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        data = request.json
+        email = data.get('email')
+
+        if not email:
+            return jsonify({'error': 'Email requis'}), 400
+
+        user = User.query.filter_by(email=email).first()
+
+        if not user:
+            return jsonify({'error': 'Utilisateur non trouvé'}), 404
+
+        user.unblock()
+
+        return jsonify({'success': True})
+    except Exception as e:
+        print(f"Error unblocking member: {str(e)}")
         return jsonify({'error': str(e)}), 500
