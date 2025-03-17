@@ -58,11 +58,52 @@
     margin-top: 0.5rem;
     color: #6c757d;
   }
-  .location-recent {
+  .connexion-info {
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    color: #2ec7ea;
+  }
+  .date-recent {
     color: #2ecc71;
   }
-  .location-old {
+  .date-old {
     color: #e74c3c;
+  }
+  .active-user {
+      color: #2ecc71;
+  }
+  .blocked-user {
+      color: #e74c3c;
+  }
+  .blocked-badge {
+    display: inline-block;
+    background-color: #e74c3c;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+  }
+  .active-badge {
+    display: inline-block;
+    background-color: #2ecc71;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+  }
+  .admin-badge {
+    display: inline-block;
+    background-color: #e67e22;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
   }
   .task-counter {
     background-color: #5e72e4;
@@ -295,7 +336,7 @@
   }
 
   // Déterminer la classe pour l'info de localisation
-  function getLocationClass(dateString) {
+  function getDateClass(dateString) {
     if (!dateString) return '';
 
     const date = new Date(dateString);
@@ -303,18 +344,39 @@
     const diffMs = now - date;
     const hoursDiff = diffMs / (1000 * 60 * 60);
 
-    return hoursDiff < 2 ? 'location-recent' : 'location-old';
+    return hoursDiff < 2 ? 'date-recent' : 'date-old';
   }
+
+
 
   // Créer une carte de membre
   function createMemberCard(member) {
     const userInitials = member.fname.charAt(0) + member.lname.charAt(0);
     const locationDate = formatDate(member.location_date);
-    const locationClass = getLocationClass(member.location_date);
-
+    const locationClass = getDateClass(member.location_date);
+    const last_connection = formatDate(member.last_connection);
+    const connexionClass = getDateClass(member.last_connection);
     const rolesBadges = member.roles.map(role =>
       `<span class="role-badge" data-role="${role}">${role}</span>`
     ).join('');
+    console.log(member);
+    if (member.blocked == 'True') {
+      var block_btn_style = 'success';
+      var block_text = 'Débloquer';
+      var function_block = 'unblock_user';
+      var block_badge = '<span class="blocked-badge">Bloqué</span>';
+    } else {
+      var block_btn_style = 'danger';
+      var block_text = 'Bloquer';
+      var function_block = 'block_user';
+      var block_badge = '<span class="active-badge">Actif·ve</span>';
+
+    }
+    if(member.is_admin == 'True'){
+        var admin_badge = '<span class="admin-badge">Admin</span>';
+    }else {
+        var admin_badge = '';
+    }
 
     return `
       <div class="member-card card mb-4" data-email="${member.email}" data-name="${member.fname} ${member.lname}" data-roles="${member.roles.join(',')}">
@@ -324,7 +386,7 @@
               ${userInitials}
             </div>
             <div>
-              <h5 class="mb-0">${member.fname} ${member.lname}</h5>
+              <h5 class="mb-0">${member.fname} ${member.lname} ${block_badge} ${admin_badge}</h5>
               <p class="text-muted mb-0">${member.email}</p>
               <p class="text-sm mb-0">${member.phone ? `<a href="tel:${member.phone}" class="text-primary"><i class="fa fa-phone me-1"></i>${member.phone}</a>` : 'Pas de téléphone'}</p>
             </div>
@@ -332,6 +394,9 @@
 
           <div class="location-info ${locationClass}">
             <i class="fa fa-map-marker"></i> Dernière position: ${locationDate}
+          </div>
+          <div class="connexion-info ${connexionClass}">
+            <i class="fa fa-plug"></i> Dernière connection: ${last_connection}
           </div>
 
           <div class="mt-3 mb-3">
@@ -352,6 +417,9 @@
             {#<button class="btn btn-sm btn-secondary" onclick="location.href='/users-map?focus=${member.email}'">#}
             <button class="btn btn-sm btn-secondary" onclick="alert('Stalker, la localisation fonctionne, mais sera accessible pendant la semaine des campagnes.')">
               <i class="fa fa-map-marker"></i> Localiser
+            </button>
+            <button class="btn btn-sm btn-${block_btn_style}" onclick="${function_block}('${member.email}', '${member.lname} ${member.fname}')" data-email="${member.email}" data-name="${member.lname} ${member.fname}">
+              <i class="fa fa-ban"></i> ${block_text}
             </button>
           </div>
         </div>
@@ -671,6 +739,75 @@
     }
 
     container.innerHTML = tasks.map(task => formatTaskCard(task)).join('');
+  }
+  function block_user(email, name) {
+    if (!confirm(`Êtes-vous sûr de vouloir bloquer ${name} ?`)) {
+      return;
+    }
+
+    fetch('/api/members-management/block-user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Mettre à jour les données locales
+        const member = allMembers.find(m => m.email === email);
+        if (member) {
+          member.blocked = 'True';
+        }
+
+        // Mettre à jour l'affichage des membres
+        displayMembers();
+      } else {
+        alert(data.error || 'Une erreur est survenue');
+      }
+    })
+    .catch(error => {
+      console.error('Error blocking user:', error);
+      alert('Une erreur est survenue lors du blocage de l\'utilisateur');
+    });
+  }
+
+  function unblock_user(email, name) {
+    if (!confirm(`Êtes-vous sûr de vouloir débloquer ${name} ?`)) {
+      return;
+    }
+
+    fetch('/api/members-management/unblock-user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Mettre à jour les données locales
+        const member = allMembers.find(m => m.email === email);
+        if (member) {
+          member.blocked = 'False';
+        }
+
+        // Mettre à jour l'affichage des membres
+        displayMembers();
+      } else {
+        alert(data.error || 'Une erreur est survenue');
+      }
+    })
+    .catch(error => {
+      console.error('Error unblocking user:', error);
+      alert('Une erreur est survenue lors du déblocage de l\'utilisateur');
+    });
   }
 
   // Attacher les événements

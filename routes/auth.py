@@ -1,6 +1,6 @@
 # auth/routes.py
 import os
-from datetime import timedelta
+from datetime import timedelta, datetime
 from flask import Blueprint, render_template, request, session, redirect, url_for, flash, jsonify
 import google.auth
 import google_auth_oauthlib.flow
@@ -43,7 +43,14 @@ def is_credentials_valid(credentials):
         # Test simple avec l'API OAuth2
         service = googleapiclient.discovery.build('oauth2', 'v2', credentials=creds)
         user_info = service.userinfo().get().execute()
-
+        user_email = user_info['email']
+        from models.user import User
+        user = User.get_by_email(user_email)
+        if user.is_blocked():
+            print(f"Utilisateur bloqué: {user_email}")
+            return False
+        now = datetime.now()
+        user.last_connection = now
         return True
     except Exception as e:
         print(f"Erreur de validation des credentials: {e}")

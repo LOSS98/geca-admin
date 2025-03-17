@@ -1,7 +1,7 @@
 from email.policy import default
 
 from flask_sqlalchemy import SQLAlchemy
-
+from services.notifications import notification_service
 from db import db
 
 # Création d'une table d'association user_roles
@@ -33,7 +33,7 @@ class User(db.Model):
     manager = db.relationship('User', remote_side=[email], backref='subordinates')
 
     def __init__(self, email, fname, lname, phone, notification_token=None, long=None, lat=None, location_date=None,
-                 manager_email=None):
+                 manager_email=None, last_connection=None, blocked=False, is_admin=False):
         self.email = email
         self.fname = fname
         self.lname = lname
@@ -44,6 +44,9 @@ class User(db.Model):
         self.notification_token = notification_token
         self.manager_email = manager_email
         self.roles = []
+        self.last_connection = last_connection
+        self.blocked = blocked
+        self.is_admin = is_admin
 
     # Méthodes de gestion des rôles
     def add_role(self, role_name):
@@ -142,8 +145,43 @@ class User(db.Model):
             'phone': self.phone,
             'notification_token': self.notification_token,
             'roles': self.get_roles(),
-            'manager_email': self.manager_email
+            'manager_email': self.manager_email,
+            'location': self.get_location(),
+            'blocked': self.blocked,
+            'is_admin': self.is_admin,
+            'last_connection': self.last_connection
         }
+
+    def is_blocked(self):
+        return self.blocked
+
+    def is_admin_user(self):
+        return self.is_admin
+
+    def block(self):
+        self.blocked = True
+        notification_service.notify_blocked_user(self)
+        db.session.commit()
+
+    def unblock(self):
+        self.blocked = False
+        notification_service.notify_unblocked_user(self)
+        db.session.commit()
+
+    def set_admin(self):
+        self.is_admin = True
+        db.session.commit()
+
+    def unset_admin(self):
+        self.is_admin = False
+        db.session.commit()
+
+    def get_last_connection(self):
+        return self.last_connection
+
+    def set_last_connection(self, last_connection):
+        self.last_connection = last_connection
+        db.session.commit()
 
     def __repr__(self):
         return f"<User {self.fname} {self.lname}, Roles: {', '.join(self.get_roles())}>"

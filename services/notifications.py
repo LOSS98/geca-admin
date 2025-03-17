@@ -291,6 +291,22 @@ class NotificationService:
         except Exception as e:
             self.logger.error(f"Erreur lors de la notification de transfert interne: {e}")
 
+    def notify_blocked_user(self, user):
+        """Notifie un utilisateur bloqué"""
+        try:
+            if user and user.phone:
+                self.send_sms(user.phone, "🔐 Votre compte GECA a été bloqué.\nContactez l'administrateur pour plus d'informations.")
+        except Exception as e:
+            self.logger.error(f"Erreur lors de la notification d'utilisateur bloqué: {e}")
+
+    def notify_unblocked_user(self, user):
+        """Notifie un utilisateur débloqué"""
+        try:
+            if user and user.phone:
+                self.send_sms(user.phone, "🔓 Votre compte GECA a été débloqué.\nVous pouvez vous reconnecter.")
+        except Exception as e:
+            self.logger.error(f"Erreur lors de la notification d'utilisateur débloqué: {e}")
+
 
 # Instanciation du service de notification
 notification_service = NotificationService()
