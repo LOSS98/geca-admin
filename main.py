@@ -16,7 +16,6 @@ from models.role import Role
 
 from config import Config
 
-#Main file
 def create_app():
     load_dotenv()
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '0'
