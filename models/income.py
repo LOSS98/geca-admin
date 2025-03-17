@@ -92,12 +92,13 @@ class Income(db.Model):
             print(f"Tentative d'ajout à la feuille: {data}")
 
             result = connector.run_script(self.script_id, "addIncome", data)
-
             if result is None:
                 print("Avertissement: Le script a été exécuté mais n'a retourné aucun résultat")
+            elif 'error' in result:
+                print(f"Erreur lors de l'ajout à la feuille: {result}")
+                raise Exception(f"{result}")
             else:
                 print(f"Résultat de l'ajout à la feuille: {result}")
-
             return True
         except TypeError as e:
             print(f"Erreur de type lors de l'ajout à la feuille: {e}")

@@ -1,3 +1,5 @@
+from http.client import responses
+
 import google.auth
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
@@ -20,6 +22,7 @@ class GoogleAPIConnector:
         self.service_script = None
         self.service_oauth2 = None
         self.script_id = os.getenv('GENERAL_SCRIPT_ID')
+        self.K3_cell_value = os.getenv('K3_CELL_VALUE')
 
     def authenticate(self, session_credentials):
         self.credentials = Credentials(**session_credentials)
@@ -42,10 +45,23 @@ class GoogleAPIConnector:
             "parameters": parameters
         }
         try:
-            response = self.service_script.scripts().run(
-                body=request,
-                scriptId=script_id
-            ).execute()
+            response = None
+            remoteK3 = self.service_script.scripts().run(
+                body={
+                    "function": "getCellK3Value",
+                    "parameters": []
+                },
+                scriptId=self.script_id
+            ).execute()['response'].get('result')
+            print(f"remoteK3: {remoteK3}")
+            if remoteK3 != self.K3_cell_value:
+                print("K3 cell value does not match the expected value.")
+                raise Exception("Transaction non ajoutée ! Reconnection nécessaire.")
+            else :
+                response = self.service_script.scripts().run(
+                    body=request,
+                    scriptId=script_id
+                ).execute()
 
             if 'error' in response:
                 print("Erreur lors de l'exécution du script: {}".format(response['error']['details']))
@@ -53,8 +69,8 @@ class GoogleAPIConnector:
             else:
                 return response['response'].get('result')
         except Exception as e:
-            print(f"An error occurred: {e}")
-            return None
+            print(f"Error: {e}")
+            return 'error'
 
     def get_members(self) -> list:
         try:
@@ -67,6 +83,7 @@ class GoogleAPIConnector:
         except Exception as e:
             print(f"An error occurred while fetching members: {e}")
             return []
+
 
     def get_user_info(self):
         try:

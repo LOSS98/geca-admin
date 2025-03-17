@@ -61,11 +61,11 @@ def adding_expense():
 
         try:
             # expense.save_to_db()
-            expense.add_to_sheet(connector)
+            print(expense.add_to_sheet(connector))
             expense.notify()
             return redirect(url_for('finances.add_expense', error="Dépense ajoutée avec succès"))
         except Exception as e:
-            return redirect(url_for('finances.add_expense', error=f"Erreur : {e}"))
+            return redirect(url_for('finances.add_expense', error=f"Transaction non ajoutée ! Reconnection nécessaire."))
 
     return redirect(url_for('finances.add_expense'))
 
@@ -127,7 +127,7 @@ def adding_income():
             income.notify()
             return redirect(url_for('finances.add_income', error="Recette ajoutée avec succès"))
         except Exception as e:
-            return redirect(url_for('finances.add_income', error=f"Erreur : {e}"))
+            return redirect(url_for('finances.add_income', error=f"Transaction non ajoutée ! Reconnection nécessaire."))
 
     return redirect(url_for('finances.add_income'))
 
@@ -216,7 +216,7 @@ def adding_internal_transfer():
             notification_service.notify_internal_transfer(expense, income)
             return redirect(url_for('finances.add_internal_transfer', error="Transfert Interne ajouté avec succès"))
         except Exception as e:
-            return redirect(url_for('finances.add_internal_transfer', error=f"Erreur : {e}"))
+            return redirect(url_for('finances.add_internal_transfer', error=f"Transaction non ajoutée ! Reconnection nécessaire."))
 
     return redirect(url_for('finances.add_internal_transfer'))
 
