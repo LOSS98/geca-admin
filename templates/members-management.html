@@ -2,6 +2,7 @@
 
 {% block head %}
 <style>
+
   .member-card {
     transition: all 0.3s ease;
     margin-bottom: 1.5rem;
@@ -144,6 +145,38 @@
   .tab-pane {
     padding: 1.5rem 0;
   }
+  @media (max-width: 767px) {
+  .member-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .member-actions .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    padding: 0.75rem 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .member-actions .btn i {
+    margin-right: 8px;
+  }
+
+  .task-counter {
+    position: absolute;
+    right: 10px;
+  }
+}
+
+/* Pour les très petits écrans */
+@media (max-width: 320px) {
+  .member-actions .btn {
+    font-size: 0.75rem;
+    padding: 0.5rem;
+  }
+}
 </style>
 {% endblock %}
 
