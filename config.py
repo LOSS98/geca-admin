@@ -21,5 +21,5 @@ class Config:
     CREDENTIALS_PATH = './credentials.json'
 
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL',
-                                        'postgresql://khalil:Kh4lil9870720406*@51.38.83.204:1125/postgres_geca_db')
+                                        f'postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PWD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_port')}/{os.getenv('DB_NAME')}')
     SQLALCHEMY_TRACK_MODIFICATIONS = False

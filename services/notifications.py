@@ -16,8 +16,8 @@ lock = threading.Lock()
 class NotificationService:
     def __init__(self):
         """Initialise le service de notification"""
-        self.api_key = os.getenv('WHATSAPP_API_KEY', 'UDvABgmTtdWC')  # Clé API par défaut
-        self.api_url = os.getenv('WHATSAPP_API_URL', 'http://api.textmebot.com/send.php')
+        self.api_key = os.getenv('WHATSAPP_API_KEY')
+        self.api_url = os.getenv('WHATSAPP_API_URL')
         self.logger = logging.getLogger(__name__)
 
         # Démarrer le worker de traitement des notifications
