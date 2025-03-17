@@ -1,0 +1,28 @@
+geca-admin/
+├── __init__.py
+├── main.py
+├── wsgi.py
+├── .env
+├── credentials.json
+├── config.py
+├── models/
+│   ├── __init__.py
+│   ├── user.py
+│   ├── role.py
+│   ├── task.py
+│   ├── income.py
+│   ├── expense.py
+│   └── task_history.py
+├── routes/
+│   ├── __init__.py
+│   ├── auth.py
+│   ├── tasks.py
+│   ├── users.py
+│   ├── finances.py
+│   └── locations.py
+├── services/
+│   ├── __init__.py
+│   ├── google_api.py
+│   └── notification.py
+├── templates/
+└── static/
