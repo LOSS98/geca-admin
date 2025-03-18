@@ -14,6 +14,7 @@ def users_map():
     if is_not_connected():
         return redirect(url_for('auth.login'))
 
+
     error_message = None
     if 'error' in request.args:
         error_message = request.args.get('error')

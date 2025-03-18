@@ -19,19 +19,19 @@
     <link href="{{ url_for('static', filename='/assets/css/style-svg.css')}}" rel="stylesheet"/>
 
     <link id="pagestyle" href="{{ url_for('static', filename='/assets/css/style-general.css')}}" rel="stylesheet"/>
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "7533bc3d-3e43-43bc-b39f-eefbc3851783",
-      safari_web_id: "web.onesignal.auto.3145fc89-5d6b-4727-99ef-e9ab80472582",
-      notifyButton: {
-        enable: true,
-      },
-    });
-  });
-</script>
+{#<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>#}
+{#<script>#}
+{#  window.OneSignalDeferred = window.OneSignalDeferred || [];#}
+{#  OneSignalDeferred.push(async function(OneSignal) {#}
+{#    await OneSignal.init({#}
+{#      appId: "7533bc3d-3e43-43bc-b39f-eefbc3851783",#}
+{#      safari_web_id: "web.onesignal.auto.3145fc89-5d6b-4727-99ef-e9ab80472582",#}
+{#      notifyButton: {#}
+{#        enable: true,#}
+{#      },#}
+{#    });#}
+{#  });#}
+{#</script>#}
         <script>
         window.onload = function () {
             if (navigator.geolocation) {

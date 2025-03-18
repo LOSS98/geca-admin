@@ -2,6 +2,103 @@
 
 {% block head %}
 <style>
+/* Styles généraux pour la version mobile */
+@media (max-width: 768px) {
+  /* Rendre les cartes de tâches plus compactes */
+  .task-card {
+    margin-bottom: 0.75rem;
+    padding: 0.5rem;
+  }
+
+  .task-card .card-body {
+    padding: 0.75rem;
+  }
+
+  /* Ajuster la taille des textes */
+  .task-card .card-title {
+    font-size: 1rem;
+  }
+
+  .task-card .card-text {
+    font-size: 0.85rem;
+  }
+
+  /* Boutons d'action */
+  .task-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .task-actions .btn {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  /* Badges */
+  .task-badge, .priority-badge, .role-badge {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.35rem;
+  }
+
+  /* Modal */
+  .modal-dialog {
+    margin: 1.75rem 0.5rem;
+    max-width: none;
+    width: calc(100% - 1rem);
+  }
+
+  .modal-body {
+    padding: 1rem 0.5rem;
+  }
+
+  /* Floating button */
+  .floating-button {
+    width: 50px;
+    height: 50px;
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  /* Onglets et filtres */
+  .nav-tabs .nav-link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .dropdown-menu {
+    font-size: 0.85rem;
+  }
+
+  /* Barre de recherche */
+  .search-container .form-control {
+    font-size: 0.9rem;
+    padding: 0.375rem 0.75rem;
+  }
+
+  /* Modals */
+  .modal-header {
+    padding: 1rem 0.5rem;
+  }
+
+  .modal-footer {
+    padding: 0.5rem;
+  }
+}
+
+/* Styles spécifiques pour les écrans très petits */
+@media (max-width: 375px) {
+  .task-actions .btn {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.4rem;
+  }
+
+  .task-badge, .priority-badge, .role-badge {
+    font-size: 0.65rem;
+    padding: 0.1rem 0.3rem;
+  }
+}
   .task-card {
     margin-bottom: 1.5rem;
     transition: all 0.3s ease;
@@ -71,7 +168,7 @@
     transform: scale(1.1);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
   }
-  #tasks-container {
+  #tasks-container, #created-tasks-container, #assigned-tasks-container {
     min-height: 200px;
   }
   .no-tasks {
@@ -175,6 +272,41 @@
     color: #6c757d;
     float: right;
   }
+
+  /* Styles pour les onglets */
+  .nav-tabs .nav-link {
+    font-weight: 500;
+    border: 0;
+    padding: 1rem 1.5rem;
+    color: #344767;
+  }
+
+  .nav-tabs .nav-link.active {
+    color: #5e72e4;
+    font-weight: 600;
+    border-bottom: 2px solid #5e72e4;
+    background-color: transparent;
+  }
+
+  /* Style pour la barre de recherche */
+  .search-container {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Badge pour indiquer le nombre de tâches */
+  .task-count-badge {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 20px;
+    height: 20px;
+    font-size: 0.75rem;
+    padding: 0 0.5rem;
+    border-radius: 10px;
+    background-color: #5e72e4;
+    color: white;
+    margin-left: 0.5rem;
+  }
 </style>
 {% endblock %}
 
@@ -206,44 +338,191 @@
   <div class="row">
     <div class="col-12">
       <div class="card">
-        <div class="card-header pb-0 p-3">
-          <div class="row">
-            <div class="col-md-6">
-              <h6 class="mb-0">Liste des tâches</h6>
-            </div>
-            <div class="col-md-6 d-flex justify-content-end">
-              <div class="dropdown me-2">
-                <button class="btn bg-gradient-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="fa fa-filter me-2"></i> Filtrer par état
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="filterDropdown">
-                  <li><a class="dropdown-item filter-option" data-filter="all" href="#">Toutes les tâches</a></li>
-                  <li><a class="dropdown-item filter-option" data-filter="assigned" href="#">Assignées</a></li>
-                  <li><a class="dropdown-item filter-option" data-filter="disputed" href="#">Contestées</a></li>
-                  <li><a class="dropdown-item filter-option" data-filter="to_validated" href="#">À valider</a></li>
-                  <li><a class="dropdown-item filter-option" data-filter="transfer_pending" href="#">Cession en attente</a></li>
-                  <li><a class="dropdown-item filter-option" data-filter="done" href="#">Terminées</a></li>
-                </ul>
-              </div>
-              <div class="dropdown">
-                <button class="btn bg-gradient-info dropdown-toggle" type="button" id="priorityFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="fa fa-sort-amount-down me-2"></i> Filtrer par priorité
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="priorityFilterDropdown">
-                  <li><a class="dropdown-item priority-filter-option" data-priority="all" href="#">Toutes les priorités</a></li>
-                  <li><a class="dropdown-item priority-filter-option" data-priority="high" href="#">Haute</a></li>
-                  <li><a class="dropdown-item priority-filter-option" data-priority="medium" href="#">Moyenne</a></li>
-                  <li><a class="dropdown-item priority-filter-option" data-priority="low" href="#">Faible</a></li>
-                </ul>
-              </div>
+        <div class="card-header p-3">
+          <!-- Barre de recherche -->
+          <div class="search-container">
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="fa fa-search"></i>
+              </span>
+              <input type="text" class="form-control" id="searchInput" placeholder="Rechercher une tâche par sujet, description, assigné...">
             </div>
           </div>
+
+          <!-- Onglets -->
+          <ul class="nav nav-tabs" id="taskTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="all-tasks-tab" data-bs-toggle="tab" data-bs-target="#all-tasks-pane" type="button" role="tab" aria-controls="all-tasks-pane" aria-selected="true">
+                Toutes les tâches <span class="task-count-badge" id="all-tasks-count">0</span>
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="created-tasks-tab" data-bs-toggle="tab" data-bs-target="#created-tasks-pane" type="button" role="tab" aria-controls="created-tasks-pane" aria-selected="false">
+                Tâches créées <span class="task-count-badge" id="created-tasks-count">0</span>
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="assigned-tasks-tab" data-bs-toggle="tab" data-bs-target="#assigned-tasks-pane" type="button" role="tab" aria-controls="assigned-tasks-pane" aria-selected="false">
+                Tâches assignées <span class="task-count-badge" id="assigned-tasks-count">0</span>
+              </button>
+            </li>
+          </ul>
         </div>
-        <div class="card-body p-3">
-          <div id="tasks-container">
-            <div class="loading-spinner">
-              <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Chargement...</span>
+          <div class="card-body p-3">
+          <div class="tab-content" id="taskTabsContent">
+            <!-- Onglet: Toutes les tâches -->
+            <div class="tab-pane fade show active" id="all-tasks-pane" role="tabpanel" aria-labelledby="all-tasks-tab">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                  <div class="dropdown me-2 d-inline-block">
+                    <button class="btn bg-gradient-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fa fa-filter me-2"></i> État
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                      <li><a class="dropdown-item filter-option" data-filter="all" href="#">Toutes les tâches</a></li>
+                      <li><a class="dropdown-item filter-option" data-filter="assigned" href="#">Assignées</a></li>
+                      <li><a class="dropdown-item filter-option" data-filter="disputed" href="#">Contestées</a></li>
+                      <li><a class="dropdown-item filter-option" data-filter="to_validated" href="#">À valider</a></li>
+                      <li><a class="dropdown-item filter-option" data-filter="transfer_pending" href="#">Cession en attente</a></li>
+                      <li><a class="dropdown-item filter-option" data-filter="done" href="#">Terminées</a></li>
+                    </ul>
+                  </div>
+                  <div class="dropdown me-2 d-inline-block">
+                    <button class="btn bg-gradient-info dropdown-toggle" type="button" id="priorityFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fa fa-sort-amount-down me-2"></i> Priorité
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="priorityFilterDropdown">
+                      <li><a class="dropdown-item priority-filter-option" data-priority="all" href="#">Toutes les priorités</a></li>
+                      <li><a class="dropdown-item priority-filter-option" data-priority="high" href="#">Haute</a></li>
+                      <li><a class="dropdown-item priority-filter-option" data-priority="medium" href="#">Moyenne</a></li>
+                      <li><a class="dropdown-item priority-filter-option" data-priority="low" href="#">Faible</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div>
+                  <div class="dropdown">
+                    <button class="btn bg-gradient-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fa fa-sort me-2"></i> Trier par
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                      <li><a class="dropdown-item sort-option" data-sort="due_date" href="#">Date d'échéance</a></li>
+                      <li><a class="dropdown-item sort-option" data-sort="priority" href="#">Priorité</a></li>
+                      <li><a class="dropdown-item sort-option" data-sort="time_remaining" href="#">Temps restant</a></li>
+                      <li><a class="dropdown-item sort-option" data-sort="creation_date" href="#">Date de création</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div id="tasks-container">
+                <div class="loading-spinner">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Chargement...</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Onglet: Tâches créées -->
+            <div class="tab-pane fade" id="created-tasks-pane" role="tabpanel" aria-labelledby="created-tasks-tab">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                  <div class="dropdown me-2 d-inline-block">
+                    <button class="btn bg-gradient-primary dropdown-toggle" type="button" id="createdFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fa fa-filter me-2"></i> État
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="createdFilterDropdown">
+                      <li><a class="dropdown-item created-filter-option" data-filter="all" href="#">Toutes les tâches</a></li>
+                      <li><a class="dropdown-item created-filter-option" data-filter="assigned" href="#">Assignées</a></li>
+                      <li><a class="dropdown-item created-filter-option" data-filter="disputed" href="#">Contestées</a></li>
+                      <li><a class="dropdown-item created-filter-option" data-filter="to_validated" href="#">À valider</a></li>
+                      <li><a class="dropdown-item created-filter-option" data-filter="transfer_pending" href="#">Cession en attente</a></li>
+                      <li><a class="dropdown-item created-filter-option" data-filter="done" href="#">Terminées</a></li>
+                    </ul>
+                  </div>
+                  <div class="dropdown me-2 d-inline-block">
+                    <button class="btn bg-gradient-info dropdown-toggle" type="button" id="createdPriorityDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fa fa-sort-amount-down me-2"></i> Priorité
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="createdPriorityDropdown">
+                      <li><a class="dropdown-item created-priority-option" data-priority="all" href="#">Toutes les priorités</a></li>
+                      <li><a class="dropdown-item created-priority-option" data-priority="high" href="#">Haute</a></li>
+                      <li><a class="dropdown-item created-priority-option" data-priority="medium" href="#">Moyenne</a></li>
+                      <li><a class="dropdown-item created-priority-option" data-priority="low" href="#">Faible</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div>
+                  <div class="dropdown">
+                    <button class="btn bg-gradient-secondary dropdown-toggle" type="button" id="createdSortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fa fa-sort me-2"></i> Trier par
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="createdSortDropdown">
+                      <li><a class="dropdown-item created-sort-option" data-sort="due_date" href="#">Date d'échéance</a></li>
+                      <li><a class="dropdown-item created-sort-option" data-sort="priority" href="#">Priorité</a></li>
+                      <li><a class="dropdown-item created-sort-option" data-sort="time_remaining" href="#">Temps restant</a></li>
+                      <li><a class="dropdown-item created-sort-option" data-sort="creation_date" href="#">Date de création</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div id="created-tasks-container">
+                <div class="loading-spinner">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Chargement...</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Onglet: Tâches assignées -->
+            <div class="tab-pane fade" id="assigned-tasks-pane" role="tabpanel" aria-labelledby="assigned-tasks-tab">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                  <div class="dropdown me-2 d-inline-block">
+                    <button class="btn bg-gradient-primary dropdown-toggle" type="button" id="assignedFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fa fa-filter me-2"></i> État
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="assignedFilterDropdown">
+                      <li><a class="dropdown-item assigned-filter-option" data-filter="all" href="#">Toutes les tâches</a></li>
+                      <li><a class="dropdown-item assigned-filter-option" data-filter="assigned" href="#">Assignées</a></li>
+                      <li><a class="dropdown-item assigned-filter-option" data-filter="disputed" href="#">Contestées</a></li>
+                      <li><a class="dropdown-item assigned-filter-option" data-filter="to_validated" href="#">À valider</a></li>
+                      <li><a class="dropdown-item assigned-filter-option" data-filter="transfer_pending" href="#">Cession en attente</a></li>
+                      <li><a class="dropdown-item assigned-filter-option" data-filter="done" href="#">Terminées</a></li>
+                    </ul>
+                  </div>
+                  <div class="dropdown me-2 d-inline-block">
+                    <button class="btn bg-gradient-info dropdown-toggle" type="button" id="assignedPriorityDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fa fa-sort-amount-down me-2"></i> Priorité
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="assignedPriorityDropdown">
+                      <li><a class="dropdown-item assigned-priority-option" data-priority="all" href="#">Toutes les priorités</a></li>
+                      <li><a class="dropdown-item assigned-priority-option" data-priority="high" href="#">Haute</a></li>
+                      <li><a class="dropdown-item assigned-priority-option" data-priority="medium" href="#">Moyenne</a></li>
+                      <li><a class="dropdown-item assigned-priority-option" data-priority="low" href="#">Faible</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div>
+                  <div class="dropdown">
+                    <button class="btn bg-gradient-secondary dropdown-toggle" type="button" id="assignedSortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fa fa-sort me-2"></i> Trier par
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="assignedSortDropdown">
+                      <li><a class="dropdown-item assigned-sort-option" data-sort="due_date" href="#">Date d'échéance</a></li>
+                      <li><a class="dropdown-item assigned-sort-option" data-sort="priority" href="#">Priorité</a></li>
+                      <li><a class="dropdown-item assigned-sort-option" data-sort="time_remaining" href="#">Temps restant</a></li>
+                      <li><a class="dropdown-item assigned-sort-option" data-sort="creation_date" href="#">Date de création</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div id="assigned-tasks-container">
+                <div class="loading-spinner">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Chargement...</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -256,7 +535,6 @@
 <a href="/createTask" class="floating-button">
   <i class="fa fa-plus"></i>
 </a>
-
 <!-- Modal pour changer la priorité -->
 <div class="modal fade" id="priorityModal" tabindex="-1" aria-labelledby="priorityModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -391,7 +669,7 @@
             <select class="form-select" id="reassignRoleSelect" multiple>
               <option value="Team Bureau">Team Bureau</option>
               <option value="Team Partenariat">Team Partenariat</option>
-              <option value="Team Com">Team Com</option>
+               <option value="Team Com">Team Com</option>
               <option value="Team BDA">Team BDA</option>
               <option value="Team BDS">Team BDS</option>
               <option value="Team Soirée">Team Soirée</option>
@@ -415,7 +693,7 @@
         </div>
 
         <div id="reassignAllSection" style="display: none;">
-          <div class="alert alert-info text-white">
+          <div class="alert alert-info">
             <i class="fa fa-info-circle me-2"></i>
             Cette tâche sera visible pour tous les utilisateurs dans la section "Tâches disponibles". N'importe quel utilisateur pourra prendre cette tâche.
           </div>
@@ -429,6 +707,91 @@
   </div>
 </div>
 
+<!-- Modal pour les détails de la tâche -->
+<div class="modal fade" id="taskDetailsModal" tabindex="-1" aria-labelledby="taskDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="taskDetailsModalLabel">Détails de la tâche</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="taskDetailsContent">
+          <!-- Les détails seront chargés dynamiquement ici -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <h6>Informations générales</h6>
+              <div class="mb-2">
+                <strong>Sujet:</strong> <span id="detail-subject"></span>
+              </div>
+              <div class="mb-2">
+                <strong>Description:</strong> <p id="detail-description" class="text-muted"></p>
+              </div>
+              <div class="mb-2">
+                <strong>État:</strong> <span id="detail-state"></span>
+              </div>
+              <div class="mb-2">
+                <strong>Priorité:</strong> <span id="detail-priority"></span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h6>Dates et assignation</h6>
+              <div class="mb-2">
+                <strong>Créée par:</strong> <span id="detail-assigned-by"></span>
+              </div>
+              <div class="mb-2">
+                <strong>Date de création:</strong> <span id="detail-assigned-at"></span>
+              </div>
+              <div class="mb-2">
+                <strong>Date de début:</strong> <span id="detail-start-date"></span>
+              </div>
+              <div class="mb-2">
+                <strong>Date d'échéance:</strong> <span id="detail-due-date"></span>
+              </div>
+              <div class="mb-2">
+                <strong>Temps restant:</strong> <span id="detail-time-remaining"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <h6>Assignés à cette tâche</h6>
+              <ul id="detail-assignees" class="list-group">
+                <!-- Liste des assignés remplie dynamiquement -->
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <h6>Équipes cibles</h6>
+              <div id="detail-target-roles">
+                <!-- Badges des rôles remplis dynamiquement -->
+              </div>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12">
+              <h6>Historique récent</h6>
+              <div id="detail-history" class="task-history">
+                <!-- Historique de la tâche rempli dynamiquement -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div id="detail-actions" class="w-100 d-flex justify-content-between">
+          <!-- Les boutons d'actions seront ajoutés dynamiquement ici -->
+          <div class="left-actions">
+            <!-- Actions du côté gauche -->
+          </div>
+          <div class="right-actions">
+            <!-- Actions du côté droit -->
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
   // Task state translations
   const stateTranslations = {
@@ -463,6 +826,43 @@
     'assigned_by_peer': 'Assignée par un pair'
   };
 
+  // Get current user's email
+  const userEmail = "{{ user_info.email }}";
+
+  // Get current user's role
+  const userRole = "{{ user_role }}";
+
+  // Storage for all tasks
+  let allTasks = [];
+  let createdTasks = [];
+  let assignedTasks = [];
+  let usersForTransfer = [];
+
+  // Current filter and sort settings for each tab
+  const settings = {
+    all: {
+      stateFilter: 'all',
+      priorityFilter: 'all',
+      sortBy: 'due_date',
+      sortDirection: 'asc',
+      searchQuery: ''
+    },
+    created: {
+      stateFilter: 'all',
+      priorityFilter: 'all',
+      sortBy: 'due_date',
+      sortDirection: 'asc',
+      searchQuery: ''
+    },
+    assigned: {
+      stateFilter: 'all',
+      priorityFilter: 'all',
+      sortBy: 'due_date',
+      sortDirection: 'asc',
+      searchQuery: ''
+    }
+  };
+
   // Get state badge class
   function getStateBadgeClass(state) {
     switch (state) {
@@ -477,6 +877,7 @@
 
   // Format date
   function formatDate(dateString) {
+    if (!dateString) return 'N/A';
     const date = new Date(dateString);
     return date.toLocaleString('fr-FR', {
       day: '2-digit',
@@ -527,29 +928,366 @@
     return `<span class="priority-badge priority-badge-${priority}">${priorityText}</span>`;
   }
 
-  // Get current user's role
-  const userRole = "{{ user_role }}";
-  // Get current user's email
-  const userEmail = "{{ user_info.email }}";
+  // Search function
+  function searchTasks(tasks, query) {
+    if (!query || query.trim() === '') return tasks;
 
-  // Variable pour stocker la liste des utilisateurs
-  let usersForTransfer = [];
+    query = query.toLowerCase().trim();
+    return tasks.filter(task => {
+      // Search in subject
+      if (task.subject.toLowerCase().includes(query)) return true;
 
-  // Fonction pour charger la liste des utilisateurs
-  function loadUsers() {
-    fetch('/api/users')
-      .then(response => response.json())
-      .then(users => {
-        usersForTransfer = users;
-      })
-      .catch(error => {
-        console.error('Error fetching users:', error);
-      });
+      // Search in description
+      if (task.description && task.description.toLowerCase().includes(query)) return true;
+
+      // Search in assignees
+      if (task.assignees.some(assignee => assignee.toLowerCase().includes(query))) return true;
+
+      // Search in assigned_by
+      if (task.assigned_by.toLowerCase().includes(query)) return true;
+
+      // Search in target roles
+      if (task.target_roles && task.target_roles.some(role => role.toLowerCase().includes(query))) return true;
+
+      return false;
+    });
   }
 
-  // Charger les utilisateurs au chargement de la page
-  document.addEventListener('DOMContentLoaded', loadUsers);
+  // Filter tasks based on state and priority
+  function filterTasks(tasks, stateFilter, priorityFilter) {
+    return tasks.filter(task => {
+      // Apply state filter
+      if (stateFilter !== 'all' && task.state !== stateFilter) return false;
 
+      // Apply priority filter
+      if (priorityFilter !== 'all' && task.priority !== priorityFilter) return false;
+
+      return true;
+    });
+  }
+
+  // Get time remaining in minutes for sorting
+  function getTimeRemainingMinutes(task) {
+    if (task.time_info && task.time_info.status === 'upcoming') {
+      return task.time_info.remaining.total_minutes;
+    } else if (task.time_info && task.time_info.status === 'overdue') {
+      return -task.time_info.delay.total_minutes; // Negative for overdue tasks
+    }
+    return 0;
+  }
+
+  // Sort tasks based on criteria
+  function sortTasks(tasks, sortBy, direction = 'asc') {
+    const directionMultiplier = direction === 'asc' ? 1 : -1;
+
+    return [...tasks].sort((a, b) => {
+      switch (sortBy) {
+        case 'due_date':
+          return directionMultiplier * (new Date(a.due_date) - new Date(b.due_date));
+
+        case 'priority':
+          const priorityOrder = { 'high': 3, 'medium': 2, 'low': 1 };
+          return directionMultiplier * (priorityOrder[b.priority] - priorityOrder[a.priority]);
+
+        case 'time_remaining':
+          return directionMultiplier * (getTimeRemainingMinutes(a) - getTimeRemainingMinutes(b));
+
+        case 'creation_date':
+          return directionMultiplier * (new Date(a.assigned_at) - new Date(b.assigned_at));
+
+        default:
+          return 0;
+      }
+    });
+  }
+  // Create task card HTML
+  function createTaskCard(task) {
+    const isTaskAssigner = task.assigned_by === userEmail;
+    const canManageTask = task.can_manage || task.assigned_by === userEmail;
+    const isAssignee = task.assignees.includes(userEmail);
+
+    let actionButtons = '';
+
+    if (task.state === 'assigned') {
+      // Only show these buttons to assignees
+      if (isAssignee) {
+        actionButtons += `
+          <button onclick="handleTaskAction(event, ${task.id}, 'dispute')" class="btn btn-danger btn-sm">Contester</button>
+          <button onclick="handleTaskAction(event, ${task.id}, 'validate')" class="btn btn-warning btn-sm">Faire valider</button>
+          <button onclick="releaseTask(event, ${task.id})" class="btn btn-info btn-sm">
+            <i class="fa fa-unlock"></i> Libérer
+          </button>
+        `;
+      }
+
+      if (canManageTask) {
+        actionButtons += `
+          <button onclick="handleTaskAction(event, ${task.id}, 'complete')" class="btn btn-success btn-sm">Terminer</button>
+        `;
+      }
+
+      // Ajouter le bouton de rappel pour les tâches assignées avec des assignés
+      if (canManageTask && task.assignees.length > 0) {
+        actionButtons += `
+          <button onclick="handleReminderAction(event, ${task.id})" class="btn btn-info btn-sm">
+            <i class="fa fa-bell"></i> Relancer
+          </button>
+        `;
+      }
+
+      if(isTaskAssigner && task.assignees.length > 0 || isAssignee){
+        actionButtons += `
+          <button onclick="openReassignModal(event, ${task.id})" class="btn btn-primary btn-sm">
+            <i class="fa fa-share"></i> Réassigner
+          </button>
+        `;
+      }
+
+      // Pour le créateur: ajouter des boutons pour réassigner et transférer la propriété
+      if (isTaskAssigner && task.assignees.length > 0) {
+        actionButtons += `
+          <button onclick="openOwnershipTransferModal(event, ${task.id})" class="btn btn-secondary btn-sm">
+            <i class="fa fa-exchange"></i> Transférer propriété
+          </button>
+        `;
+      }
+    } else if (task.state === 'disputed') {
+      if (canManageTask) {
+        actionButtons += `
+          <button onclick="handleTaskAction(event, ${task.id}, 'reject-dispute')" class="btn btn-warning btn-sm">Rejeter la contestation</button>
+          <button onclick="handleTaskAction(event, ${task.id}, 'delete')" class="btn btn-danger btn-sm">Supprimer la tâche</button>
+        `;
+      }
+    } else if (task.state === 'to_validated') {
+      if (canManageTask) {
+        actionButtons += `
+          <button onclick="handleTaskAction(event, ${task.id}, 'complete')" class="btn btn-success btn-sm">Valider la tâche</button>
+          <button onclick="handleTaskAction(event, ${task.id}, 'reject-validation')" class="btn btn-danger btn-sm">Refuser la validation</button>
+        `;
+      }
+      // Allow assignees to cancel their validation request
+      if (isAssignee) {
+        actionButtons += `
+          <button onclick="handleTaskAction(event, ${task.id}, 'cancel-validation')" class="btn btn-secondary btn-sm">Annuler la validation</button>
+        `;
+      }
+    } else if (task.state === 'transfer_pending') {
+      // Afficher des boutons pour approuver/rejeter la cession si on est le créateur
+      if (isTaskAssigner) {
+        actionButtons += `
+          <button onclick="handleTaskAction(event, ${task.id}, 'approve-transfer')" class="btn btn-success btn-sm">
+            Approuver la cession
+          </button>
+          <button onclick="handleTaskAction(event, ${task.id}, 'reject-transfer')" class="btn btn-danger btn-sm">
+            Rejeter la cession
+          </button>
+        `;
+      }
+
+      // Afficher un message spécial si on est celui qui a demandé la cession
+      if (task.transfer_from === userEmail) {
+        actionButtons += `
+          <span class="task-badge badge-info">En attente d'approbation de cession</span>
+        `;
+      }
+    } else if (task.state === 'done') {
+      // Allow assigner/admin to reopen completed tasks
+      if (canManageTask) {
+        actionButtons += `
+          <button onclick="handleTaskAction(event, ${task.id}, 'reopen')" class="btn btn-info btn-sm">Réouvrir la tâche</button>
+        `;
+      }
+    }
+
+    // Add delete button for admin/assigners at all times except disputed state
+    if (canManageTask && task.state !== 'disputed') {
+      actionButtons += `
+        <button onclick="handleTaskAction(event, ${task.id}, 'delete')" class="btn btn-danger btn-sm">Supprimer</button>
+      `;
+    }
+
+    // Add priority change button for admin/assigners
+    if (canManageTask) {
+      actionButtons += `
+        <button onclick="openPriorityModal(${task.id}, '${task.priority}')" class="btn btn-info btn-sm">Changer la priorité</button>
+      `;
+    }
+
+    // Add details button for all tasks
+    actionButtons += `
+      <button onclick="openTaskDetailsModal(${task.id})" class="btn btn-secondary btn-sm">
+        <i class="fa fa-eye"></i> Détails
+      </button>
+    `;
+
+    // Format time info
+    let timeInfoHTML = '';
+    if (task.time_info) {
+      const timeInfoClass = getTimeInfoClass(task.time_info);
+      timeInfoHTML = `
+        <div class="time-info ${timeInfoClass}">
+          <i class="fa fa-clock"></i> ${task.time_info.message}
+        </div>
+      `;
+    }
+
+    // Show role badge for task (assigned by you or assigned to you)
+    let roleBadgeHtml = '';
+    if (task.is_assigner) {
+      roleBadgeHtml = '<span class="task-badge badge-info">Attribuée par vous</span>';
+    } else if (task.assignees.includes(userEmail)) {
+      roleBadgeHtml = '<span class="task-badge badge-info">Attribuée à vous</span>';
+    }
+
+    // Information sur la cession en cours si applicable
+    let transferInfoHtml = '';
+    if (task.state === 'transfer_pending' && task.transfer_from && task.transfer_to) {
+      transferInfoHtml = `<div class="text-info"><strong>En attente de cession</strong> : De ${task.transfer_from} à ${task.transfer_to}</div>`;
+    }
+
+    // Afficher les rôles cibles si présents
+    let targetRolesBadgesHtml = '';
+    if (task.target_roles && task.target_roles.length > 0) {
+      targetRolesBadgesHtml = task.target_roles.map(role =>
+        `<span class="role-badge">Rôle: ${role}</span>`
+      ).join(' ');
+    }
+
+    // Get list of assignees
+    const assigneesText = task.assignees.length > 0
+      ? `<div class="float-right text-muted small">Attribuée à: ${task.assignees.join(', ')}</div>`
+      : '';
+
+    return `
+      <div class="task-card card priority-${task.priority}" data-task-state="${task.state}" data-task-priority="${task.priority}" data-task-id="${task.id}">
+        <div class="card-body">
+
+            <div>
+              <h4 class="card-title mb-0">${task.subject}</h4>
+              <div class="mt-1">
+                <span class="task-badge ${getStateBadgeClass(task.state)}">${stateTranslations[task.state]}</span>
+                ${getPriorityBadge(task.priority)}
+                ${roleBadgeHtml}
+              </div>
+              <div class="text-muted small">Créée par: ${task.assigned_by}</div>
+              ${assigneesText}
+              <div class="text-muted small">Échéance: ${formatDate(task.due_date)}</div>
+              ${timeInfoHTML}
+            </div>
+
+
+          <div class="mb-2">
+            ${targetRolesBadgesHtml}
+          </div>
+
+          <p class="card-text text-truncate">${task.description || 'Pas de description'}</p>
+
+          <div class="task-actions">
+            ${actionButtons}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Render tasks to container based on filters, sorting, and search query
+  function renderTasks(tab, tasks) {
+    const containerId = tab === 'all' ? 'tasks-container' :
+                        tab === 'created' ? 'created-tasks-container' :
+                        'assigned-tasks-container';
+    const container = document.getElementById(containerId);
+
+    // Apply settings from the current tab
+    const { stateFilter, priorityFilter, sortBy, searchQuery } = settings[tab];
+
+    // Filter tasks
+    let filteredTasks = filterTasks(tasks, stateFilter, priorityFilter);
+
+    // Apply search if needed
+    if (searchQuery) {
+      filteredTasks = searchTasks(filteredTasks, searchQuery);
+    }
+
+    // Sort tasks
+    filteredTasks = sortTasks(filteredTasks, sortBy);
+
+    // Update task count
+    const countElement = document.getElementById(`${tab}-tasks-count`);
+    if (countElement) {
+      countElement.textContent = filteredTasks.length;
+    }
+
+    // Render filtered tasks
+    if (filteredTasks.length === 0) {
+      container.innerHTML = `
+        <div class="no-tasks">
+          <p>Aucune tâche ne correspond aux critères sélectionnés</p>
+        </div>
+      `;
+    } else {
+      container.innerHTML = filteredTasks.map(task => createTaskCard(task)).join('');
+    }
+  }
+
+  // Fetch all tasks from API
+  function fetchTasks() {
+    // Show loading spinner in all containers
+    document.getElementById('tasks-container').innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+    `;
+    document.getElementById('created-tasks-container').innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+    `;
+    document.getElementById('assigned-tasks-container').innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+    `;
+
+    fetch('/api/tasks')
+      .then(response => response.json())
+      .then(tasks => {
+        // Store all tasks
+        allTasks = tasks;
+
+        // Filter tasks for each category
+        createdTasks = tasks.filter(task => task.assigned_by === userEmail);
+        assignedTasks = tasks.filter(task => task.assignees.includes(userEmail));
+
+        // Render tasks in each tab
+        renderTasks('all', allTasks);
+        renderTasks('created', createdTasks);
+        renderTasks('assigned', assignedTasks);
+      })
+      .catch(error => {
+        console.error('Error fetching tasks:', error);
+        document.getElementById('tasks-container').innerHTML = `
+          <div class="alert alert-danger">
+            Une erreur est survenue lors du chargement des tâches. Veuillez réessayer.
+          </div>
+        `;
+        document.getElementById('created-tasks-container').innerHTML = `
+          <div class="alert alert-danger">
+            Une erreur est survenue lors du chargement des tâches. Veuillez réessayer.
+          </div>
+        `;
+        document.getElementById('assigned-tasks-container').innerHTML = `
+          <div class="alert alert-danger">
+            Une erreur est survenue lors du chargement des tâches. Veuillez réessayer.
+          </div>
+        `;
+      });
+  }
   // Fonction pour ouvrir le modal d'historique des tâches
   function openHistoryModal(event, taskId, history) {
     event.preventDefault();
@@ -580,6 +1318,135 @@
     // Afficher le modal
     const historyModal = new bootstrap.Modal(document.getElementById('historyModal'));
     historyModal.show();
+  }
+
+  // Fonction pour ouvrir le modal de détails de la tâche
+  function openTaskDetailsModal(taskId) {
+    // Trouver la tâche
+    const task = allTasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    // Mettre à jour le titre du modal
+    document.getElementById('taskDetailsModalLabel').textContent = `Détails de la tâche: ${task.subject}`;
+
+    // Remplir les informations générales
+    document.getElementById('detail-subject').textContent = task.subject;
+    document.getElementById('detail-description').textContent = task.description || 'Pas de description';
+    document.getElementById('detail-state').innerHTML = `<span class="task-badge ${getStateBadgeClass(task.state)}">${stateTranslations[task.state]}</span>`;
+    document.getElementById('detail-priority').innerHTML = getPriorityBadge(task.priority);
+    document.getElementById('detail-assigned-by').textContent = task.assigned_by;
+    document.getElementById('detail-assigned-at').textContent = formatDate(task.assigned_at);
+    document.getElementById('detail-start-date').textContent = formatDate(task.start_date);
+    document.getElementById('detail-due-date').textContent = formatDate(task.due_date);
+
+    // Temps restant
+    let timeRemainingText = 'Non disponible';
+    if (task.time_info) {
+      timeRemainingText = task.time_info.message;
+    }
+    document.getElementById('detail-time-remaining').innerHTML = `<span class="${getTimeInfoClass(task.time_info)}">${timeRemainingText}</span>`;
+
+    // Liste des assignés
+    const assigneesList = document.getElementById('detail-assignees');
+    assigneesList.innerHTML = '';
+
+    if (task.assignees && task.assignees.length > 0) {
+      task.assignees.forEach(assignee => {
+        const li = document.createElement('li');
+        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+        li.textContent = assignee;
+
+        // Ajouter un badge si c'est l'utilisateur courant
+        if (assignee === userEmail) {
+          const badge = document.createElement('span');
+          badge.className = 'badge bg-primary rounded-pill';
+          badge.textContent = 'Vous';
+          li.appendChild(badge);
+        }
+
+        assigneesList.appendChild(li);
+      });
+    } else {
+      assigneesList.innerHTML = '<p class="text-muted">Aucun assigné</p>';
+    }
+
+    // Équipes cibles
+    const targetRolesDiv = document.getElementById('detail-target-roles');
+    targetRolesDiv.innerHTML = '';
+
+    if (task.target_roles && task.target_roles.length > 0) {
+      task.target_roles.forEach(role => {
+        const badge = document.createElement('span');
+        badge.className = 'role-badge';
+        badge.textContent = role;
+        targetRolesDiv.appendChild(badge);
+      });
+    } else {
+      targetRolesDiv.innerHTML = '<p class="text-muted">Aucune équipe cible</p>';
+    }
+
+    // Historique récent
+    const historyDiv = document.getElementById('detail-history');
+    historyDiv.innerHTML = '';
+
+    if (task.history && task.history.length > 0) {
+      task.history.slice(0, 5).forEach(entry => {
+        const actionText = actionTranslations[entry.action] || entry.action;
+        const div = document.createElement('div');
+        div.className = 'task-history-item';
+        div.innerHTML = `
+          <span class="task-history-action">${actionText}</span> par ${entry.user_email}
+          <span class="task-history-date">${formatDate(entry.timestamp)}</span>
+        `;
+        historyDiv.appendChild(div);
+      });
+
+      // Ajouter un lien pour voir tout l'historique
+      if (task.history.length > 5) {
+        const viewMoreLink = document.createElement('a');
+        viewMoreLink.href = '#';
+        viewMoreLink.className = 'mt-2 d-block text-primary';
+        viewMoreLink.textContent = 'Voir tout l\'historique';
+        viewMoreLink.onclick = (e) => {
+          e.preventDefault();
+          openHistoryModal(e, task.id, task.history);
+        };
+        historyDiv.appendChild(viewMoreLink);
+      }
+    } else {
+      historyDiv.innerHTML = '<p class="text-muted">Aucun historique disponible</p>';
+    }
+
+    // Boutons d'action
+    const leftActions = document.querySelector('#detail-actions .left-actions');
+    leftActions.innerHTML = '';
+
+    const isTaskAssigner = task.assigned_by === userEmail;
+    const canManageTask = task.can_manage || task.assigned_by === userEmail;
+    const isAssignee = task.assignees.includes(userEmail);
+
+    // Ajouter les boutons d'action selon l'état de la tâche
+    // (similaire à la fonction createTaskCard)
+    if (task.state === 'assigned') {
+      if (isAssignee) {
+        leftActions.innerHTML += `
+          <button onclick="handleTaskAction(event, ${task.id}, 'dispute')" class="btn btn-danger">Contester</button>
+          <button onclick="handleTaskAction(event, ${task.id}, 'validate')" class="btn btn-warning">Faire valider</button>
+          <button onclick="releaseTask(event, ${task.id})" class="btn btn-info">Libérer</button>
+        `;
+      }
+
+      if (canManageTask) {
+        leftActions.innerHTML += `
+          <button onclick="handleTaskAction(event, ${task.id}, 'complete')" class="btn btn-success">Terminer la tâche</button>
+        `;
+      }
+    }
+    // Autres états...
+
+    // Afficher le modal
+    const detailsModal = new bootstrap.Modal(document.getElementById('taskDetailsModal'));
+    detailsModal.show();
   }
 
   // Fonction pour libérer une tâche (la rendre disponible pour d'autres)
@@ -627,7 +1494,6 @@
     });
   }
 
-
   // Fonction pour ouvrir le modal de transfert de propriété
   function openOwnershipTransferModal(event, taskId) {
     event.preventDefault();
@@ -654,7 +1520,6 @@
     const transferOwnershipModal = new bootstrap.Modal(document.getElementById('transferOwnershipModal'));
     transferOwnershipModal.show();
   }
-
   // Fonction pour transférer la propriété d'une tâche
   function transferTaskOwnership() {
     const taskId = document.getElementById('taskIdForOwnershipTransfer').value;
@@ -720,8 +1585,6 @@
     button.disabled = true;
     button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Envoi...';
 
-    console.log(`Sending reminder for task ${taskId}`);
-
     // Make API call
     fetch(`/api/tasks/${taskId}/remind`, {
       method: 'POST',
@@ -765,8 +1628,6 @@
     button.disabled = true;
     button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> En cours...';
 
-    console.log(`Executing action ${action} on task ${taskId}`);
-
     // Make API call
     fetch(`/api/tasks/${taskId}/${action}`, {
       method: 'POST',
@@ -780,6 +1641,16 @@
       if (data.success) {
         // Refresh tasks after successful action
         fetchTasks();
+
+        // If we're in a modal, close it
+        const modalElements = ['priorityModal', 'transferOwnershipModal', 'taskDetailsModal', 'reassignModal'];
+
+        modalElements.forEach(modalId => {
+          const modalInstance = bootstrap.Modal.getInstance(document.getElementById(modalId));
+          if (modalInstance) {
+            modalInstance.hide();
+          }
+        });
       } else {
         const errorMessage = data.error ? data.error : 'Une erreur inconnue est survenue';
         alert(`Erreur: ${errorMessage}`);
@@ -896,343 +1767,153 @@
     const priorityModal = new bootstrap.Modal(document.getElementById('priorityModal'));
     priorityModal.show();
   }
-
-  // Save priority changes
-  document.getElementById('savePriorityBtn').addEventListener('click', function() {
-    const taskId = document.getElementById('taskIdForPriority').value;
-    const selectedPriority = document.querySelector('input[name="taskPriority"]:checked').value;
-
-    // Disable the button to prevent double clicks
-    this.disabled = true;
-    this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enregistrement...';
-
-    // Make API call to change priority
-    fetch(`/api/tasks/${taskId}/priority`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        priority: selectedPriority
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        // Hide the modal
-        const priorityModal = bootstrap.Modal.getInstance(document.getElementById('priorityModal'));
-        priorityModal.hide();
-
-        // Refresh tasks
-        fetchTasks();
-      } else {
-        alert(`Erreur: ${data.error || 'Une erreur est survenue'}`);
-
-        // Re-enable the button
-        this.disabled = false;
-        this.innerHTML = 'Enregistrer';
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert(`Une erreur est survenue: ${error.message}`);
-
-      // Re-enable the button
-      this.disabled = false;
-      this.innerHTML = 'Enregistrer';
-    });
-  });
-
-  // Create task card HTML
-  function createTaskCard(task) {
-    const isTaskAssigner = task.assigned_by === userEmail;
-    const canManageTask = task.can_manage || task.assigned_by === userEmail;
-    const isAssignee = task.assignees.includes(userEmail);
-
-    // Debug: log task info
-    console.log(`Creating card for task ${task.id}:`, {
-      subject: task.subject,
-      state: task.state,
-      priority: task.priority,
-      is_assigner: isTaskAssigner,
-      can_manage: canManageTask,
-      is_assignee: isAssignee,
-      time_info: task.time_info,
-      transfer_from: task.transfer_from,
-      transfer_to: task.transfer_to,
-      history: task.history || []
-    });
-
-    let actionButtons = '';
-
-    if (task.state === 'assigned') {
-      // Only show these buttons to assignees
-      if (isAssignee) {
-        actionButtons += `
-          <button onclick="handleTaskAction(event, ${task.id}, 'dispute')" class="btn btn-danger btn-sm">Contester</button>
-          <button onclick="handleTaskAction(event, ${task.id}, 'validate')" class="btn btn-warning btn-sm">Faire valider</button>
-          <button onclick="releaseTask(event, ${task.id})" class="btn btn-info btn-sm">
-            <i class="fa fa-unlock"></i> Libérer
-          </button>
-        `;
-      }
-
-      if (canManageTask) {
-        actionButtons += `
-          <button onclick="handleTaskAction(event, ${task.id}, 'complete')" class="btn btn-success btn-sm">Terminer</button>
-        `;
-      }
-
-      // Ajouter le bouton de rappel pour les tâches assignées avec des assignés
-      if (canManageTask && task.assignees.length > 0) {
-        actionButtons += `
-          <button onclick="handleReminderAction(event, ${task.id})" class="btn btn-info btn-sm">
-            <i class="fa fa-bell"></i> Relancer
-          </button>
-        `;
-      }
-
-      if(isTaskAssigner && task.assignees.length > 0 || isAssignee){
-        actionButtons += `
-          <button onclick="openReassignModal(event, ${task.id})" class="btn btn-primary btn-sm">
-            <i class="fa fa-share"></i> Réassigner
-          </button>
-        `;
-      }
-
-      // Pour le créateur: ajouter des boutons pour réassigner et transférer la propriété
-      if (isTaskAssigner && task.assignees.length > 0) {
-        actionButtons += `
-          <button onclick="openOwnershipTransferModal(event, ${task.id})" class="btn btn-secondary btn-sm">
-            <i class="fa fa-exchange"></i> Transférer propriété
-          </button>
-        `;
-      }
-    } else if (task.state === 'disputed') {
-      if (canManageTask) {
-        actionButtons += `
-          <button onclick="handleTaskAction(event, ${task.id}, 'reject-dispute')" class="btn btn-warning btn-sm">Rejeter la contestation</button>
-          <button onclick="handleTaskAction(event, ${task.id}, 'delete')" class="btn btn-danger btn-sm">Supprimer la tâche</button>
-        `;
-      }
-    } else if (task.state === 'to_validated') {
-      if (canManageTask) {
-        actionButtons += `
-          <button onclick="handleTaskAction(event, ${task.id}, 'complete')" class="btn btn-success btn-sm">Valider la tâche</button>
-          <button onclick="handleTaskAction(event, ${task.id}, 'reject-validation')" class="btn btn-danger btn-sm">Refuser la validation</button>
-        `;
-      }
-      // Allow assignees to cancel their validation request
-      if (isAssignee) {
-        actionButtons += `
-          <button onclick="handleTaskAction(event, ${task.id}, 'cancel-validation')" class="btn btn-secondary btn-sm">Annuler la validation</button>
-        `;
-      }
-    } else if (task.state === 'transfer_pending') {
-      // Afficher des boutons pour approuver/rejeter la cession si on est le créateur
-      if (isTaskAssigner) {
-        actionButtons += `
-          <button onclick="handleTaskAction(event, ${task.id}, 'approve-transfer')" class="btn btn-success btn-sm">
-            Approuver la cession
-          </button>
-          <button onclick="handleTaskAction(event, ${task.id}, 'reject-transfer')" class="btn btn-danger btn-sm">
-            Rejeter la cession
-          </button>
-        `;
-      }
-
-      // Afficher un message spécial si on est celui qui a demandé la cession
-      if (task.transfer_from === userEmail) {
-        actionButtons += `
-          <span class="task-badge badge-info">En attente d'approbation de cession</span>
-        `;
-      }
-    } else if (task.state === 'done') {
-      // Allow assigner/admin to reopen completed tasks
-      if (canManageTask) {
-        actionButtons += `
-          <button onclick="handleTaskAction(event, ${task.id}, 'reopen')" class="btn btn-info btn-sm">Réouvrir la tâche</button>
-        `;
-      }
-    }
-
-    // Add delete button for admin/assigners at all times except disputed state
-    if (canManageTask && task.state !== 'disputed') {
-      actionButtons += `
-        <button onclick="handleTaskAction(event, ${task.id}, 'delete')" class="btn btn-danger btn-sm">Supprimer</button>
-      `;
-    }
-
-    // Add priority change button for admin/assigners
-    if (canManageTask) {
-      actionButtons += `
-        <button onclick="openPriorityModal(${task.id}, '${task.priority}')" class="btn btn-info btn-sm">Changer la priorité</button>
-      `;
-    }
-
-    // Add history button
-    if (task.history && task.history.length > 0) {
-      actionButtons += `
-        <button onclick='openHistoryModal(event, ${task.id}, ${JSON.stringify(task.history)})' class="btn btn-secondary btn-sm">
-          <i class="fa fa-history"></i> Historique
-        </button>
-      `;
-    }
-
-    // Format time info
-    let timeInfoHTML = '';
-    if (task.time_info) {
-      const timeInfoClass = getTimeInfoClass(task.time_info);
-      timeInfoHTML = `
-        <div class="time-info ${timeInfoClass}">
-          <i class="fa fa-clock"></i> ${task.time_info.message}
-        </div>
-      `;
-    }
-
-    // Show role badge for task (assigned by you or assigned to you)
-    let roleBadgeHtml = '';
-    if (task.is_assigner) {
-      roleBadgeHtml = '<span class="task-badge badge-info">Attribuée par vous</span>';
-    } else if (task.assignees.includes(userEmail)) {
-      roleBadgeHtml = '<span class="task-badge badge-info">Attribuée à vous</span>';
-    }
-
-    // Information sur la cession en cours si applicable
-    let transferInfoHtml = '';
-    if (task.state === 'transfer_pending' && task.transfer_from && task.transfer_to) {
-      transferInfoHtml = `<div class="text-info"><strong>En attente de cession</strong> : De ${task.transfer_from} à ${task.transfer_to}</div>`;
-    }
-
-    // Afficher les rôles cibles si présents
-    let targetRolesBadgesHtml = '';
-    if (task.target_roles && task.target_roles.length > 0) {
-      targetRolesBadgesHtml = task.target_roles.map(role =>
-        `<span class="role-badge">Rôle: ${role}</span>`
-      ).join(' ');
-    }
-
-    // Get list of assignees
-    const assigneesText = task.assignees.length > 0
-      ? `<div class="float-right text-muted small">Attribuée à: ${task.assignees.join(', ')}</div>`
-      : '';
-
-    return `
-      <div class="task-card card priority-${task.priority}" data-task-state="${task.state}" data-task-priority="${task.priority}">
-        <div class="card-body">
-          <div class="float-right text-muted small">Attribuée par: ${task.assigned_by}</div>
-          ${assigneesText}
-          <div class="float-right text-muted small">Début: ${formatDate(task.start_date)}</div>
-          <div class="float-right text-muted small">Fin: ${formatDate(task.due_date)}</div>
-          ${timeInfoHTML}
-          ${transferInfoHtml}
-          <div class="mb-2">
-            <span class="task-badge ${getStateBadgeClass(task.state)}">${stateTranslations[task.state]}</span>
-            ${getPriorityBadge(task.priority)}
-            ${roleBadgeHtml}
-          </div>
-          <div class="mb-2">
-            ${targetRolesBadgesHtml}
-          </div>
-          <h4 class="card-title">${task.subject}</h4>
-          <p class="card-text">${task.description || 'Pas de description'}</p>
-          <div class="task-actions">
-            ${actionButtons}
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  // Fetch tasks from API
-  let currentStateFilter = 'all';
-  let currentPriorityFilter = 'all';
-
-  function fetchTasks() {
-    const tasksContainer = document.getElementById('tasks-container');
-    tasksContainer.innerHTML = `
-      <div class="loading-spinner">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Chargement...</span>
-        </div>
-      </div>
-    `;
-
-    fetch('/api/tasks')
+  // Fonction pour charger la liste des utilisateurs
+  function loadUsers() {
+    fetch('/api/users')
       .then(response => response.json())
-      .then(tasks => {
-        if (tasks.length === 0) {
-          tasksContainer.innerHTML = `
-            <div class="no-tasks">
-              <p>Aucune tâche trouvée</p>
-            </div>
-          `;
-        } else {
-          // Filter tasks based on current state filter
-          let filteredTasks = tasks;
+      .then(users => {
+        usersForTransfer = users;
 
-          if (currentStateFilter !== 'all') {
-            filteredTasks = filteredTasks.filter(task => task.state === currentStateFilter);
-          }
+        // Remplir aussi le select pour la réassignation
+        const userSelect = document.getElementById('reassignUserSelect');
+        userSelect.innerHTML = '';
 
-          // Filter by priority if needed
-          if (currentPriorityFilter !== 'all') {
-            filteredTasks = filteredTasks.filter(task => task.priority === currentPriorityFilter);
-          }
-
-          if (filteredTasks.length === 0) {
-            tasksContainer.innerHTML = `
-              <div class="no-tasks">
-                <p>Aucune tâche ne correspond aux filtres sélectionnés</p>
-              </div>
-            `;
-          } else {
-            // Create HTML for each task card
-            const tasksHTML = filteredTasks.map(task => createTaskCard(task)).join('');
-            tasksContainer.innerHTML = tasksHTML;
-          }
-        }
+        users.forEach(user => {
+          const option = document.createElement('option');
+          option.value = user.email;
+          option.textContent = user.name;
+          userSelect.appendChild(option);
+        });
       })
       .catch(error => {
-        console.error('Error:', error);
-        tasksContainer.innerHTML = `
-          <div class="alert alert-danger">
-            Une erreur est survenue lors du chargement des tâches. Veuillez réessayer.
-          </div>
-        `;
+        console.error('Error fetching users:', error);
       });
   }
 
-  // Initial fetch
-  fetchTasks();
-
-  // Set up automatic refresh every 30 seconds
-  setInterval(fetchTasks, 30000);
-
-  // Set up filter options for task state
-  document.querySelectorAll('.filter-option').forEach(option => {
-    option.addEventListener('click', function(e) {
-      e.preventDefault();
-      currentStateFilter = this.dataset.filter;
-      document.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('active'));
-      this.classList.add('active');
-      fetchTasks();
-    });
-  });
-
-  // Set up filter options for task priority
-  document.querySelectorAll('.priority-filter-option').forEach(option => {
-    option.addEventListener('click', function(e) {
-      e.preventDefault();
-      currentPriorityFilter = this.dataset.priority;
-      document.querySelectorAll('.priority-filter-option').forEach(opt => opt.classList.remove('active'));
-      this.classList.add('active');
-      fetchTasks();
-    });
-  });
-
-  // Gestion des sections du modal de réassignation
+  // Événements pour les filtres et tris
   document.addEventListener('DOMContentLoaded', function() {
+    // Charger les tâches et les utilisateurs au chargement de la page
+    fetchTasks();
+    loadUsers();
+
+    // Set up automatic refresh every 60 seconds
+    setInterval(fetchTasks, 60000);
+
+    // Événement pour la barre de recherche
+    document.getElementById('searchInput').addEventListener('input', function() {
+      const searchQuery = this.value.trim();
+
+      // Mettre à jour la recherche dans tous les onglets
+      settings.all.searchQuery = searchQuery;
+      settings.created.searchQuery = searchQuery;
+      settings.assigned.searchQuery = searchQuery;
+
+      // Réafficher les tâches dans l'onglet actif
+      const activeTabId = document.querySelector('.tab-pane.active').id;
+      const tabName = activeTabId.replace('-pane', '').replace('tasks', '').replace('-', '');
+
+      if (tabName === 'all') {
+        renderTasks('all', allTasks);
+      } else if (tabName === 'created') {
+        renderTasks('created', createdTasks);
+      } else {
+        renderTasks('assigned', assignedTasks);
+      }
+    });
+
+    // Événements pour les onglets
+    document.querySelectorAll('button[data-bs-toggle="tab"]').forEach(function(tab) {
+      tab.addEventListener('shown.bs.tab', function(e) {
+        // Récupérer l'ID de l'onglet actif
+        const activeTabId = e.target.getAttribute('data-bs-target').substring(1);
+        const tabName = activeTabId.replace('-pane', '').replace('tasks', '').replace('-', '');
+
+        // Réafficher les tâches dans l'onglet actif
+        if (tabName === 'all') {
+          renderTasks('all', allTasks);
+        } else if (tabName === 'created') {
+          renderTasks('created', createdTasks);
+        } else {
+          renderTasks('assigned', assignedTasks);
+        }
+      });
+    });
+
+    // Événements pour les filtres par état
+    document.querySelectorAll('.filter-option').forEach(option => {
+      option.addEventListener('click', function(e) {
+        e.preventDefault();
+        settings.all.stateFilter = this.dataset.filter;
+        renderTasks('all', allTasks);
+      });
+    });
+
+    document.querySelectorAll('.created-filter-option').forEach(option => {
+      option.addEventListener('click', function(e) {
+        e.preventDefault();
+        settings.created.stateFilter = this.dataset.filter;
+        renderTasks('created', createdTasks);
+      });
+    });
+
+    document.querySelectorAll('.assigned-filter-option').forEach(option => {
+      option.addEventListener('click', function(e) {
+        e.preventDefault();
+        settings.assigned.stateFilter = this.dataset.filter;
+        renderTasks('assigned', assignedTasks);
+      });
+    });
+
+    // Événements pour les filtres par priorité
+    document.querySelectorAll('.priority-filter-option').forEach(option => {
+      option.addEventListener('click', function(e) {
+        e.preventDefault();
+        settings.all.priorityFilter = this.dataset.priority;
+        renderTasks('all', allTasks);
+      });
+    });
+
+    document.querySelectorAll('.created-priority-option').forEach(option => {
+      option.addEventListener('click', function(e) {
+        e.preventDefault();
+        settings.created.priorityFilter = this.dataset.priority;
+        renderTasks('created', createdTasks);
+      });
+    });
+
+    document.querySelectorAll('.assigned-priority-option').forEach(option => {
+      option.addEventListener('click', function(e) {
+        e.preventDefault();
+        settings.assigned.priorityFilter = this.dataset.priority;
+        renderTasks('assigned', assignedTasks);
+      });
+    });
+
+    // Événements pour les options de tri
+    document.querySelectorAll('.sort-option').forEach(option => {
+      option.addEventListener('click', function(e) {
+        e.preventDefault();
+        settings.all.sortBy = this.dataset.sort;
+        renderTasks('all', allTasks);
+      });
+    });
+
+    document.querySelectorAll('.created-sort-option').forEach(option => {
+      option.addEventListener('click', function(e) {
+        e.preventDefault();
+        settings.created.sortBy = this.dataset.sort;
+        renderTasks('created', createdTasks);
+      });
+    });
+
+    document.querySelectorAll('.assigned-sort-option').forEach(option => {
+      option.addEventListener('click', function(e) {
+        e.preventDefault();
+        settings.assigned.sortBy = this.dataset.sort;
+        renderTasks('assigned', assignedTasks);
+      });
+    });
+
     // Gérer l'affichage des sections du modal de réassignation
     const reassignToUsers = document.getElementById('reassignToUsers');
     const reassignToRoles = document.getElementById('reassignToRoles');
@@ -1265,23 +1946,51 @@
       }
     });
 
-    // Charger les utilisateurs dans le select de réassignation
-    fetch('/api/users')
-      .then(response => response.json())
-      .then(users => {
-        const userSelect = document.getElementById('reassignUserSelect');
-        userSelect.innerHTML = '';
+    // Événement pour sauvegarder la priorité
+    document.getElementById('savePriorityBtn').addEventListener('click', function() {
+      const taskId = document.getElementById('taskIdForPriority').value;
+      const selectedPriority = document.querySelector('input[name="taskPriority"]:checked').value;
 
-        users.forEach(user => {
-          const option = document.createElement('option');
-          option.value = user.email;
-          option.textContent = user.name;
-          userSelect.appendChild(option);
-        });
+      // Disable the button to prevent double clicks
+      this.disabled = true;
+      this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enregistrement...';
+
+      // Make API call to change priority
+      fetch(`/api/tasks/${taskId}/priority`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          priority: selectedPriority
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Hide the modal
+          const priorityModal = bootstrap.Modal.getInstance(document.getElementById('priorityModal'));
+          priorityModal.hide();
+
+          // Refresh tasks
+          fetchTasks();
+        } else {
+          alert(`Erreur: ${data.error || 'Une erreur est survenue'}`);
+
+          // Re-enable the button
+          this.disabled = false;
+          this.innerHTML = 'Enregistrer';
+        }
       })
       .catch(error => {
-        console.error('Error fetching users:', error);
+        console.error('Error:', error);
+        alert(`Une erreur est survenue: ${error.message}`);
+
+        // Re-enable the button
+        this.disabled = false;
+        this.innerHTML = 'Enregistrer';
       });
+    });
   });
 </script>
 {% endblock %}
