@@ -213,6 +213,42 @@
         </div>
         </div>
     </nav>
+<!-- Modal de maintenance -->
+{% if in_maintenance %}
+<div class="modal fade" id="maintenanceModal" tabindex="-1" aria-labelledby="maintenanceModalLabel" aria-hidden="true" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title text-white" id="maintenanceModalLabel">
+          <i class="fa fa-exclamation-triangle me-2"></i> Mode Maintenance
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <i class="fa fa-cogs fa-4x text-danger"></i>
+        </div>
+        <p class="lead text-center">Le site est actuellement en maintenance !</p>
+        <div class="alert alert-warning text-white">
+          <p><strong>Attention :</strong> L'utilisation du site pendant cette période peut entraîner des incohérences dans les données.</p>
+          <p>Veuillez limiter votre utilisation.</p>
+        </div>
+        <p class="text-center">En cas d'urgence, veuillez contacter <strong>Khalilos</strong>.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">J'ai compris</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var maintenanceModal = new bootstrap.Modal(document.getElementById('maintenanceModal'));
+    maintenanceModal.show();
+  });
+</script>
+{% endif %}
 {% block content %}
 {% endblock %}
 <footer class="footer pt-3  ">

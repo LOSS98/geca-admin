@@ -26,6 +26,11 @@ def create_app():
 
 
     app = Flask(__name__, static_folder='static')
+    app.config['IN_MAINTENANCE'] = os.getenv('IN_MAINTENANCE', '0') == '1'
+
+    @app.context_processor
+    def inject_maintenance():
+        return dict(in_maintenance=app.config['IN_MAINTENANCE'])
 
     app.config.from_object(Config)
 
