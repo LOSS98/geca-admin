@@ -803,7 +803,7 @@ def get_users():
 
     try:
         users = User.query.order_by(User.fname, User.lname).all()
-        users_data = [{'email': user.email, 'name': f"{user.lname} {user.fname}"} for user in users]
+        users_data = [{'email': user.email, 'name': f"{user.fname} {user.lname}"} for user in users]
         return jsonify(users_data)
     except Exception as e:
         print(f"Error getting users: {str(e)}")

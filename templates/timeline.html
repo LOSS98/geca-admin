@@ -600,26 +600,6 @@
   </div>
 </div>
 
-<!-- Modal pour voir l'historique d'une tâche -->
-<div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="historyModalLabel">Historique de la tâche</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div id="taskHistoryContent">
-          <!-- L'historique sera chargé dynamiquement ici -->
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- Modal pour la réassignation -->
 <div class="modal fade" id="reassignModal" tabindex="-1" aria-labelledby="reassignModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -788,6 +768,26 @@
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Modal pour voir l'historique d'une tâche -->
+<div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="historyModalLabel">Historique de la tâche</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="taskHistoryContent">
+          <!-- L'historique sera chargé dynamiquement ici -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
       </div>
     </div>
   </div>
@@ -1797,7 +1797,7 @@
     loadUsers();
 
     // Set up automatic refresh every 60 seconds
-    setInterval(fetchTasks, 60000);
+    //setInterval(fetchTasks, 60000);
 
     // Événement pour la barre de recherche
     document.getElementById('searchInput').addEventListener('input', function() {

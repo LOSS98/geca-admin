@@ -174,6 +174,12 @@ class Task(db.Model):
 
         return True, "Tâche libérée avec succès"
 
+    def drop_all_assignees(self):
+        """Drop all assignees from the task"""
+        self.assignees = []
+        self.state = TaskState.ASSIGNED
+        db.session.commit()
+
     def reassign(self, user_email, assignment_type, reassignment_data):
         """Permet à un assigné de réattribuer la tâche à d'autres personnes, équipes ou à tout le monde"""
         from models.user import User
@@ -189,12 +195,13 @@ class Task(db.Model):
             action="reassigned"
         )
         history_entry.save_to_db()
-
         if user in self.assignees:
             self.assignees.remove(user)
+        self.drop_all_assignees()
 
         if assignment_type == 'users':
             new_assignee_emails = reassignment_data.get('assignees', [])
+
 
             for email in new_assignee_emails:
                 new_user = User.query.filter_by(email=email).first()
