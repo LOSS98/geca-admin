@@ -1,0 +1,743 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<style>
+  .task-card {
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+  }
+  .task-card:hover {
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+  }
+  .delay-info {
+    font-weight: bold;
+  }
+  .task-actions {
+    margin-top: 1rem;
+  }
+  .task-badge {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+  }
+  .badge-assigned {
+    background-color: #3498db;
+    color: white;
+  }
+  .badge-disputed {
+    background-color: #e74c3c;
+    color: white;
+  }
+  .badge-to-validated {
+    background-color: #f39c12;
+    color: white;
+  }
+  .badge-done {
+    background-color: #2ecc71;
+    color: white;
+  }
+  .badge-transfer-pending {
+    background-color: #9b59b6;
+    color: white;
+  }
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+  }
+  .priority-high {
+    border-left: 5px solid #e74c3c;
+  }
+  .priority-medium {
+    border-left: 5px solid #f39c12;
+  }
+  .priority-low {
+    border-left: 5px solid #2ecc71;
+  }
+  .priority-badge {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
+  .priority-badge-high {
+    background-color: #e74c3c;
+    color: white;
+  }
+  .priority-badge-medium {
+    background-color: #f39c12;
+    color: white;
+  }
+  .priority-badge-low {
+    background-color: #2ecc71;
+    color: white;
+  }
+  .time-info {
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+  .time-overdue {
+    color: #e74c3c;
+    font-weight: bold;
+  }
+  .time-critical {
+    color: #e74c3c;
+  }
+  .time-high {
+    color: #f39c12;
+  }
+  .time-medium {
+    color: #3498db;
+  }
+  .time-low {
+    color: #2ecc71;
+  }
+  .comments-badge {
+    background-color: #6c757d;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+  }
+  .comments-section {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+    display: none;
+  }
+  .comment {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #dee2e6;
+  }
+  .comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+  }
+  .comment-author {
+    font-weight: bold;
+  }
+  .comment-timestamp {
+    font-size: 0.8rem;
+    color: #6c757d;
+  }
+  .comment-content {
+    margin-bottom: 0.25rem;
+  }
+  .comment-actions {
+    text-align: right;
+  }
+  .new-comment-form {
+    margin-top: 1rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="page-header min-height-200 border-radius-xl mt-4" style="background-image: url('/static/assets/img/bg-task.jpg'); background-position-y: 50%;">
+  </div>
+  <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
+    <div class="row gx-4">
+      <div class="col-auto my-auto">
+        <div class="h-100">
+          <h5 class="mb-1">
+            Toutes les tâches
+          </h5>
+          <p class="mb-0 font-weight-bold text-sm">
+            Visualisez toutes les tâches de l'équipe
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header pb-0 p-3">
+          <!-- Barre de recherche -->
+          <div class="search-container mb-3">
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="fa fa-search"></i>
+              </span>
+              <input type="text" class="form-control" id="searchInput" placeholder="Rechercher une tâche par sujet, description, assigné...">
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <div class="dropdown me-2 d-inline-block">
+                <button class="btn bg-gradient-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa fa-filter me-2"></i> État
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                  <li><a class="dropdown-item filter-option" data-filter="all" href="#">Toutes les tâches</a></li>
+                  <li><a class="dropdown-item filter-option" data-filter="assigned" href="#">Assignées</a></li>
+                  <li><a class="dropdown-item filter-option" data-filter="disputed" href="#">Contestées</a></li>
+                  <li><a class="dropdown-item filter-option" data-filter="to_validated" href="#">À valider</a></li>
+                  <li><a class="dropdown-item filter-option" data-filter="transfer_pending" href="#">Cession en attente</a></li>
+                  <li><a class="dropdown-item filter-option" data-filter="done" href="#">Terminées</a></li>
+                </ul>
+              </div>
+              <div class="dropdown me-2 d-inline-block">
+                <button class="btn bg-gradient-info dropdown-toggle" type="button" id="priorityFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa fa-sort-amount-down me-2"></i> Priorité
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="priorityFilterDropdown">
+                  <li><a class="dropdown-item priority-filter-option" data-priority="all" href="#">Toutes les priorités</a></li>
+                  <li><a class="dropdown-item priority-filter-option" data-priority="high" href="#">Haute</a></li>
+                  <li><a class="dropdown-item priority-filter-option" data-priority="medium" href="#">Moyenne</a></li>
+                  <li><a class="dropdown-item priority-filter-option" data-priority="low" href="#">Faible</a></li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="dropdown">
+                <button class="btn bg-gradient-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fa fa-sort me-2"></i> Trier par
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                  <li><a class="dropdown-item sort-option" data-sort="due_date" href="#">Date d'échéance</a></li>
+                  <li><a class="dropdown-item sort-option" data-sort="priority" href="#">Priorité</a></li>
+                  <li><a class="dropdown-item sort-option" data-sort="time_remaining" href="#">Temps restant</a></li>
+                  <li><a class="dropdown-item sort-option" data-sort="creation_date" href="#">Date de création</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-3">
+          <div id="all-tasks-container">
+            <div class="loading-spinner">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Chargement...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal pour les commentaires -->
+<div class="modal fade" id="commentsModal" tabindex="-1" aria-labelledby="commentsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="commentsModalLabel">Commentaires</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="commentsContainer" class="mb-3">
+          <div class="loading-spinner">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Chargement des commentaires...</span>
+            </div>
+          </div>
+        </div>
+
+        <form id="commentForm">
+          <input type="hidden" id="commentTaskId" value="">
+          <div class="form-group">
+            <textarea class="form-control" id="commentContent" rows="3" placeholder="Ajouter un commentaire..."></textarea>
+          </div>
+          <div class="d-flex justify-content-end mt-2">
+            <button type="submit" class="btn btn-primary">Commenter</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // State and priority translations
+  const stateTranslations = {
+    'assigned': 'Assignée',
+    'disputed': 'Contestée',
+    'to_validated': 'En attente de validation',
+    'done': 'Terminée',
+    'deleted': 'Supprimée',
+    'transfer_pending': 'Cession en attente'
+  };
+
+  const priorityTranslations = {
+    'high': 'Haute',
+    'medium': 'Moyenne',
+    'low': 'Faible'
+  };
+
+  // Global variables
+  let allTasks = [];
+  const userEmail = "{{ user_info.email }}";
+  const userRole = "{{ user_role }}";
+  let isAdmin = Array.isArray(userRole) ? userRole.includes('admin') : userRole === 'admin';
+
+  // Filter settings
+  const settings = {
+    stateFilter: 'all',
+    priorityFilter: 'all',
+    sortBy: 'due_date',
+    sortDirection: 'asc',
+    searchQuery: ''
+  };
+
+  // Helper functions
+  function getStateBadgeClass(state) {
+    switch (state) {
+      case 'assigned': return 'badge-assigned';
+      case 'disputed': return 'badge-disputed';
+      case 'to_validated': return 'badge-to-validated';
+      case 'done': return 'badge-done';
+      case 'transfer_pending': return 'badge-transfer-pending';
+      default: return '';
+    }
+  }
+
+  function formatDate(dateString) {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return date.toLocaleString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+  function getTimeInfoClass(timeInfo) {
+    if (!timeInfo) return '';
+
+    if (timeInfo.status === 'overdue') {
+      return 'time-overdue';
+    } else if (timeInfo.status === 'upcoming') {
+      switch (timeInfo.urgency) {
+        case 'critical': return 'time-critical';
+        case 'high': return 'time-high';
+        case 'medium': return 'time-medium';
+        default: return 'time-low';
+      }
+    }
+    return '';
+  }
+
+  function getPriorityBadge(priority) {
+    const priorityText = priorityTranslations[priority] || 'Moyenne';
+    return `<span class="priority-badge priority-badge-${priority}">${priorityText}</span>`;
+  }
+
+  // Search, filter, and sort functions
+  function searchTasks(tasks, query) {
+    if (!query || query.trim() === '') return tasks;
+
+    query = query.toLowerCase().trim();
+    return tasks.filter(task => {
+      if (task.subject.toLowerCase().includes(query)) return true;
+      if (task.description && task.description.toLowerCase().includes(query)) return true;
+      if (task.assignees.some(assignee => assignee.toLowerCase().includes(query))) return true;
+      if (task.assigned_by.toLowerCase().includes(query)) return true;
+      if (task.target_roles && task.target_roles.some(role => role.toLowerCase().includes(query))) return true;
+      return false;
+    });
+  }
+
+  function filterTasks(tasks, stateFilter, priorityFilter) {
+    return tasks.filter(task => {
+      if (stateFilter !== 'all' && task.state !== stateFilter) return false;
+      if (priorityFilter !== 'all' && task.priority !== priorityFilter) return false;
+      return true;
+    });
+  }
+
+  function getTimeRemainingMinutes(task) {
+    if (task.time_info && task.time_info.status === 'upcoming') {
+      return task.time_info.remaining.total_minutes;
+    } else if (task.time_info && task.time_info.status === 'overdue') {
+      return -task.time_info.delay.total_minutes;
+    }
+    return 0;
+  }
+
+  function sortTasks(tasks, sortBy, direction = 'asc') {
+    const directionMultiplier = direction === 'asc' ? 1 : -1;
+
+    return [...tasks].sort((a, b) => {
+      switch (sortBy) {
+        case 'due_date':
+          return directionMultiplier * (new Date(a.due_date) - new Date(b.due_date));
+        case 'priority':
+          const priorityOrder = { 'high': 3, 'medium': 2, 'low': 1 };
+          return directionMultiplier * (priorityOrder[b.priority] - priorityOrder[a.priority]);
+        case 'time_remaining':
+          return directionMultiplier * (getTimeRemainingMinutes(a) - getTimeRemainingMinutes(b));
+        case 'creation_date':
+          return directionMultiplier * (new Date(a.assigned_at) - new Date(b.assigned_at));
+        default:
+          return 0;
+      }
+    });
+  }
+
+  // Create task card with comments badge
+  function createTaskCard(task) {
+    // Get task state badge
+    const stateBadgeHtml = `<span class="task-badge ${getStateBadgeClass(task.state)}">${stateTranslations[task.state]}</span>`;
+
+    // Get task priority badge
+    const priorityBadgeHtml = getPriorityBadge(task.priority);
+
+    // Format time info
+    let timeInfoHTML = '';
+    if (task.time_info) {
+      const timeInfoClass = getTimeInfoClass(task.time_info);
+      timeInfoHTML = `
+        <div class="time-info ${timeInfoClass}">
+          <i class="fa fa-clock"></i> ${task.time_info.message}
+        </div>
+      `;
+    }
+
+    // Comments badge
+    const commentsBadge = `
+      <a href="#" class="comments-badge" onclick="openCommentsModal(event, ${task.id})">
+        <i class="fa fa-comments"></i> ${task.comments_count || 0} commentaire(s)
+      </a>
+    `;
+
+    // Assignees list
+    const assigneesText = task.assignees.length > 0
+      ? `<div class="mb-1 text-muted small">Assignée à: ${task.assignees.join(', ')}</div>`
+      : '<div class="mb-1 text-muted small">Aucun assigné</div>';
+
+    return `
+      <div class="task-card card priority-${task.priority}" data-task-id="${task.id}" data-task-state="${task.state}" data-task-priority="${task.priority}">
+        <div class="card-body">
+          <div class="mb-2">
+            <h4 class="card-title">${task.subject}</h4>
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                ${stateBadgeHtml}
+                ${priorityBadgeHtml}
+              </div>
+              <div>
+                ${commentsBadge}
+              </div>
+            </div>
+          </div>
+          <div class="text-muted small">Créée par: ${task.assigned_by}</div>
+          ${assigneesText}
+          <div class="text-muted small">Échéance: ${formatDate(task.due_date)}</div>
+          ${timeInfoHTML}
+          <p class="card-text mt-2 text-truncate">${task.description || 'Pas de description'}</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // Render tasks
+  function renderTasks() {
+    const container = document.getElementById('all-tasks-container');
+
+    // Apply filters, search, and sorting
+    let filteredTasks = filterTasks(allTasks, settings.stateFilter, settings.priorityFilter);
+
+    if (settings.searchQuery) {
+      filteredTasks = searchTasks(filteredTasks, settings.searchQuery);
+    }
+
+    filteredTasks = sortTasks(filteredTasks, settings.sortBy, settings.sortDirection);
+
+    // Render tasks
+    if (filteredTasks.length === 0) {
+      container.innerHTML = `
+        <div class="no-tasks">
+          <p>Aucune tâche ne correspond aux critères sélectionnés</p>
+        </div>
+      `;
+    } else {
+      container.innerHTML = filteredTasks.map(task => createTaskCard(task)).join('');
+    }
+  }
+
+  // Fetch all tasks
+  function fetchAllTasks() {
+    document.getElementById('all-tasks-container').innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+    `;
+
+    fetch('/api/all-tasks')
+      .then(response => response.json())
+      .then(tasks => {
+        allTasks = tasks;
+        renderTasks();
+      })
+      .catch(error => {
+        console.error('Error fetching tasks:', error);
+        document.getElementById('all-tasks-container').innerHTML = `
+          <div class="alert alert-danger">
+            Une erreur est survenue lors du chargement des tâches. Veuillez réessayer.
+          </div>
+        `;
+      });
+  }
+
+  // Comments functions
+  function openCommentsModal(event, taskId) {
+    event.preventDefault();
+
+    const task = allTasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    // Set task ID in the form
+    document.getElementById('commentTaskId').value = taskId;
+
+    // Update modal title
+    document.getElementById('commentsModalLabel').textContent = `Commentaires - ${task.subject}`;
+
+    // Clear and show loading spinner
+    const commentsContainer = document.getElementById('commentsContainer');
+    commentsContainer.innerHTML = `
+      <div class="loading-spinner">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement des commentaires...</span>
+        </div>
+      </div>
+    `;
+
+    // Show modal
+    const commentsModal = new bootstrap.Modal(document.getElementById('commentsModal'));
+    commentsModal.show();
+
+    // Fetch comments
+    fetchTaskComments(taskId);
+  }
+
+  function fetchTaskComments(taskId) {
+    fetch(`/api/tasks/${taskId}/comments`)
+      .then(response => response.json())
+      .then(comments => {
+        renderComments(comments);
+      })
+      .catch(error => {
+        console.error('Error fetching comments:', error);
+        document.getElementById('commentsContainer').innerHTML = `
+          <div class="alert alert-danger">
+            Une erreur est survenue lors du chargement des commentaires. Veuillez réessayer.
+          </div>
+        `;
+      });
+  }
+
+  function renderComments(comments) {
+    const container = document.getElementById('commentsContainer');
+
+    if (comments.length === 0) {
+      container.innerHTML = `
+        <div class="alert alert-info">
+          Aucun commentaire pour cette tâche. Soyez le premier à commenter !
+        </div>
+      `;
+      return;
+    }
+
+    let commentsHtml = `<div class="comments-list">`;
+
+    comments.forEach(comment => {
+      // Check if user can delete this comment
+      const canDelete = comment.user_email === userEmail || isAdmin;
+
+      commentsHtml += `
+        <div class="comment" data-comment-id="${comment.id}">
+          <div class="comment-header">
+            <span class="comment-author">${comment.user_name || comment.user_email}</span>
+            <span class="comment-timestamp">${formatDate(comment.timestamp)}</span>
+          </div>
+          <div class="comment-content">${comment.content}</div>
+          ${canDelete ? `
+            <div class="comment-actions">
+              <button class="btn btn-sm btn-danger" onclick="deleteComment(${comment.id})">
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    });
+
+    commentsHtml += `</div>`;
+    container.innerHTML = commentsHtml;
+  }
+
+  function addComment(event) {
+    event.preventDefault();
+
+    const taskId = document.getElementById('commentTaskId').value;
+    const content = document.getElementById('commentContent').value.trim();
+
+    if (!content) {
+      alert('Le commentaire ne peut pas être vide.');
+      return;
+    }
+
+    const btn = event.submitter;
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Envoi...';
+
+    fetch(`/api/tasks/${taskId}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ content })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Clear form
+      document.getElementById('commentContent').value = '';
+
+      // Refresh comments
+      fetchTaskComments(taskId);
+
+      // Update comment count in the tasks list
+      updateCommentCount(taskId);
+
+      // Re-enable button
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+    })
+    .catch(error => {
+      console.error('Error adding comment:', error);
+      alert('Une erreur est survenue lors de l\'ajout du commentaire.');
+
+      // Re-enable button
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+    });
+  }
+
+function deleteComment(commentId) {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')) {
+      return;
+    }
+
+    fetch(`/api/comments/${commentId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Trouver et supprimer le commentaire du DOM
+        const commentElement = document.querySelector(`.comment[data-comment-id="${commentId}"]`);
+        if (commentElement) {
+          commentElement.remove();
+        }
+
+        // Vérifier s'il reste des commentaires
+        const commentsContainer = document.getElementById('commentsContainer');
+        if (commentsContainer.querySelectorAll('.comment').length === 0) {
+          commentsContainer.innerHTML = `
+            <div class="alert alert-info">
+              Aucun commentaire pour cette tâche. Soyez le premier à commenter !
+            </div>
+          `;
+        }
+
+        // Mettre à jour le nombre de commentaires dans la liste des tâches
+        const taskId = document.getElementById('commentTaskId').value;
+        updateCommentCount(taskId);
+      } else {
+        alert('Erreur: ' + (data.error || 'Une erreur est survenue'));
+      }
+    })
+    .catch(error => {
+      console.error('Error deleting comment:', error);
+      alert('Une erreur est survenue lors de la suppression du commentaire.');
+    });
+  }
+
+  function updateCommentCount(taskId) {
+    // Récupérer le nombre actuel de commentaires
+    fetch(`/api/tasks/${taskId}/comments`)
+      .then(response => response.json())
+      .then(comments => {
+        // Mettre à jour le badge dans la liste des tâches
+        const commentsBadge = document.querySelector(`.task-card[data-task-id="${taskId}"] .comments-badge`);
+        if (commentsBadge) {
+          commentsBadge.innerHTML = `<i class="fa fa-comments"></i> ${comments.length} commentaire(s)`;
+        }
+
+        // Mettre à jour aussi dans les données locales
+        const taskIndex = allTasks.findIndex(t => t.id === parseInt(taskId));
+        if (taskIndex !== -1) {
+          allTasks[taskIndex].comments_count = comments.length;
+        }
+      })
+      .catch(error => {
+        console.error('Error updating comment count:', error);
+      });
+  }
+
+  // Event listeners
+  document.addEventListener('DOMContentLoaded', function() {
+    // Fetch all tasks
+    fetchAllTasks();
+
+    // Comment form submission
+    document.getElementById('commentForm').addEventListener('submit', addComment);
+
+    // Search input
+    document.getElementById('searchInput').addEventListener('input', function() {
+      settings.searchQuery = this.value.trim();
+      renderTasks();
+    });
+
+    // State filter options
+    document.querySelectorAll('.filter-option').forEach(option => {
+      option.addEventListener('click', function(e) {
+        e.preventDefault();
+        settings.stateFilter = this.dataset.filter;
+        renderTasks();
+      });
+    });
+
+    // Priority filter options
+    document.querySelectorAll('.priority-filter-option').forEach(option => {
+      option.addEventListener('click', function(e) {
+        e.preventDefault();
+        settings.priorityFilter = this.dataset.priority;
+        renderTasks();
+      });
+    });
+
+    // Sort options
+    document.querySelectorAll('.sort-option').forEach(option => {
+      option.addEventListener('click', function(e) {
+        e.preventDefault();
+        settings.sortBy = this.dataset.sort;
+        renderTasks();
+      });
+    });
+  });
+</script>
+{% endblock %}
