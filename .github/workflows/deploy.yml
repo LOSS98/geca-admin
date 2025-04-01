@@ -11,10 +11,17 @@ jobs:
       uses: webfactory/ssh-agent@v0.8.0
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Configure Git on server
+      run: |
+        ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p ~/.ssh && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts && chmod 600 ~/.ssh/known_hosts"
     - name: Debug directory
       run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "ls -la ${{ secrets.APP_DIR }}"
+    - name: Git remote setup
+      run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.APP_DIR }} && git remote -v || (git init && git remote add origin https://github.com/LOSS98/geca-admin.git)"
+    - name: Git config
+      run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.APP_DIR }} && git config --global --add safe.directory ${{ secrets.APP_DIR }} && git config pull.rebase false"
     - name: Git pull latest changes
-      run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.APP_DIR }} && git pull"
+      run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.APP_DIR }} && git pull origin main || git fetch --all && git reset --hard origin/main"
     - name: Activate virtual environment and install dependencies
       run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.APP_DIR }} && source gecavenv/bin/activate && pip install -r requirements.txt"
     - name: Restart application service
