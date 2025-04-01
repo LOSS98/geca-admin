@@ -1,20 +1,21 @@
-name: Debug SSH Connection
+name: Deploy to Server
 on:
   push:
     branches: [ main ]
 jobs:
-  debug:
+  deploy:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Setup SSH key
+    - name: Setup SSH
       uses: webfactory/ssh-agent@v0.8.0
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-    - name: Debug SSH connection
-      run: |
-        echo "Current user: $(whoami)"
-        echo "SSH directory contents:"
-        ls -la ~/.ssh/
-        echo "Checking SSH connection..."
-        ssh -v -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo Connection successful"
+    - name: Debug directory
+      run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "ls -la ${{ secrets.APP_DIR }}"
+    - name: Git pull latest changes
+      run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.APP_DIR }} && git pull"
+    - name: Activate virtual environment and install dependencies
+      run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.APP_DIR }} && source gecavenv/bin/activate && pip install -r requirements.txt"
+    - name: Restart application service
+      run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo systemctl restart geca.service"
