@@ -808,3 +808,101 @@ def get_users():
     except Exception as e:
         print(f"Error getting users: {str(e)}")
         return jsonify({'error': str(e)}), 500
+
+
+@tasks_bp.route('/api/tasks/<int:task_id>/comments', methods=['GET'])
+def get_task_comments(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        from models.comment import Comment
+        task = Task.query.get(task_id)
+
+        if not task:
+            return jsonify({'error': 'Task not found'}), 404
+
+        comments = Comment.query.filter_by(task_id=task_id).order_by(Comment.timestamp.desc()).all()
+        comments_data = [comment.to_dict() for comment in comments]
+
+        return jsonify(comments_data)
+    except Exception as e:
+        print(f"Error getting task comments: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+@tasks_bp.route('/api/tasks/<int:task_id>/comments', methods=['POST'])
+def add_comment(task_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        data = request.json
+        content = data.get('content')
+
+        if not content or content.strip() == '':
+            return jsonify({'error': 'Comment content cannot be empty'}), 400
+
+        user_email = session['user_info']['email']
+
+        from models.comment import Comment
+        comment = Comment(task_id=task_id, user_email=user_email, content=content)
+        comment.save_to_db()
+
+        return jsonify(comment.to_dict()), 201
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error adding comment: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+@tasks_bp.route('/api/comments/<int:comment_id>', methods=['DELETE'])
+def delete_comment(comment_id):
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        from models.comment import Comment
+        user_email = session['user_info']['email']
+        comment = Comment.query.get(comment_id)
+
+        if not comment:
+            return jsonify({'error': 'Comment not found'}), 404
+
+        if comment.user_email != user_email and 'admin' not in session.get('role', []):
+            return jsonify({'error': 'Not authorized to delete this comment'}), 403
+
+        comment.delete()
+
+        return jsonify({'success': True})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error deleting comment: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+@tasks_bp.route('/api/all-tasks', methods=['GET'])
+def get_all_tasks():
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    try:
+        tasks = Task.query.filter(Task.state != TaskState.DELETED).all()
+        tasks_data = [task.to_dict() for task in tasks]
+
+        return jsonify(tasks_data)
+    except Exception as e:
+        print(f"Error getting all tasks: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@tasks_bp.route('/all-tasks')
+def all_tasks_page():
+    """Page pour voir toutes les tâches"""
+    if is_not_connected():
+        return redirect(url_for('auth.login'))
+
+    error_message = None
+    if 'error' in request.args:
+        error_message = request.args.get('error')
+
+    return render_template('all-tasks.html', error=error_message, user_info=session['user_info'])

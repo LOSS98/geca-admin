@@ -13,6 +13,7 @@ from routes.locations import locations_bp
 
 from db import db
 from models.role import Role
+from models.comment import Comment
 
 from config import Config
 

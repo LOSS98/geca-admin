@@ -303,7 +303,8 @@ class Task(db.Model):
             'transfer_from': self.transfer_from,
             'transfer_to': self.transfer_to,
             'previous_assignees': previous_assignees,
-            'history': [entry.to_dict() for entry in history[:10]]
+            'history': [entry.to_dict() for entry in history[:10]],
+            'comments_count': self.comments.count() if hasattr(self, 'comments') else 0,
         }
 
     def set_priority(self, priority_str):
