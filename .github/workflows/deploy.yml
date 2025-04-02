@@ -8,41 +8,33 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    # Configurer une clé SSH pour GitHub
-    - name: Setup GitHub SSH key
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.GITHUB_SSH_KEY }}" > ~/.ssh/github_key
-        chmod 600 ~/.ssh/github_key
-        eval "$(ssh-agent -s)"
-        ssh-add ~/.ssh/github_key
-
-    # Configurer l'accès SSH au serveur
+    # Configurer l'accès SSH au serveur uniquement
     - name: Setup SSH for server
       uses: webfactory/ssh-agent@v0.8.0
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+    # Utiliser HTTPS pour GitHub mais SSH pour se connecter au serveur
     - name: Configure Git on server
       run: |
         ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p ~/.ssh && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts && chmod 600 ~/.ssh/known_hosts"
 
-    - name: Setup GitHub SSH access on server
-      run: |
-        # Créer une clé SSH pour GitHub sur le serveur
-        echo "${{ secrets.GITHUB_SSH_KEY }}" | ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p ~/.ssh && cat > ~/.ssh/github_key && chmod 600 ~/.ssh/github_key"
-        
-        # Configurer SSH pour utiliser cette clé spécifique pour GitHub
-        ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo 'Host github.com\n  HostName github.com\n  User git\n  IdentityFile ~/.ssh/github_key\n  IdentitiesOnly yes' > ~/.ssh/config && chmod 600 ~/.ssh/config"
-
     - name: Debug directory
       run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "ls -la ${{ secrets.APP_DIR }}"
 
-    - name: Change remote to SSH
-      run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.APP_DIR }} && git remote set-url origin git@github.com:LOSS98/geca-admin.git"
+    # Conserver l'utilisation de HTTPS pour GitHub puisque SSH vers GitHub est bloqué
+    - name: Ensure GitHub remote is using HTTPS
+      run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.APP_DIR }} && git remote set-url origin https://github.com/LOSS98/geca-admin.git"
 
     - name: Git config
       run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.APP_DIR }} && git config --global --add safe.directory ${{ secrets.APP_DIR }} && git config pull.rebase false"
+
+    # Configurer un token GitHub pour l'authentification HTTPS (optionnel)
+    - name: Configure GitHub credentials
+      run: |
+        if [ ! -z "${{ secrets.GITHUB_TOKEN }}" ]; then
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.APP_DIR }} && git config --global credential.helper store && echo 'https://LOSS98:${{ secrets.GITHUB_TOKEN }}@github.com' > ~/.git-credentials && chmod 600 ~/.git-credentials"
+        fi
 
     - name: Git pull latest changes
       run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.APP_DIR }} && git pull origin main || git fetch --all && git reset --hard origin/main"
