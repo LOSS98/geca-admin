@@ -1,4 +1,4 @@
-name: Deploy to Server via SSH
+name: Deploy to Server
 on:
   push:
     branches: [ main ]
@@ -7,33 +7,39 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-
     - name: Setup SSH
       uses: webfactory/ssh-agent@v0.8.0
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Add server to known hosts
+    - name: Configure Git on server
       run: |
-        mkdir -p ~/.ssh
-        ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+        ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p ~/.ssh && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts && chmod 600 ~/.ssh/known_hosts"
 
-    - name: Check if repository exists
+    - name: Setup GitHub SSH access on server
       run: |
-        ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "if [ ! -d ${{ secrets.APP_DIR }} ]; then mkdir -p ${{ secrets.APP_DIR }}; fi"
+        # Copier la clé SSH du GitHub Actions runner vers le serveur
+        ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p ~/.ssh"
+        scp -P ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/.ssh/github_deploy_key
+        ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "chmod 600 ~/.ssh/github_deploy_key"
+        
+        # Configurer SSH pour utiliser cette clé spécifique pour GitHub
+        ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo 'Host github.com\n  HostName github.com\n  User git\n  IdentityFile ~/.ssh/github_deploy_key\n  IdentitiesOnly yes' > ~/.ssh/config && chmod 600 ~/.ssh/config"
 
-    - name: Configure Git on local machine
-      run: |
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
+    - name: Debug directory
+      run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "ls -la ${{ secrets.APP_DIR }}"
 
-    - name: Deploy code to server
-      run: |
-        git push --force ssh://${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PORT }}${{ secrets.APP_DIR }} HEAD:main
+    - name: Change remote to SSH
+      run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.APP_DIR }} && git remote set-url origin git@github.com:LOSS98/geca-admin.git"
 
-    - name: Finalize deployment
-      run: |
-        ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.APP_DIR }} && \
-        source gecavenv/bin/activate && \
-        pip install -r requirements.txt && \
-        sudo systemctl restart geca.service"
+    - name: Git config
+      run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.APP_DIR }} && git config --global --add safe.directory ${{ secrets.APP_DIR }} && git config pull.rebase false"
+
+    - name: Git pull latest changes
+      run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.APP_DIR }} && git pull origin main || git fetch --all && git reset --hard origin/main"
+
+    - name: Activate virtual environment and install dependencies
+      run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.APP_DIR }} && source gecavenv/bin/activate && pip install -r requirements.txt"
+
+    - name: Restart application service
+      run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo systemctl restart geca.service"
