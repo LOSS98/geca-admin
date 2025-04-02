@@ -848,6 +848,7 @@ def add_comment(task_id):
         from models.comment import Comment
         comment = Comment(task_id=task_id, user_email=user_email, content=content)
         comment.save_to_db()
+        comment.notify_task_comment()
 
         return jsonify(comment.to_dict()), 201
     except Exception as e:

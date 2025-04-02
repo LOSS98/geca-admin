@@ -36,3 +36,23 @@ class Comment(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    def notify_task_comment(self):
+        from services.notifications import notification_service
+
+        try:
+            task = self.task
+
+            assigned_users = [f"{user.fname} {user.lname}" for user in task.assigned_users if
+                              user.email != self.user_email]
+
+            if assigned_users:
+                notification_service.send_task_comment_notification(
+                    task_subject=task.subject,
+                    task_id=str(task.id),
+                    comment_author=f"{self.user.fname} {self.user.lname}",
+                    comment_text=self.content,
+                    assigned_users=assigned_users
+                )
+        except Exception as e:
+            print(f"Erreur lors de la notification du commentaire : {e}")

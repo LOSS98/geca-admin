@@ -97,6 +97,30 @@ class NotificationService:
 
         return results
 
+    def send_task_comment_notification(self,
+                                       task_subject: str,
+                                       comment_author: str,
+                                       comment_text: str,
+                                       assigned_users: List[str]) -> Dict[str, bool]:
+        """Envoie une notification de commentaire de tâche aux utilisateurs assignés"""
+        emoji = "💬"
+        current_time = datetime.now().strftime("%d/%m/%Y à %H:%M")
+
+        message = f"""*{emoji} Nouveau commentaire sur la tâche : '{task_subject}'*
+                    Auteur : {comment_author}
+                    Commentaire : {comment_text}
+                    Temps : {current_time}
+                    
+                    Consultez l'application pour plus de détails."""
+
+        phones = []
+        for full_name in assigned_users:
+            user = self.get_user_by_name(full_name)
+            if user and user.phone:
+                phones.append(user.phone)
+
+        return self.send_bulk_sms(phones, message) if phones else {}
+
     def send_task_notification(self,
                                phones: List[str],
                                task_subject: str,
