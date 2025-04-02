@@ -1200,7 +1200,7 @@ function createTaskCard(task) {
     const isAssignee = task.assignees.includes(userEmail);
     const commentsBadge = `
         <a href="#" class="comments-badge" onclick="openTaskDetailsModal(${task.id})">
-            <i class="fa fa-comments"></i> ${task.comments_count || 0}
+            <i class="fa fa-comments"> </i> ${task.comments_count || 0}
         </a>
     `;
 

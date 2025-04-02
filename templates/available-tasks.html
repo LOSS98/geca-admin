@@ -655,7 +655,7 @@ function updateTaskCommentCount(taskId) {
       // Mettre à jour le badge dans la liste des tâches
       const commentsBadge = document.querySelector(`.task-card[data-task-id="${taskId}"] .comments-badge`);
       if (commentsBadge) {
-        commentsBadge.innerHTML = `<i class="fa fa-comments"></i> ${comments.length} commentaire(s)`;
+        commentsBadge.innerHTML = `<i class="fa fa-comments"> </i> ${comments.length} commentaire(s)`;
       }
 
       // Mettre à jour aussi dans les données locales

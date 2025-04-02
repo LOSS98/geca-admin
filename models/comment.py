@@ -39,20 +39,56 @@ class Comment(db.Model):
 
     def notify_task_comment(self):
         from services.notifications import notification_service
+        DEBUG = True
+
+        if DEBUG:
+            print("Starting comment notification")
 
         try:
             task = self.task
 
-            assigned_users = [f"{user.fname} {user.lname}" for user in task.assigned_users if
+            if DEBUG:
+                print(f"Task ID: {task.id}, Subject: {task.subject}")
+                print(f"Total assignees: {len(task.assignees)}")
+                print(f"Current user email: {self.user_email}")
+
+            # Get assignees excluding the commenter
+            assigned_users = [f"{user.fname} {user.lname}" for user in task.assignees if
                               user.email != self.user_email]
 
+            if DEBUG:
+                print(f"Assignees to notify: {assigned_users}")
+
+            # If no assignees found, notify the task creator
+            if not assigned_users:
+                from models.user import User
+                creator = User.query.filter_by(email=task.assigned_by).first()
+
+                if DEBUG:
+                    print(f"No assignees found, notifying creator: {task.assigned_by}")
+
+                if creator and creator.email != self.user_email:
+                    assigned_users = [f"{creator.fname} {creator.lname}"]
+
+                    if DEBUG:
+                        print(f"Added creator to notification list: {assigned_users}")
+
             if assigned_users:
+                if DEBUG:
+                    print(f"Sending notifications to: {assigned_users}")
+
                 notification_service.send_task_comment_notification(
                     task_subject=task.subject,
-                    task_id=str(task.id),
                     comment_author=f"{self.user.fname} {self.user.lname}",
                     comment_text=self.content,
                     assigned_users=assigned_users
                 )
+            else:
+                if DEBUG:
+                    print("No users to notify (commenter is the only person involved with the task)")
+
         except Exception as e:
-            print(f"Erreur lors de la notification du commentaire : {e}")
+            if DEBUG:
+                print(f"Error during comment notification: {e}")
+                import traceback
+                print(f"Traceback: {traceback.format_exc()}")

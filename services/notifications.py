@@ -7,56 +7,57 @@ import queue
 from typing import List, Optional, Dict, Any, Union
 from datetime import datetime
 
-# File d'attente pour les notifications
 notification_queue = queue.Queue()
-# Verrou pour l'accès aux ressources partagées
 lock = threading.Lock()
 
 
 class NotificationService:
+    DEBUG = True
+
     def __init__(self):
-        """Initialise le service de notification"""
         self.api_key = os.getenv('WHATSAPP_API_KEY')
         self.api_url = os.getenv('WHATSAPP_API_URL')
         self.logger = logging.getLogger(__name__)
-
-        # Démarrer le worker de traitement des notifications
         self._start_notification_worker()
 
     def _start_notification_worker(self):
-        """Démarre un thread qui traite les notifications en file d'attente"""
-
         def worker():
             while True:
                 try:
-                    # Récupérer la prochaine notification
                     notification_data = notification_queue.get()
-                    if notification_data is None:  # Signal pour arrêter le thread
+                    if notification_data is None:
                         break
 
                     recipient, message = notification_data
 
-                    # Effectuer l'envoi réel
-                    self._perform_send(recipient, message)
+                    if self.DEBUG:
+                        print(f"DEBUG: Processing notification for recipient: {recipient}")
 
-                    # Marquer la tâche comme terminée
+                    self._perform_send(recipient, message)
                     notification_queue.task_done()
 
-                    # Attendre 7 secondes avant de traiter la prochaine notification
+                    if self.DEBUG:
+                        print(f"DEBUG: Notification processing complete, waiting 7 seconds before next")
+
                     time.sleep(7)
                 except Exception as e:
-                    self.logger.error(f"Erreur dans le worker de notifications: {str(e)}")
-                    # Continuer malgré les erreurs
+                    if self.DEBUG:
+                        print(f"DEBUG: Error in notification worker: {str(e)}")
+                        import traceback
+                        print(f"DEBUG: Worker traceback: {traceback.format_exc()}")
+                    self.logger.error(f"Error in notification worker: {str(e)}")
 
-        # Démarrer le thread en arrière-plan
         notification_thread = threading.Thread(target=worker, daemon=True)
         notification_thread.start()
 
+        if self.DEBUG:
+            print("DEBUG: Notification worker thread started")
+
     def _perform_send(self, recipient_phone: str, message: str) -> bool:
-        """Effectue l'envoi réel du SMS via l'API"""
         if not recipient_phone.startswith('+'):
-            # Ajouter le code pays français si absent
             recipient_phone = '+33' + recipient_phone.lstrip('0')
+            if self.DEBUG:
+                print(f"DEBUG: Formatted phone number to {recipient_phone}")
 
         try:
             params = {
@@ -65,35 +66,58 @@ class NotificationService:
                 'text': message
             }
 
+            if self.DEBUG:
+                print(f"DEBUG: Sending API request to {self.api_url}")
+                print(f"DEBUG: Message length: {len(message)} characters")
+
             response = requests.get(self.api_url, params=params)
 
             if response.status_code != 200:
-                self.logger.error(f"Erreur lors de l'envoi de la notification: {response.text}")
+                if self.DEBUG:
+                    print(f"DEBUG: API request failed with status {response.status_code}")
+                    print(f"DEBUG: Response text: {response.text}")
+                self.logger.error(f"Error sending notification: {response.text}")
                 return False
 
-            self.logger.info(f"Notification envoyée avec succès à {recipient_phone}")
+            if self.DEBUG:
+                print(f"DEBUG: Notification sent successfully to {recipient_phone}")
+
+            self.logger.info(f"Notification sent successfully to {recipient_phone}")
             return True
         except Exception as e:
-            self.logger.error(f"Erreur lors de l'envoi de la notification: {str(e)}")
+            if self.DEBUG:
+                print(f"DEBUG: Exception during send: {str(e)}")
+                import traceback
+                print(f"DEBUG: Send traceback: {traceback.format_exc()}")
+            self.logger.error(f"Error sending notification: {str(e)}")
             return False
 
     def send_sms(self, recipient_phone: str, message: str) -> bool:
-        """Ajoute un SMS à la file d'attente"""
         try:
-            # Ajouter la notification à la file d'attente
+            if self.DEBUG:
+                print(f"DEBUG: Queueing SMS for {recipient_phone}")
+                print(f"DEBUG: Message preview: {message[:50]}...")
+
             notification_queue.put((recipient_phone, message))
             return True
         except Exception as e:
-            self.logger.error(f"Erreur lors de l'ajout de la notification à la file d'attente: {str(e)}")
+            if self.DEBUG:
+                print(f"DEBUG: Error queueing notification: {str(e)}")
+            self.logger.error(f"Error adding notification to queue: {str(e)}")
             return False
 
     def send_bulk_sms(self, recipient_phones: List[str], message: str) -> Dict[str, bool]:
-        """Envoie un SMS à plusieurs destinataires"""
         results = {}
+
+        if self.DEBUG:
+            print(f"DEBUG: Sending bulk SMS to {len(recipient_phones)} recipients")
 
         for phone in recipient_phones:
             success = self.send_sms(phone, message)
             results[phone] = success
+
+            if self.DEBUG:
+                print(f"DEBUG: SMS to {phone} queued: {success}")
 
         return results
 
@@ -102,22 +126,31 @@ class NotificationService:
                                        comment_author: str,
                                        comment_text: str,
                                        assigned_users: List[str]) -> Dict[str, bool]:
-        """Envoie une notification de commentaire de tâche aux utilisateurs assignés"""
         emoji = "💬"
         current_time = datetime.now().strftime("%d/%m/%Y à %H:%M")
 
-        message = f"""*{emoji} Nouveau commentaire sur la tâche : '{task_subject}'*
-                    Auteur : {comment_author}
-                    Commentaire : {comment_text}
-                    Temps : {current_time}
-                    
-                    Consultez l'application pour plus de détails."""
+        if self.DEBUG:
+            print(f"DEBUG: Preparing comment notification for task: {task_subject}")
+            print(f"DEBUG: Comment by: {comment_author}")
+            print(f"DEBUG: Assigned users: {assigned_users}")
+
+        message = f"""*{emoji} Nouveau commentaire sur la tâche :*'{task_subject}'\n\n*Auteur :* {comment_author}\n*Commentaire :* {comment_text}\n*Date :* {current_time}\n\nConsultez le site du GECA pour plus de détails."""
 
         phones = []
         for full_name in assigned_users:
+            if self.DEBUG:
+                print(f"DEBUG: Looking up user by name: {full_name}")
+
             user = self.get_user_by_name(full_name)
             if user and user.phone:
+                if self.DEBUG:
+                    print(f"DEBUG: Found phone number for {full_name}: {user.phone}")
                 phones.append(user.phone)
+            elif self.DEBUG:
+                print(f"DEBUG: No phone number found for {full_name}")
+
+        if self.DEBUG:
+            print(f"DEBUG: Found {len(phones)} phone numbers for notification")
 
         return self.send_bulk_sms(phones, message) if phones else {}
 
@@ -127,7 +160,6 @@ class NotificationService:
                                task_type: str,
                                actor_name: str,
                                additional_info: Optional[str] = None) -> Dict[str, bool]:
-        """Envoie une notification concernant une tâche"""
         emoji_map = {
             "assignment": "📋",
             "validation": "✅",
@@ -142,6 +174,11 @@ class NotificationService:
 
         emoji = emoji_map.get(task_type, "📌")
         current_time = datetime.now().strftime("%d/%m/%Y à %H:%M")
+
+        if self.DEBUG:
+            print(f"DEBUG: Creating task notification of type: {task_type}")
+            print(f"DEBUG: Task subject: {task_subject}")
+            print(f"DEBUG: Actor: {actor_name}")
 
         if task_type == "assignment":
             message = f"*{emoji} Nouvelle tâche : '{task_subject}'*"
@@ -167,6 +204,9 @@ class NotificationService:
         if additional_info:
             message += f"\n\n{additional_info}"
 
+        if self.DEBUG:
+            print(f"DEBUG: Message created, sending to {len(phones)} recipients")
+
         return self.send_bulk_sms(phones, message)
 
     def format_financial_notification(self,
@@ -174,8 +214,11 @@ class NotificationService:
                                       amount: float,
                                       subject: str,
                                       actor: str) -> str:
-        """Formate une notification financière"""
         current_time = datetime.now().strftime("%d/%m/%Y à %H:%M")
+
+        if self.DEBUG:
+            print(f"DEBUG: Formatting financial notification of type: {transaction_type}")
+            print(f"DEBUG: Amount: {amount:.2f}€, Subject: {subject}")
 
         if transaction_type == "income":
             emoji = "💰"
@@ -192,7 +235,7 @@ class NotificationService:
 
         message += f"\nAjouté par {actor} le {current_time}"
 
-        return "⚠️ Vérifie dans le Gsheet tréso des membres ⚠️\n"+message
+        return "⚠️ Vérifie dans le Gsheet tréso des membres ⚠️\n" + message
 
     def notify_financial_transaction(self,
                                      transaction_type: str,
@@ -200,34 +243,73 @@ class NotificationService:
                                      subject: str,
                                      actor: str,
                                      recipients: List[str]) -> Dict[str, bool]:
-        """Notifie une transaction financière"""
+        if self.DEBUG:
+            print(f"DEBUG: Notifying financial transaction to {len(recipients)} recipients")
+
         message = self.format_financial_notification(transaction_type, amount, subject, actor)
         return self.send_bulk_sms(recipients, message)
 
     def get_user_by_name(self, full_name: str):
-        """Obtient un utilisateur par son nom complet"""
         try:
+            if self.DEBUG:
+                print(f"DEBUG: Looking up user by name: {full_name}")
+
             from models.user import User
             parts = full_name.split(' ', 1)
             if len(parts) == 2:
-                lname, fname = parts
-                return User.query.filter_by(lname=lname, fname=fname).first()
+                fname, lname = parts
+
+                if self.DEBUG:
+                    print(f"DEBUG: Parsed name - Last: {lname}, First: {fname}")
+
+                user = User.query.filter_by(lname=lname, fname=fname).first()
+
+                if self.DEBUG:
+                    if user:
+                        print(f"DEBUG: Found user with Email: {user.email}")
+                    else:
+                        print(f"DEBUG: No user found with name {full_name}")
+
+                return user
+            elif self.DEBUG:
+                print(f"DEBUG: Invalid name format: {full_name}")
         except Exception as e:
-            self.logger.error(f"Erreur lors de la recherche de l'utilisateur par nom: {e}")
+            if self.DEBUG:
+                print(f"DEBUG: Error looking up user by name: {e}")
+                import traceback
+                print(f"DEBUG: Lookup traceback: {traceback.format_exc()}")
+            self.logger.error(f"Error looking up user by name: {e}")
         return None
 
     def get_user_by_email(self, email: str):
-        """Obtient un utilisateur par son email"""
         try:
+            if self.DEBUG:
+                print(f"DEBUG: Looking up user by email: {email}")
+
             from models.user import User
-            return User.query.filter_by(email=email).first()
+            user = User.query.filter_by(email=email).first()
+
+            if self.DEBUG:
+                if user:
+                    print(f"DEBUG: Found user with Name: {user.fname} {user.lname}")
+                else:
+                    print(f"DEBUG: No user found with email {email}")
+
+            return user
         except Exception as e:
-            self.logger.error(f"Erreur lors de la recherche de l'utilisateur par email: {e}")
+            if self.DEBUG:
+                print(f"DEBUG: Error looking up user by email: {e}")
+                import traceback
+                print(f"DEBUG: Lookup traceback: {traceback.format_exc()}")
+            self.logger.error(f"Error looking up user by email: {e}")
         return None
 
     def notify_income(self, income):
-        """Notifie une recette"""
         try:
+            if self.DEBUG:
+                print(
+                    f"DEBUG: Processing income notification for ID: {income.id if hasattr(income, 'id') else 'unknown'}")
+
             beneficiary_name = income.beneficiary
             added_by_email = income.added_by
 
@@ -242,6 +324,9 @@ class NotificationService:
                 if not beneficiary_user or beneficiary_user.email != added_by_user.email:
                     phones.append(added_by_user.phone)
 
+            if self.DEBUG:
+                print(f"DEBUG: Found {len(phones)} recipients for income notification")
+
             if phones:
                 self.notify_financial_transaction(
                     transaction_type="income",
@@ -251,12 +336,19 @@ class NotificationService:
                     recipients=phones
                 )
         except Exception as e:
-            self.logger.error(f"Erreur lors de la notification de recette: {e}")
+            if self.DEBUG:
+                print(f"DEBUG: Error notifying income: {e}")
+                import traceback
+                print(f"DEBUG: Income notification traceback: {traceback.format_exc()}")
+            self.logger.error(f"Error notifying income: {e}")
 
     def notify_expense(self, expense):
-        """Notifie une dépense"""
         try:
-            debited_from_name = expense.debited_from  # Nom complet
+            if self.DEBUG:
+                print(
+                    f"DEBUG: Processing expense notification for ID: {expense.id if hasattr(expense, 'id') else 'unknown'}")
+
+            debited_from_name = expense.debited_from
             added_by_email = expense.added_by
 
             phones = []
@@ -270,6 +362,9 @@ class NotificationService:
                 if not debited_user or debited_user.email != added_by_user.email:
                     phones.append(added_by_user.phone)
 
+            if self.DEBUG:
+                print(f"DEBUG: Found {len(phones)} recipients for expense notification")
+
             if phones:
                 self.notify_financial_transaction(
                     transaction_type="expense",
@@ -279,13 +374,19 @@ class NotificationService:
                     recipients=phones
                 )
         except Exception as e:
-            self.logger.error(f"Erreur lors de la notification de dépense: {e}")
+            if self.DEBUG:
+                print(f"DEBUG: Error notifying expense: {e}")
+                import traceback
+                print(f"DEBUG: Expense notification traceback: {traceback.format_exc()}")
+            self.logger.error(f"Error notifying expense: {e}")
 
     def notify_internal_transfer(self, expense, income):
-        """Notifie un transfert interne"""
         try:
-            debited_from_name = expense.debited_from  # Nom complet
-            beneficiary_name = income.beneficiary  # Nom complet
+            if self.DEBUG:
+                print(f"DEBUG: Processing internal transfer notification")
+
+            debited_from_name = expense.debited_from
+            beneficiary_name = income.beneficiary
             added_by_email = expense.added_by
 
             phones_set = set()
@@ -304,6 +405,9 @@ class NotificationService:
 
             phones = list(phones_set)
 
+            if self.DEBUG:
+                print(f"DEBUG: Found {len(phones)} unique recipients for transfer notification")
+
             if phones:
                 self.notify_financial_transaction(
                     transaction_type="transfer",
@@ -313,24 +417,42 @@ class NotificationService:
                     recipients=phones
                 )
         except Exception as e:
-            self.logger.error(f"Erreur lors de la notification de transfert interne: {e}")
+            if self.DEBUG:
+                print(f"DEBUG: Error notifying internal transfer: {e}")
+                import traceback
+                print(f"DEBUG: Transfer notification traceback: {traceback.format_exc()}")
+            self.logger.error(f"Error notifying internal transfer: {e}")
 
     def notify_blocked_user(self, user):
-        """Notifie un utilisateur bloqué"""
         try:
+            if self.DEBUG:
+                print(
+                    f"DEBUG: Sending blocked user notification to: {user.email if hasattr(user, 'email') else 'unknown'}")
+
             if user and user.phone:
-                self.send_sms(user.phone, "🔐 Votre compte GECA a été bloqué.\nContactez l'administrateur pour plus d'informations.")
+                self.send_sms(user.phone,
+                              "🔐 Votre compte GECA a été bloqué.\nContactez l'administrateur pour plus d'informations.")
         except Exception as e:
-            self.logger.error(f"Erreur lors de la notification d'utilisateur bloqué: {e}")
+            if self.DEBUG:
+                print(f"DEBUG: Error notifying blocked user: {e}")
+                import traceback
+                print(f"DEBUG: Block notification traceback: {traceback.format_exc()}")
+            self.logger.error(f"Error notifying blocked user: {e}")
 
     def notify_unblocked_user(self, user):
-        """Notifie un utilisateur débloqué"""
         try:
+            if self.DEBUG:
+                print(
+                    f"DEBUG: Sending unblocked user notification to: {user.email if hasattr(user, 'email') else 'unknown'}")
+
             if user and user.phone:
                 self.send_sms(user.phone, "🔓 Votre compte GECA a été débloqué.\nVous pouvez vous reconnecter.")
         except Exception as e:
-            self.logger.error(f"Erreur lors de la notification d'utilisateur débloqué: {e}")
+            if self.DEBUG:
+                print(f"DEBUG: Error notifying unblocked user: {e}")
+                import traceback
+                print(f"DEBUG: Unblock notification traceback: {traceback.format_exc()}")
+            self.logger.error(f"Error notifying unblocked user: {e}")
 
 
-# Instanciation du service de notification
 notification_service = NotificationService()
