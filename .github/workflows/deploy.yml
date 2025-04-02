@@ -7,7 +7,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Setup SSH
+
+    # Configurer une clé SSH pour GitHub
+    - name: Setup GitHub SSH key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.GITHUB_SSH_KEY }}" > ~/.ssh/github_key
+        chmod 600 ~/.ssh/github_key
+        eval "$(ssh-agent -s)"
+        ssh-add ~/.ssh/github_key
+
+    # Configurer l'accès SSH au serveur
+    - name: Setup SSH for server
       uses: webfactory/ssh-agent@v0.8.0
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -18,13 +29,11 @@ jobs:
 
     - name: Setup GitHub SSH access on server
       run: |
-        # Copier la clé SSH du GitHub Actions runner vers le serveur
-        ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p ~/.ssh"
-        scp -P ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/.ssh/github_deploy_key
-        ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "chmod 600 ~/.ssh/github_deploy_key"
+        # Créer une clé SSH pour GitHub sur le serveur
+        echo "${{ secrets.GITHUB_SSH_KEY }}" | ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "mkdir -p ~/.ssh && cat > ~/.ssh/github_key && chmod 600 ~/.ssh/github_key"
         
         # Configurer SSH pour utiliser cette clé spécifique pour GitHub
-        ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo 'Host github.com\n  HostName github.com\n  User git\n  IdentityFile ~/.ssh/github_deploy_key\n  IdentitiesOnly yes' > ~/.ssh/config && chmod 600 ~/.ssh/config"
+        ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo 'Host github.com\n  HostName github.com\n  User git\n  IdentityFile ~/.ssh/github_key\n  IdentitiesOnly yes' > ~/.ssh/config && chmod 600 ~/.ssh/config"
 
     - name: Debug directory
       run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "ls -la ${{ secrets.APP_DIR }}"
