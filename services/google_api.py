@@ -1,11 +1,13 @@
 from http.client import responses
-
+import os
+import json
+from urllib.parse import urlparse, parse_qs
 import google.auth
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
-import os
+from flask import session
 
 
 class GoogleAPIConnector:
@@ -24,20 +26,81 @@ class GoogleAPIConnector:
         self.script_id = os.getenv('GENERAL_SCRIPT_ID')
         self.K3_cell_value = os.getenv('K3_CELL_VALUE')
 
-    def authenticate(self, session_credentials):
-        self.credentials = Credentials(**session_credentials)
+        self.is_dev = os.getenv('DEVELOP') == '1'
+        if self.is_dev:
+            self.redirect_uri = "http://127.0.0.1:5000/callback"
+        else:
+            self.redirect_uri = "https://www.assos-geca.fr/callback"
 
-        if not self.credentials or not self.credentials.valid:
-            if self.credentials and self.credentials.expired and self.credentials.refresh_token:
-                self.credentials.refresh(Request())
+    def get_auth_url(self):
+        flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
+            self.credentials_path,
+            scopes=self.scopes
+        )
+        flow.redirect_uri = self.redirect_uri
+
+        authorization_url, state = flow.authorization_url(
+            access_type='offline',
+            prompt='consent',
+            include_granted_scopes='true'
+        )
+
+        return authorization_url, state
+
+    def process_callback(self, authorization_response, state=None):
+        try:
+            flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
+                self.credentials_path,
+                scopes=self.scopes,
+                state=state
+            )
+            flow.redirect_uri = self.redirect_uri
+
+            flow.fetch_token(authorization_response=authorization_response)
+            self.credentials = flow.credentials
+
+            self.service_script = googleapiclient.discovery.build('script', 'v1', credentials=self.credentials)
+            self.service_oauth2 = googleapiclient.discovery.build('oauth2', 'v2', credentials=self.credentials)
+
+            print("Authentication successful")
+            return True, self.credentials_to_dict()
+        except Exception as e:
+            print(f"Error processing OAuth callback: {e}")
+            return False, str(e)
+
+    def authenticate(self, session_credentials=None):
+        try:
+            if session_credentials:
+                self.credentials = Credentials(**session_credentials)
+
+                if not self.credentials or not self.credentials.valid:
+                    if self.credentials and self.credentials.expired and self.credentials.refresh_token:
+                        self.credentials.refresh(Request())
+                    else:
+                        return None
+
+                self.service_script = googleapiclient.discovery.build('script', 'v1', credentials=self.credentials)
+                self.service_oauth2 = googleapiclient.discovery.build('oauth2', 'v2', credentials=self.credentials)
+                print("Authentication successful using existing credentials")
+                return True
             else:
-                flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
-                    self.credentials_path, self.scopes)
-                self.credentials = flow.run_local_server(port=0, access_type='offline', prompt='consent')
+                return None
+        except Exception as e:
+            print(f"Error during authentication: {e}")
+            return False
 
-        self.service_script = googleapiclient.discovery.build('script', 'v1', credentials=self.credentials)
-        self.service_oauth2 = googleapiclient.discovery.build('oauth2', 'v2', credentials=self.credentials)
-        print("Authentication successful")
+    def credentials_to_dict(self):
+        if not self.credentials:
+            return None
+
+        return {
+            'token': self.credentials.token,
+            'refresh_token': self.credentials.refresh_token,
+            'token_uri': self.credentials.token_uri,
+            'client_id': self.credentials.client_id,
+            'client_secret': self.credentials.client_secret,
+            'scopes': self.credentials.scopes
+        }
 
     def run_script(self, script_id: str, function_name: str, parameters: list):
         request = {
@@ -45,23 +108,23 @@ class GoogleAPIConnector:
             "parameters": parameters
         }
         try:
-            response = None
-            remoteK3 = self.service_script.scripts().run(
-                body={
-                    "function": "getCellK3Value",
-                    "parameters": []
-                },
-                scriptId=self.script_id
-            ).execute()['response'].get('result')
-            print(f"remoteK3: {remoteK3}")
-            if remoteK3 != self.K3_cell_value:
-                print("K3 cell value does not match the expected value.")
-                raise Exception("Transaction non ajoutée ! Reconnection nécessaire.")
-            else :
-                response = self.service_script.scripts().run(
-                    body=request,
-                    scriptId=script_id
-                ).execute()
+            if self.K3_cell_value:
+                remoteK3 = self.service_script.scripts().run(
+                    body={
+                        "function": "getCellK3Value",
+                        "parameters": []
+                    },
+                    scriptId=self.script_id
+                ).execute()['response'].get('result')
+                print(f"remoteK3: {remoteK3}")
+                if remoteK3 != self.K3_cell_value:
+                    print("K3 cell value does not match the expected value.")
+                    raise Exception("Transaction non ajoutée ! Reconnection nécessaire.")
+
+            response = self.service_script.scripts().run(
+                body=request,
+                scriptId=script_id
+            ).execute()
 
             if 'error' in response:
                 print("Erreur lors de l'exécution du script: {}".format(response['error']['details']))
@@ -69,7 +132,7 @@ class GoogleAPIConnector:
             else:
                 return response['response'].get('result')
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"Error executing script: {e}")
             return 'error'
 
     def get_members(self) -> list:
@@ -83,7 +146,6 @@ class GoogleAPIConnector:
         except Exception as e:
             print(f"An error occurred while fetching members: {e}")
             return []
-
 
     def get_user_info(self):
         try:
@@ -152,12 +214,9 @@ class GoogleAPIConnector:
             return None
 
     def test_connection(self):
-        """Test de connexion aux API Google pour vérifier la validité des credentials"""
         try:
-            # Tester l'API OAuth2 (la plus légère)
             user_info = self.service_oauth2.userinfo().get().execute()
 
-            # Tester l'API Sheets si possible
             if os.getenv('SHEET_ID'):
                 sheets_service = googleapiclient.discovery.build('sheets', 'v4', credentials=self.credentials)
                 sheet_metadata = sheets_service.spreadsheets().get(spreadsheetId=os.getenv('SHEET_ID')).execute()
