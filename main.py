@@ -33,6 +33,10 @@ def create_app():
     def inject_maintenance():
         return dict(in_maintenance=app.config['IN_MAINTENANCE'])
 
+    @app.context_processor
+    def inject_maintenance():
+        return {"maintenance": os.getenv("MAINTENANCE", "0") == "1"}
+
     app.config.from_object(Config)
 
     Session(app)
@@ -67,4 +71,4 @@ def create_app():
 app = create_app()
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True)
+    app.run(debug=True)

@@ -70,6 +70,67 @@
             }
         };
     </script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Vérifier si la géolocalisation est autorisée
+    if (!navigator.geolocation) {
+        console.error("La géolocalisation n'est pas supportée par ce navigateur.");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            // La géolocalisation est autorisée
+            console.log(`Latitude: ${position.coords.latitude}`);
+            console.log(`Longitude: ${position.coords.longitude}`);
+        },
+        function(error) {
+            // La géolocalisation n'est pas autorisée
+            console.error("Erreur de géolocalisation:", error.message);
+            document.getElementById('requestLocationBtn').style.display = 'block';
+        }
+    );
+
+    // Ajouter un événement au bouton pour demander la localisation
+    document.getElementById('requestLocationBtn').addEventListener('click', function() {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                console.log(`Latitude: ${position.coords.latitude}`);
+                console.log(`Longitude: ${position.coords.longitude}`);
+                // Envoyer les coordonnées au serveur
+                fetch('/save-location', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                });
+            },
+            function(error) {
+                console.error("Erreur de géolocalisation:", error.message);
+            }
+        );
+    });
+});
+</script>
+<style>
+#requestLocationBtn {
+    display: none;
+    margin: 20px;
+}
+</style>
+
+
     {% block head %}
 {% endblock %}
 </head>
@@ -202,6 +263,9 @@
             </nav>
 
             <ul class="navbar-nav  justify-content-end">
+                <li class="nav-item d-flex align-items-center">
+                    <button id="requestLocationBtn" class="btn btn-primary">Localisation</button>
+                </li>
                 <li class="nav-item d-flex align-items-center">
                     <a href="./disconnect" class="nav-link text-body font-weight-bold px-0">
                         <i class="fa fa-power-off me-sm-1"></i>
