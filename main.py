@@ -10,10 +10,12 @@ from routes.tasks import tasks_bp
 from routes.users import users_bp
 from routes.finances import finances_bp
 from routes.locations import locations_bp
+from routes.stats import stats_bp
 
 from db import db
 from models.role import Role
 from models.comment import Comment
+from models.statistic import Statistic
 
 from config import Config
 
@@ -33,6 +35,10 @@ def create_app():
     def inject_maintenance():
         return dict(in_maintenance=app.config['IN_MAINTENANCE'])
 
+    @app.context_processor
+    def inject_maintenance():
+        return {"maintenance": os.getenv("MAINTENANCE", "0") == "1"}
+
     app.config.from_object(Config)
 
     Session(app)
@@ -49,17 +55,17 @@ def create_app():
             ]
         )
 
-    # Register blueprints
     app.register_blueprint(auth_bp, url_prefix='')
     app.register_blueprint(tasks_bp, url_prefix='')
     app.register_blueprint(users_bp, url_prefix='')
     app.register_blueprint(finances_bp, url_prefix='')
     app.register_blueprint(locations_bp, url_prefix='')
+    app.register_blueprint(stats_bp, url_prefix='')
 
-    # Init db
     with app.app_context():
         db.create_all()
         Role.initialize_roles()
+        Statistic.initialize_stats()
 
     return app
 
@@ -67,4 +73,4 @@ def create_app():
 app = create_app()
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', debug=True)
+    app.run(debug=True)

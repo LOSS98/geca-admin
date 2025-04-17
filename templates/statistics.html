@@ -1,0 +1,238 @@
+{% extends "layout.html" %}
+
+{% block head %}
+    <style>
+        .stats-header {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .stats-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+        .stats-subtitle {
+            font-size: 14px;
+            color: #6c757d;
+        }
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 768px) {
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 576px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        .stat-card {
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+        }
+        .card-crepes {
+            background: linear-gradient(135deg, #e33a24 0%, #ff8f50 100%);
+        }
+        .card-taxis {
+            background: linear-gradient(135deg, #0dcaf0 0%, #0d6efd 100%);
+        }
+        .card-appels {
+            background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);
+        }
+        .card-accidents {
+            background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+        }
+        .card-topcaller {
+            background: linear-gradient(135deg, #facc15 0%, #f97316 100%);
+            grid-column: span 2;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 600px;
+        }
+        .stat-value {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+        .stat-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .btn-increment {
+            background-color: white;
+            color: #333;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;
+            font-weight: 500;
+            flex: 1;
+        }
+        .stat-input-group {
+            display: flex;
+            gap: 10px;
+        }
+        .stat-input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+        }
+        .btn-set {
+            background-color: white;
+            color: #333;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;
+            font-weight: 500;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="stats-header">
+            <h1 class="stats-title">Statistiques</h1>
+            <p class="stats-subtitle">Tableau de bord des statistiques</p>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card card-crepes">
+                <div class="stat-value" id="crepes-value">{{ stats.crepes.value if stats.crepes else '1895' }}</div>
+                <div class="stat-label">{{ stats.crepes.label if stats.crepes else 'Crêpes commandées' }}</div>
+                <div class="stat-actions">
+                    <button class="btn-increment" onclick="incrementStat('crepes', 1)">+1</button>
+                    <button class="btn-increment" onclick="incrementStat('crepes', 5)">+5</button>
+                    <button class="btn-increment" onclick="incrementStat('crepes', 10)">+10</button>
+                </div>
+                <div class="stat-input-group">
+                    <input type="text" class="stat-input" id="crepes-input" placeholder="Valeur">
+                    <button class="btn-set" onclick="setStat('crepes', document.getElementById('crepes-input').value)">DÉFINIR</button>
+                </div>
+            </div>
+
+            <div class="stat-card card-taxis">
+                <div class="stat-value" id="taxis-value">{{ stats.taxis.value if stats.taxis else '58' }}</div>
+                <div class="stat-label">{{ stats.taxis.label if stats.taxis else 'Trajets en taxi' }}</div>
+                <div class="stat-actions">
+                    <button class="btn-increment" onclick="incrementStat('taxis', 1)">+1</button>
+                    <button class="btn-increment" onclick="incrementStat('taxis', 5)">+5</button>
+                    <button class="btn-increment" onclick="incrementStat('taxis', 10)">+10</button>
+                </div>
+                <div class="stat-input-group">
+                    <input type="text" class="stat-input" id="taxis-input" placeholder="Valeur">
+                    <button class="btn-set" onclick="setStat('taxis', document.getElementById('taxis-input').value)">DÉFINIR</button>
+                </div>
+            </div>
+
+            <div class="stat-card card-appels">
+                <div class="stat-value" id="appels-value">{{ stats.appels.value if stats.appels else '368' }}</div>
+                <div class="stat-label">{{ stats.appels.label if stats.appels else 'Appels au standard' }}</div>
+                <div class="stat-actions">
+                    <button class="btn-increment" onclick="incrementStat('appels', 1)">+1</button>
+                    <button class="btn-increment" onclick="incrementStat('appels', 5)">+5</button>
+                    <button class="btn-increment" onclick="incrementStat('appels', 10)">+10</button>
+                </div>
+                <div class="stat-input-group">
+                    <input type="text" class="stat-input" id="appels-input" placeholder="Valeur">
+                    <button class="btn-set" onclick="setStat('appels', document.getElementById('appels-input').value)">DÉFINIR</button>
+                </div>
+            </div>
+
+            <div class="stat-card card-accidents">
+                <div class="stat-value" id="accidents-value">{{ stats.accidents.value if stats.accidents else '10' }}</div>
+                <div class="stat-label">{{ stats.accidents.label if stats.accidents else 'Nombre d\'accidents' }}</div>
+                <div class="stat-actions">
+                    <button class="btn-increment" onclick="incrementStat('accidents', 1)">+1</button>
+                    <button class="btn-increment" onclick="incrementStat('accidents', 5)">+5</button>
+                    <button class="btn-increment" onclick="incrementStat('accidents', 10)">+10</button>
+                </div>
+                <div class="stat-input-group">
+                    <input type="text" class="stat-input" id="accidents-input" placeholder="Valeur">
+                    <button class="btn-set" onclick="setStat('accidents', document.getElementById('accidents-input').value)">DÉFINIR</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card card-topcaller">
+            <div class="stat-value" id="top_caller-value">{{ stats.top_caller.value if stats.top_caller else 'khalil' }}</div>
+            <div class="stat-label">{{ stats.top_caller.label if stats.top_caller else 'Le plus d\'appel au standard' }}</div>
+            <div class="stat-input-group">
+                <input type="text" class="stat-input" id="top_caller-input" placeholder="Nom">
+                <button class="btn-set" onclick="setStat('top_caller', document.getElementById('top_caller-input').value)">DÉFINIR</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function incrementStat(key, amount) {
+            fetch('/api/statistics/increment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    key: key,
+                    amount: amount
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById(`${key}-value`).textContent = data.statistic.value;
+                } else {
+                    alert('Erreur: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Une erreur est survenue');
+            });
+        }
+
+        function setStat(key, value) {
+            if (value === '') {
+                alert('Veuillez entrer une valeur');
+                return;
+            }
+
+            fetch('/api/statistics/set', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    key: key,
+                    value: value
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById(`${key}-value`).textContent = data.statistic.value;
+                    document.getElementById(`${key}-input`).value = '';
+                } else {
+                    alert('Erreur: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Une erreur est survenue');
+            });
+        }
+    </script>
+{% endblock %}
