@@ -28,7 +28,7 @@ class Statistic(db.Model):
     @staticmethod
     def get_all():
         """Récupère toutes les statistiques de la base de données"""
-        return Statistic.query.all()
+        return Statistic.query.all().order_by(Statistic.id.asc())
 
     @staticmethod
     def get_by_id(id):
