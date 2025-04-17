@@ -241,11 +241,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 </a>
             </li>
             <li class="nav-item"></li>
-                <a id="navbar" class="nav-link" href="" onclick="alert('Stalker, la localisation fonctionne, mais sera accessible pendant la semaine des campagnes.')">
-                    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+{#                <a id="navbar" class="nav-link" href="./users-map" onclick="alert('Stalker, la localisation fonctionne, mais sera accessible pendant la semaine des campagnes.')">#}
+            <a id="navbar" class="nav-link" href="./users-map">
+                <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa fa-map text-lg opacity-10" aria-hidden="true" style="color: red;"></i>
                     </div>
                     <span class="nav-link-text ms-1">Carte</span>
+                </a>
+            </li>
+            <li class="nav-item"></li>
+                <a id="navbar" class="nav-link" href="./statistics">
+                    <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fa fa-chart-bar text-lg opacity-10" aria-hidden="true" style="color: red;"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Statistiques</span>
                 </a>
             </li>
         </ul>

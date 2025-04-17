@@ -1,0 +1,322 @@
+{% extends "layout.html" %}
+
+{% block head %}
+    <style>
+        .stats-header {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .stats-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+        .stats-subtitle {
+            font-size: 14px;
+            color: #6c757d;
+        }
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 1200px) {
+            .stats-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        @media (max-width: 992px) {
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 576px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        .stat-card {
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .card-1 {
+            background: linear-gradient(135deg, #e33a24 0%, #ff8f50 100%);
+        }
+        .card-2 {
+            background: linear-gradient(135deg, #0dcaf0 0%, #0d6efd 100%);
+        }
+        .card-3 {
+            background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);
+        }
+        .card-4 {
+            background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+        }
+        .card-5 {
+            background: linear-gradient(135deg, #facc15 0%, #f97316 100%);
+        }
+        .card-text {
+            background: linear-gradient(135deg, #6b7280 0%, #374151 100%);
+        }
+        .card-default {
+            background: linear-gradient(135deg, #4f46e5 0%, #818cf8 100%);
+        }
+        .stat-value {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+        .stat-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .btn-increment {
+            background-color: white;
+            color: #333;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;
+            font-weight: 500;
+            flex: 1;
+        }
+        .custom-increment {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .custom-input {
+            flex: 2;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+        }
+        .btn-add, .btn-subtract {
+            flex: 1;
+            background-color: white;
+            color: #333;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 0;
+            font-weight: 500;
+        }
+        .btn-add {
+            background-color: #d1fae5;
+        }
+        .btn-subtract {
+            background-color: #fee2e2;
+        }
+        .stat-input-group {
+            display: flex;
+            gap: 10px;
+        }
+        .stat-input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+        }
+        .btn-set {
+            background-color: white;
+            color: #333;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 16px;
+            font-weight: 500;
+        }
+        .new-stat-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="stats-header">
+            <h1 class="stats-title">Statistiques</h1>
+            <p class="stats-subtitle">Tableau de bord des statistiques</p>
+        </div>
+
+        <div class="stats-container">
+            {% for stat in stats.values() %}
+                <div class="stat-card
+                    {% if stat.is_text %}card-text
+                    {% else %}card-{{ loop.index % 5 + 1 }}
+                    {% endif %}">
+                    <div class="stat-value" id="stat-{{ stat.id }}-value">{{ stat.value }}</div>
+                    <div class="stat-label">{{ stat.label }}</div>
+
+                    {% if not stat.is_text %}
+                        <div class="stat-actions">
+                            <button class="btn-increment" onclick="incrementStat({{ stat.id }}, 1)">+1</button>
+                            <button class="btn-increment" onclick="incrementStat({{ stat.id }}, 5)">+5</button>
+                            <button class="btn-increment" onclick="incrementStat({{ stat.id }}, 10)">+10</button>
+                        </div>
+                        <div class="custom-increment">
+                            <input type="number" class="custom-input" id="stat-{{ stat.id }}-custom" placeholder="Valeur">
+                            <button class="btn-add" onclick="incrementStat({{ stat.id }}, document.getElementById('stat-{{ stat.id }}-custom').value ? parseInt(document.getElementById('stat-{{ stat.id }}-custom').value) : 0)">+</button>
+                            <button class="btn-subtract" onclick="incrementStat({{ stat.id }}, document.getElementById('stat-{{ stat.id }}-custom').value ? -parseInt(document.getElementById('stat-{{ stat.id }}-custom').value) : 0)">-</button>
+                        </div>
+                    {% endif %}
+
+                    <div class="stat-input-group">
+                        <input type="text" class="stat-input" id="stat-{{ stat.id }}-input" placeholder="Valeur">
+                        <button class="btn-set" onclick="setStat({{ stat.id }}, document.getElementById('stat-{{ stat.id }}-input').value)">DÉFINIR</button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="new-stat-section">
+            <div class="row">
+                <div class="col-md-6 col-lg-4 mx-auto">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Ajouter une nouvelle statistique</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="newStatForm">
+                                <div class="mb-3">
+                                    <label for="newStatLabel" class="form-label">Libellé</label>
+                                    <input type="text" class="form-control" id="newStatLabel" required>
+                                    <div class="form-text">Nom affiché pour cette statistique</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newStatValue" class="form-label">Valeur initiale</label>
+                                    <input type="text" class="form-control" id="newStatValue" required>
+                                </div>
+                                <div class="mb-3 form-check">
+                                    <input type="checkbox" class="form-check-input" id="isTextStat">
+                                    <label class="form-check-label" for="isTextStat">Statistique textuelle</label>
+                                    <div class="form-text">Pour les valeurs non-numériques comme des noms</div>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Ajouter</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function incrementStat(id, amount) {
+            // Vérifier si amount est un nombre valide
+            if (isNaN(amount) || amount === '') {
+                alert('Veuillez entrer un nombre valide');
+                return;
+            }
+
+            fetch('/api/statistics/increment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: id,
+                    amount: parseInt(amount)
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById(`stat-${id}-value`).textContent = data.statistic.value;
+                    if (document.getElementById(`stat-${id}-custom`)) {
+                        document.getElementById(`stat-${id}-custom`).value = '';
+                    }
+                } else {
+                    alert('Erreur: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Une erreur est survenue');
+            });
+        }
+
+        function setStat(id, value) {
+            if (value === '') {
+                alert('Veuillez entrer une valeur');
+                return;
+            }
+
+            fetch('/api/statistics/set', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: id,
+                    value: value
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById(`stat-${id}-value`).textContent = data.statistic.value;
+                    document.getElementById(`stat-${id}-input`).value = '';
+                } else {
+                    alert('Erreur: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Une erreur est survenue');
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Formulaire pour ajouter une nouvelle statistique
+            const newStatForm = document.getElementById('newStatForm');
+
+            newStatForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const label = document.getElementById('newStatLabel').value.trim();
+                const value = document.getElementById('newStatValue').value.trim();
+                const isText = document.getElementById('isTextStat').checked;
+
+                // Créer la nouvelle statistique via l'API
+                fetch('/api/statistics/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        label: label,
+                        value: value,
+                        is_text: isText
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Recharger la page pour afficher la nouvelle statistique
+                        window.location.reload();
+                    } else {
+                        alert('Erreur: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Une erreur est survenue lors de la création de la statistique');
+                });
+            });
+        });
+    </script>
+{% endblock %}

@@ -10,10 +10,12 @@ from routes.tasks import tasks_bp
 from routes.users import users_bp
 from routes.finances import finances_bp
 from routes.locations import locations_bp
+from routes.stats import stats_bp
 
 from db import db
 from models.role import Role
 from models.comment import Comment
+from models.statistic import Statistic
 
 from config import Config
 
@@ -53,17 +55,17 @@ def create_app():
             ]
         )
 
-    # Register blueprints
     app.register_blueprint(auth_bp, url_prefix='')
     app.register_blueprint(tasks_bp, url_prefix='')
     app.register_blueprint(users_bp, url_prefix='')
     app.register_blueprint(finances_bp, url_prefix='')
     app.register_blueprint(locations_bp, url_prefix='')
+    app.register_blueprint(stats_bp, url_prefix='')
 
-    # Init db
     with app.app_context():
         db.create_all()
         Role.initialize_roles()
+        #Statistic.initialize_stats()
 
     return app
 
