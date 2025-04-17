@@ -2,8 +2,10 @@ from flask import Blueprint, render_template, request, session, redirect, url_fo
 from models.statistic import Statistic
 from routes.auth import is_not_connected
 from db import db
+from datetime import datetime
 
 stats_bp = Blueprint('stats', __name__)
+
 
 @stats_bp.route('/statistics')
 def statistics_page():
@@ -15,9 +17,10 @@ def statistics_page():
         error_message = request.args.get('error')
 
     stats = Statistic.get_all()
-    stats_dict = {stat.key: stat.to_dict() for stat in stats}
+    stats_dict = {stat.id: stat.to_dict() for stat in stats}
 
     return render_template('statistics.html', error=error_message, user_info=session['user_info'], stats=stats_dict)
+
 
 @stats_bp.route('/api/statistics/increment', methods=['POST'])
 def increment_statistic():
@@ -25,27 +28,28 @@ def increment_statistic():
         return jsonify({'error': 'Not connected'}), 401
 
     data = request.json
-    key = data.get('key')
+    stat_id = data.get('id')
     amount = data.get('amount', 1)
 
-    if not key:
-        return jsonify({'error': 'Key required'}), 400
+    if not stat_id:
+        return jsonify({'error': 'Statistic ID required'}), 400
 
     try:
         amount = int(amount)
     except ValueError:
         return jsonify({'error': 'Amount must be a number'}), 400
 
-    success = Statistic.increment(key, amount)
+    success = Statistic.increment(stat_id, amount)
     if not success:
         return jsonify({'error': 'Failed to increment statistic'}), 500
 
     # Récupérer la statistique mise à jour
-    stat = Statistic.get_by_key(key)
+    stat = Statistic.get_by_id(stat_id)
     if not stat:
         return jsonify({'error': 'Statistic not found'}), 404
 
     return jsonify({'success': True, 'statistic': stat.to_dict()})
+
 
 @stats_bp.route('/api/statistics/set', methods=['POST'])
 def set_statistic():
@@ -53,22 +57,71 @@ def set_statistic():
         return jsonify({'error': 'Not connected'}), 401
 
     data = request.json
-    key = data.get('key')
+    stat_id = data.get('id')
     value = data.get('value')
 
-    if not key or value is None:
-        return jsonify({'error': 'Key and value required'}), 400
+    if not stat_id or value is None:
+        return jsonify({'error': 'ID and value required'}), 400
 
-    success = Statistic.set_value(key, value)
+    success = Statistic.set_value(stat_id, value)
     if not success:
         return jsonify({'error': 'Failed to set statistic'}), 500
 
     # Récupérer la statistique mise à jour
-    stat = Statistic.get_by_key(key)
+    stat = Statistic.get_by_id(stat_id)
     if not stat:
         return jsonify({'error': 'Statistic not found'}), 404
 
     return jsonify({'success': True, 'statistic': stat.to_dict()})
+
+
+@stats_bp.route('/api/statistics/create', methods=['POST'])
+def create_statistic():
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    data = request.json
+    label = data.get('label')
+    value = data.get('value')
+    is_text = data.get('is_text', False)
+
+    if not label or value is None:
+        return jsonify({'error': 'Label and value are required'}), 400
+
+    # Vérifier si le libellé existe déjà
+    existing_stat = Statistic.get_by_label(label)
+    if existing_stat:
+        return jsonify({'error': 'A statistic with this label already exists'}), 400
+
+    # Créer une nouvelle statistique
+    try:
+        stat = Statistic(value=value, label=label, is_text=is_text)
+        db.session.add(stat)
+        db.session.commit()
+        return jsonify({'success': True, 'statistic': stat.to_dict()})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f'Failed to create statistic: {str(e)}'}), 500
+
+
+@stats_bp.route('/api/statistics/delete', methods=['POST'])
+def delete_statistic():
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    data = request.json
+    stat_id = data.get('id')
+
+    if not stat_id:
+        return jsonify({'error': 'Statistic ID required'}), 400
+
+    # Trouver et supprimer la statistique
+    success = Statistic.delete(stat_id)
+    if not success:
+        return jsonify({'error': 'Statistic not found or could not be deleted'}), 404
+
+    return jsonify({'success': True})
+
 
 @stats_bp.route('/api/statistics', methods=['GET'])
 def get_statistics():

@@ -65,7 +65,7 @@ def create_app():
     with app.app_context():
         db.create_all()
         Role.initialize_roles()
-        Statistic.initialize_stats()
+        #Statistic.initialize_stats()
 
     return app
 
