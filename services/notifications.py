@@ -39,7 +39,7 @@ class NotificationService:
                     if self.DEBUG:
                         print(f"DEBUG: Notification processing complete, waiting 7 seconds before next")
 
-                    time.sleep(7)
+                    time.sleep(1)
                 except Exception as e:
                     if self.DEBUG:
                         print(f"DEBUG: Error in notification worker: {str(e)}")
