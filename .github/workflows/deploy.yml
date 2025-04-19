@@ -1,44 +1,26 @@
-name: github-deploy
+name: Deploy to Production
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
+      - name: Execute remote SSH commands
+        uses: appleboy/ssh-action@master
         with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          known_hosts: unnecessary
-          if_key_exists: replace
-
-      - name: Adding Known Hosts
-        run: ssh-keyscan -p ${{ secrets.SSH_PORT }} -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Debug directory
-        run: ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "ls -la ${{ secrets.APP_DIR }}"
-
-      - name: Git pull latest changes
-        run: |
-          # Configuration Git avancée pour diagnostiquer les problèmes
-          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.APP_DIR }} && \
-            git config --global --add safe.directory ${{ secrets.APP_DIR }} && \
-            git config pull.rebase false && \
-            git config --get remote.origin.url && \
-            echo 'Tentative de git pull...' && \
-            GIT_TERMINAL_PROMPT=0 git pull origin main || \
-            (echo 'Pull failed, trying fetch/reset...' && \
-            GIT_TERMINAL_PROMPT=0 git fetch --all && \
-            git reset --hard origin/main)"
-
-      - name: Activate virtual environment and install dependencies
-        run: ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.APP_DIR }} && source gecavenv/bin/activate && pip install -r requirements.txt"
-
-      - name: Restart application service
-        run: ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo systemctl restart geca.service"
+          port: ${{ secrets.PORT }}
+          script: |
+            cd ${{ secrets.APP_DIR }}
+            git pull
+            docker-compose down
+            docker-compose build
+            docker-compose up -d
+            docker-compose exec -T web flask db upgrade
+            sudo systemctl restart nginx
