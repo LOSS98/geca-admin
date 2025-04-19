@@ -1,0 +1,16 @@
+services:
+  web:
+    build: .
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./flask_session:/app/flask_session
+    ports:
+      - "5000:5000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
