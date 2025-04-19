@@ -3,6 +3,7 @@ services:
     build: .
     container_name: geca-admin
     restart: always
+    network_mode: "host"
     ports:
       - "5000:5000"
     env_file:
@@ -17,7 +18,3 @@ services:
           memory: 1G
     networks:
       - geca-network
-
-networks:
-  geca-network:
-    driver: bridge
