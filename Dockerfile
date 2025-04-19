@@ -12,4 +12,7 @@ ENV PYTHONUNBUFFERED=1
 
 EXPOSE 5000
 
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "1", "--timeout", "120", "--log-level", "debug", "wsgi:app"]
+dockerfile# Ajoutez ces packages
+RUN pip install --no-cache-dir gevent
+
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "3", "--worker-class", "gevent", "--worker-connections", "1000", "--timeout", "300", "--log-level", "info", "wsgi:app"]
