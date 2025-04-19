@@ -1,26 +1,57 @@
-name: Deploy to Production
+name: Deploy Flask Admin App to VPS
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Execute remote SSH commands
-        uses: appleboy/ssh-action@master
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.PORT }}
-          script: |
-            cd ${{ secrets.APP_DIR }}
-            git pull
-            docker-compose down
-            docker-compose build
-            docker-compose up -d
-            docker-compose exec -T web flask db upgrade
-            sudo systemctl restart nginx
+          known_hosts: unnecessary
+          if_key_exists: replace
+
+      - name: Adding Known Hosts
+        run: ssh-keyscan -p ${{ secrets.SSH_PORT }} -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to VPS
+        run: |
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "mkdir -p ~/geca-admin"
+          rsync -avz -e "ssh -p ${{ secrets.SSH_PORT }}" --exclude='.git/' --exclude='.github/' --exclude='.env' --exclude='*.db' ./ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:~/geca-admin/
+
+      - name: Create .env file
+        run: |
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cat > ~/geca-admin/.env << 'EOL'
+          EXPENSE_SCRIPT_ID=${{ secrets.EXPENSE_SCRIPT_ID }}
+          INCOME_SCRIPT_ID=${{ secrets.INCOME_SCRIPT_ID }}
+          INTERNALTRANSFER_SCRIPT_ID=${{ secrets.INTERNALTRANSFER_SCRIPT_ID }}
+          GENERAL_SCRIPT_ID=${{ secrets.GENERAL_SCRIPT_ID }}
+          ASKMONEY_SCRIPT_ID=${{ secrets.ASKMONEY_SCRIPT_ID }}
+          WHATSAPP_API_KEY=${{ secrets.WHATSAPP_API_KEY }}
+          WHATSAPP_API_URL=${{ secrets.WHATSAPP_API_URL }}
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_PORT=${{ secrets.DB_PORT }}
+          DB_USER=${{ secrets.DB_USER }}
+          DB_PWD=${{ secrets.DB_PWD }}
+          DB_NAME=${{ secrets.DB_NAME }}
+          DB_URI=${{ secrets.DB_URI }}
+          K3_CELL_VALUE=${{ secrets.K3_CELL_VALUE }}
+          IN_MAINTENANCE=${{ secrets.IN_MAINTENANCE }}
+          DEVELOP=${{ secrets.DEVELOP }}
+          EOL"
+
+      - name: Connect to VPS and stop containers
+        run: ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd ~/geca-admin && docker compose down"
+
+      - name: Build containers
+        run: ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd ~/geca-admin && docker compose build"
+
+      - name: Start containers
+        run: ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd ~/geca-admin && docker compose up -d"
