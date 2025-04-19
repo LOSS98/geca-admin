@@ -9,6 +9,12 @@ services:
       - .env
     volumes:
       - ./flask_session:/app/flask_session
+    deploy:
+      resources:
+        limits:
+          memory: 3G
+        reservations:
+          memory: 1G
     networks:
       - geca-network
 

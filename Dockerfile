@@ -12,4 +12,4 @@ ENV PYTHONUNBUFFERED=1
 
 EXPOSE 5000
 
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "wsgi:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "5", "--threads", "2", "--worker-class", "sync", "--worker-connections", "1000", "--timeout", "300", "--keepalive", "2", "--log-level", "info", "wsgi:app"]
