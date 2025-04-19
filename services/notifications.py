@@ -60,17 +60,20 @@ class NotificationService:
                 print(f"DEBUG: Formatted phone number to {recipient_phone}")
 
         try:
-            params = {
-                'recipient': recipient_phone,
-                'apikey': self.api_key,
-                'text': message
+            headers = {
+                "X-API-KEY": self.api_key
+            }
+
+            data = {
+                "recipient": recipient_phone,
+                "message": message
             }
 
             if self.DEBUG:
-                print(f"DEBUG: Sending API request to {self.api_url}")
+                print(f"DEBUG: Sending POST request to {self.api_url}")
                 print(f"DEBUG: Message length: {len(message)} characters")
 
-            response = requests.get(self.api_url, params=params)
+            response = requests.post(self.api_url, json=data, headers=headers)
 
             if response.status_code != 200:
                 if self.DEBUG:
@@ -81,6 +84,7 @@ class NotificationService:
 
             if self.DEBUG:
                 print(f"DEBUG: Notification sent successfully to {recipient_phone}")
+                print(f"DEBUG: Response: {response.json()}")
 
             self.logger.info(f"Notification sent successfully to {recipient_phone}")
             return True
