@@ -14,4 +14,4 @@ EXPOSE 5000
 
 RUN pip install --no-cache-dir gevent
 
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "3", "--worker-class", "gevent", "--worker-connections", "1000", "--timeout", "300", "--log-level", "info", "wsgi:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "5", "--worker-class", "gevent", "--worker-connections", "1000", "--timeout", "300", "--log-level", "info", "wsgi:app"]
