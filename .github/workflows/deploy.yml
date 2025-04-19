@@ -49,12 +49,6 @@ jobs:
           DEVELOP=${{ secrets.DEVELOP }}
           EOL"
 
-      - name: Create credentials.json file
-        run: |
-          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cat > ~/geca-admin/credentials.json << 'EOL'
-          ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
-          EOL"
-
       - name: Stop containers
         run: ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd ~/geca-admin && docker-compose down"
 
