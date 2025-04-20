@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <div class="row">
+                        <div class="col-8">
+                            <h6>Liste des shotguns</h6>
+                        </div>
+                        <div class="col-4 text-end">
+                            {% if is_admin %}
+                            <a href="{{ url_for('shotguns.create_shotgun') }}" class="btn btn-sm btn-primary">
+                                <i class="fa fa-plus"></i> Créer un shotgun
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    {% if error %}
+                    <div class="alert alert-danger mx-4 mt-3">
+                        {{ error }}
+                    </div>
+                    {% endif %}
+                    {% if success %}
+                    <div class="alert alert-success mx-4 mt-3">
+                        {{ success }}
+                    </div>
+                    {% endif %}
+                    {% if shotguns %}
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Titre</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Places</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Statut</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for shotgun in shotguns %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex px-2 py-1">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm">{{ shotgun.title }}</h6>
+                                                <p class="text-xs text-secondary mb-0">
+                                                    Créé par: {{ shotgun.creator.fname }} {{ shotgun.creator.lname }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">
+                                            {% if shotgun.event_date %}
+                                            {{ shotgun.event_date.strftime('%d/%m/%Y %H:%M') }}
+                                            {% else %}
+                                            Non définie
+                                            {% endif %}
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">
+                                            {{ shotgun.participants|length }}
+                                            {% if shotgun.max_participants %}
+                                            / {{ shotgun.max_participants }}
+                                            {% endif %}
+                                        </p>
+                                    </td>
+                                    <td>
+                                        {% if shotgun.is_published %}
+                                        <span class="badge badge-sm bg-gradient-success">Publié</span>
+                                        {% else %}
+                                        <span class="badge badge-sm bg-gradient-secondary">Brouillon</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="align-middle">
+                                        <a href="{{ url_for('shotguns.view_shotgun', shotgun_id=shotgun.id) }}" class="btn btn-sm btn-info" data-toggle="tooltip" data-original-title="Voir">
+                                            <i class="fa fa-eye"></i> Voir
+                                        </a>
+                                        {% if is_admin %}
+                                        <a href="{{ url_for('shotguns.edit_shotgun', shotgun_id=shotgun.id) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-original-title="Modifier">
+                                            <i class="fa fa-edit"></i> Modifier
+                                        </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <p>Aucun shotgun disponible</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
