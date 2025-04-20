@@ -286,7 +286,7 @@
                         <label for="excel-file" class="form-control-label">Fichier Excel (.xls, .xlsx)</label>
                         <input class="form-control" type="file" id="excel-file" accept=".xls,.xlsx" required>
                     </div>
-                    <div class="alert alert-info mt-3">
+                    <div class="alert alert-info mt-3 text-white">
                         <p class="mb-0">Le fichier Excel doit contenir les colonnes suivantes :</p>
                         <ul class="mb-0">
                             <li>Nom (obligatoire)</li>
@@ -312,9 +312,9 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        console.log('Document loaded and script running');
         const shotgunId = {{ shotgun.id }};
-        let participantsData = {{ participants }};
-        
+        let participantsData = {{ participants|tojson }};
         // Gestion de la suppression du shotgun
         document.getElementById('delete-shotgun-btn').addEventListener('click', function() {
             Swal.fire({
@@ -575,10 +575,10 @@
                 });
                 return;
             }
-            
+
             const formData = new FormData();
             formData.append('excel_file', fileInput.files[0]);
-            
+
             Swal.fire({
                 title: 'Importation en cours...',
                 text: 'Veuillez patienter pendant l\'importation des données.',
@@ -587,7 +587,7 @@
                     Swal.showLoading();
                 }
             });
-            
+
             fetch(`/shotguns/${shotgunId}/import-excel`, {
                 method: 'POST',
                 body: formData
@@ -595,10 +595,9 @@
             .then(response => response.json())
             .then(data => {
                 Swal.close();
-                
+
                 if (data.success) {
                     bootstrap.Modal.getInstance(document.getElementById('excel-import-modal')).hide();
-                    
                     Swal.fire({
                         title: 'Importation réussie !',
                         text: data.message || `${data.count} participants importés avec succès.`,
@@ -619,7 +618,7 @@
             .catch(error => {
                 console.error('Error:', error);
                 Swal.close();
-                
+
                 Swal.fire({
                     title: 'Erreur',
                     text: 'Une erreur est survenue lors de l\'importation.',
