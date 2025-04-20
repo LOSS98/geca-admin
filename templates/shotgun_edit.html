@@ -1,0 +1,633 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+    .participant-row:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <div class="row">
+                        <div class="col-6">
+                            <h6>Modifier le shotgun</h6>
+                        </div>
+                        <div class="col-6 text-end">
+                            <a href="{{ url_for('shotguns.shotguns_list') }}" class="btn btn-sm btn-outline-secondary">
+                                <i class="fa fa-arrow-left"></i> Retour à la liste
+                            </a>
+                            <a href="{{ url_for('shotguns.view_shotgun', shotgun_id=shotgun.id) }}" class="btn btn-sm btn-info">
+                                <i class="fa fa-eye"></i> Voir
+                            </a>
+                            <button type="button" class="btn btn-sm btn-danger" id="delete-shotgun-btn">
+                                <i class="fa fa-trash"></i> Supprimer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if error %}
+                    <div class="alert alert-danger">
+                        {{ error }}
+                    </div>
+                    {% endif %}
+                    {% if success %}
+                    <div class="alert alert-success">
+                        {{ success }}
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Formulaire de modification du shotgun -->
+                    <form method="POST" action="{{ url_for('shotguns.edit_shotgun', shotgun_id=shotgun.id) }}">
+                        <input type="hidden" name="update_shotgun" value="1">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="title" class="form-control-label">Titre *</label>
+                                    <input class="form-control" type="text" id="title" name="title" value="{{ shotgun.title }}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="event_date" class="form-control-label">Date de l'événement</label>
+                                    <input class="form-control" type="datetime-local" id="event_date" name="event_date" 
+                                           value="{{ shotgun.event_date if shotgun.event_date else '' }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description" class="form-control-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3">{{ shotgun.description or '' }}</textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="max_participants" class="form-control-label">Nombre maximum de participants</label>
+                                    <input class="form-control" type="number" id="max_participants" name="max_participants" min="1" 
+                                           value="{{ shotgun.max_participants or '' }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check form-switch mt-4">
+                                    <input class="form-check-input" type="checkbox" id="is_published" name="is_published" 
+                                           {% if shotgun.is_published %}checked{% endif %}>
+                                    <label class="form-check-label" for="is_published">Publié</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="submit" class="btn btn-primary">Mettre à jour le shotgun</button>
+                        </div>
+                    </form>
+                    
+                    <hr class="my-4">
+                    
+                    <!-- Gestion des participants -->
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="mb-0">Participants ({{ participants|length }}{% if shotgun.max_participants %} / {{ shotgun.max_participants }}{% endif %})</h5>
+                                <div>
+                                    <button type="button" class="btn btn-sm btn-success" id="add-participant-btn">
+                                        <i class="fa fa-plus"></i> Ajouter un participant
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-primary" id="import-excel-btn">
+                                        <i class="fa fa-file-excel"></i> Importer Excel
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-hover align-items-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nom</th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Email</th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Téléphone</th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Année d'étude</th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date d'inscription</th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="participants-table">
+                                        {% for participant in participants %}
+                                        <tr class="participant-row" data-id="{{ participant.id }}">
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm">{{ participant.lname }} {{ participant.fname }}</h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                    {% if participant.email %}
+                                                    {{ participant.email }}
+                                                    {% else %}
+                                                    -
+                                                    {% endif %}
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                    {% if participant.phone %}
+                                                    {{ participant.phone }}
+                                                    {% else %}
+                                                    -
+                                                    {% endif %}
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                    {% if participant.study_year %}
+                                                    {{ participant.study_year }}
+                                                    {% else %}
+                                                    -
+                                                    {% endif %}
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p class="text-xs font-weight-bold mb-0">
+                                                    {{ participant.registration_time }}
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-info edit-participant" data-id="{{ participant.id }}">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-danger delete-participant" data-id="{{ participant.id }}">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                
+                                {% if not participants %}
+                                <div class="text-center py-3">
+                                    <p class="text-muted">Aucun participant inscrit pour le moment.</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour ajouter/modifier un participant -->
+<div class="modal fade" id="participant-modal" tabindex="-1" role="dialog" aria-labelledby="participant-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="participant-modal-label">Ajouter un participant</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="participant-form">
+                    <input type="hidden" id="participant-id" value="">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="participant-fname" class="form-control-label">Prénom *</label>
+                                <input class="form-control" type="text" id="participant-fname" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="participant-lname" class="form-control-label">Nom *</label>
+                                <input class="form-control" type="text" id="participant-lname" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="participant-email" class="form-control-label">Email</label>
+                        <input class="form-control" type="email" id="participant-email">
+                    </div>
+                    <div class="form-group">
+                        <label for="participant-phone" class="form-control-label">Téléphone</label>
+                        <input class="form-control" type="tel" id="participant-phone">
+                    </div>
+                                        <div class="form-group">
+                        <label for="participant-study-year" class="form-control-label">Année d'étude</label>
+                        <input class="form-control" type="text" id="participant-study-year" list="study-year-options">
+                        <datalist id="study-year-options">
+                            <option value="1A SHpI">
+                            <option value="2A SHpI">
+                            <option value="3A FISA INO">
+                            <option value="3A FISA GEII">
+                            <option value="3A FISA GI">
+                            <option value="3A FISA ME">
+                            <option value="4A FISA INO">
+                            <option value="4A FISA GEII">
+                            <option value="4A FISA GI">
+                            <option value="4A FISA ME">
+                            <option value="5A FISA INO">
+                            <option value="5A FISA GEII">
+                            <option value="5A FISA GI">
+                            <option value="5A FISA ME">
+                            <option value="3A FISE ME">
+                            <option value="3A FISE AVM">
+                            <option value="3A FISE GCB">
+                            <option value="3A FISE GI">
+                            <option value="3A FISE ICY">
+                            <option value="3A FISE I2A">
+                            <option value="3A FISE MT">
+                            <option value="3A FISE SE">
+                            <option value="4A FISE ME">
+                            <option value="4A FISE AVM">
+                            <option value="4A FISE GCB">
+                            <option value="4A FISE GI">
+                            <option value="4A FISE ICY">
+                            <option value="4A FISE I2A">
+                            <option value="4A FISE MT">
+                            <option value="4A FISE SE">
+                            <option value="5A FISE ME">
+                            <option value="5A FISE AVM">
+                            <option value="5A FISE GCB">
+                            <option value="5A FISE GI">
+                            <option value="5A FISE ICY">
+                            <option value="5A FISE I2A">
+                            <option value="5A FISE MT">
+                            <option value="5A FISE SE">
+                        </datalist>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary" id="save-participant-btn">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pour l'import Excel -->
+<div class="modal fade" id="excel-import-modal" tabindex="-1" role="dialog" aria-labelledby="excel-import-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="excel-import-modal-label">Importer depuis Excel</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="excel-import-form" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="excel-file" class="form-control-label">Fichier Excel (.xls, .xlsx)</label>
+                        <input class="form-control" type="file" id="excel-file" accept=".xls,.xlsx" required>
+                    </div>
+                    <div class="alert alert-info mt-3">
+                        <p class="mb-0">Le fichier Excel doit contenir les colonnes suivantes :</p>
+                        <ul class="mb-0">
+                            <li>Nom (obligatoire)</li>
+                            <li>Prenom (obligatoire)</li>
+                            <li>Email</li>
+                            <li>Tel</li>
+                            <li>Annee_d_etude</li>
+                        </ul>
+                        <p class="mb-2 mt-2">Chaque ligne doit avoir au moins une des informations suivantes renseignée :</p>
+                        <ul class="mb-0">
+                            <li>Email, Téléphone ou Année d'étude</li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary" id="import-excel-confirm-btn">Importer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const shotgunId = {{ shotgun.id }};
+        let participantsData = {{ participants }};
+        
+        // Gestion de la suppression du shotgun
+        document.getElementById('delete-shotgun-btn').addEventListener('click', function() {
+            Swal.fire({
+                title: 'Êtes-vous sûr ?',
+                text: "Cette action est irréversible !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Oui, supprimer',
+                cancelButtonText: 'Annuler'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteShotgun();
+                }
+            });
+        });
+        
+        // Gestion de l'ajout de participant
+        document.getElementById('add-participant-btn').addEventListener('click', function() {
+            // Réinitialiser le formulaire
+            document.getElementById('participant-form').reset();
+            document.getElementById('participant-id').value = '';
+            document.getElementById('participant-modal-label').textContent = 'Ajouter un participant';
+            
+            // Afficher le modal
+            const modal = new bootstrap.Modal(document.getElementById('participant-modal'));
+            modal.show();
+        });
+        
+        // Gestion de l'édition de participant
+        document.querySelectorAll('.edit-participant').forEach(button => {
+            button.addEventListener('click', function() {
+                const participantId = this.getAttribute('data-id');
+                editParticipant(participantId);
+            });
+        });
+        
+        // Gestion de la suppression de participant
+        document.querySelectorAll('.delete-participant').forEach(button => {
+            button.addEventListener('click', function() {
+                const participantId = this.getAttribute('data-id');
+                
+                Swal.fire({
+                    title: 'Êtes-vous sûr ?',
+                    text: "Cette action est irréversible !",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Oui, supprimer',
+                    cancelButtonText: 'Annuler'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        deleteParticipant(participantId);
+                    }
+                });
+            });
+        });
+        
+        // Gestion de l'enregistrement d'un participant
+        document.getElementById('save-participant-btn').addEventListener('click', function() {
+            saveParticipant();
+        });
+        
+        // Gestion de l'import Excel
+        document.getElementById('import-excel-btn').addEventListener('click', function() {
+            // Réinitialiser le formulaire
+            document.getElementById('excel-import-form').reset();
+            
+            // Afficher le modal
+            const modal = new bootstrap.Modal(document.getElementById('excel-import-modal'));
+            modal.show();
+        });
+        
+        // Gestion de la confirmation d'import Excel
+        document.getElementById('import-excel-confirm-btn').addEventListener('click', function() {
+            importExcel();
+        });
+        
+        // Fonction pour supprimer le shotgun
+        function deleteShotgun() {
+            fetch(`/shotguns/${shotgunId}/delete`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        title: 'Supprimé !',
+                        text: 'Le shotgun a été supprimé avec succès.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        window.location.href = "{{ url_for('shotguns.shotguns_list') }}";
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Erreur',
+                        text: data.error || 'Une erreur est survenue.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: 'Erreur',
+                    text: 'Une erreur est survenue lors de la suppression.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            });
+        }
+        
+        // Fonction pour éditer un participant
+        function editParticipant(participantId) {
+            const participant = participantsData.find(p => p.id == participantId);
+            if (!participant) return;
+            
+            document.getElementById('participant-id').value = participant.id;
+            document.getElementById('participant-fname').value = participant.fname;
+            document.getElementById('participant-lname').value = participant.lname;
+            document.getElementById('participant-email').value = participant.email || '';
+            document.getElementById('participant-phone').value = participant.phone || '';
+            document.getElementById('participant-study-year').value = participant.study_year || '';
+            
+            document.getElementById('participant-modal-label').textContent = 'Modifier un participant';
+            
+            const modal = new bootstrap.Modal(document.getElementById('participant-modal'));
+            modal.show();
+        }
+        
+        // Fonction pour sauvegarder un participant
+        function saveParticipant() {
+            const participantId = document.getElementById('participant-id').value;
+            const fname = document.getElementById('participant-fname').value;
+            const lname = document.getElementById('participant-lname').value;
+            const email = document.getElementById('participant-email').value;
+            const phone = document.getElementById('participant-phone').value;
+            const studyYear = document.getElementById('participant-study-year').value;
+            
+            if (!fname || !lname) {
+                Swal.fire({
+                    title: 'Erreur',
+                    text: 'Les champs Prénom et Nom sont obligatoires.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+            
+            const participantData = {
+                fname: fname,
+                lname: lname,
+                email: email || null,
+                phone: phone || null,
+                study_year: studyYear || null
+            };
+            
+            let url = `/shotguns/${shotgunId}/participants`;
+            let method = 'POST';
+            
+            if (participantId) {
+                url += `/${participantId}`;
+                method = 'PUT';
+            }
+            
+            fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(participantData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    bootstrap.Modal.getInstance(document.getElementById('participant-modal')).hide();
+                    
+                    Swal.fire({
+                        title: 'Succès',
+                        text: participantId ? 'Participant modifié avec succès.' : 'Participant ajouté avec succès.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Erreur',
+                        text: data.error || 'Une erreur est survenue.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: 'Erreur',
+                    text: 'Une erreur est survenue lors de l\'enregistrement.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            });
+        }
+        
+        // Fonction pour supprimer un participant
+        function deleteParticipant(participantId) {
+            fetch(`/shotguns/${shotgunId}/participants/${participantId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        title: 'Supprimé !',
+                        text: 'Le participant a été supprimé avec succès.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Erreur',
+                        text: data.error || 'Une erreur est survenue.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    title: 'Erreur',
+                    text: 'Une erreur est survenue lors de la suppression.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            });
+        }
+        
+        // Fonction pour importer depuis Excel
+        function importExcel() {
+            const fileInput = document.getElementById('excel-file');
+            if (!fileInput.files || fileInput.files.length === 0) {
+                Swal.fire({
+                    title: 'Erreur',
+                    text: 'Veuillez sélectionner un fichier Excel.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('excel_file', fileInput.files[0]);
+            
+            Swal.fire({
+                title: 'Importation en cours...',
+                text: 'Veuillez patienter pendant l\'importation des données.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            fetch(`/shotguns/${shotgunId}/import-excel`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                Swal.close();
+                
+                if (data.success) {
+                    bootstrap.Modal.getInstance(document.getElementById('excel-import-modal')).hide();
+                    
+                    Swal.fire({
+                        title: 'Importation réussie !',
+                        text: data.message || `${data.count} participants importés avec succès.`,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Erreur',
+                        text: data.error || 'Une erreur est survenue lors de l\'importation.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.close();
+                
+                Swal.fire({
+                    title: 'Erreur',
+                    text: 'Une erreur est survenue lors de l\'importation.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}

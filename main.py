@@ -11,11 +11,13 @@ from routes.users import users_bp
 from routes.finances import finances_bp
 from routes.locations import locations_bp
 from routes.stats import stats_bp
+from routes.shotguns import shotguns_bp
 
 from db import db
 from models.role import Role
 from models.comment import Comment
 from models.statistic import Statistic
+from models.shotgun import Shotgun, ShotgunParticipant
 
 from config import Config
 
@@ -26,7 +28,6 @@ def create_app():
     os.makedirs(Config.SESSION_FILE_DIR, exist_ok=True)
     import googleapiclient.discovery
     googleapiclient.discovery.BUILD_HTTP_CACHE_DISCOVERY = False
-
 
     app = Flask(__name__, static_folder='static')
     app.config['IN_MAINTENANCE'] = os.getenv('IN_MAINTENANCE', '0') == '1'
@@ -45,7 +46,7 @@ def create_app():
     db.init_app(app)
     migrate = Migrate(app, db)
 
-    if 0 :
+    if 0:
         logging.basicConfig(
             level=logging.DEBUG,
             format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s',
@@ -61,11 +62,11 @@ def create_app():
     app.register_blueprint(finances_bp, url_prefix='')
     app.register_blueprint(locations_bp, url_prefix='')
     app.register_blueprint(stats_bp, url_prefix='')
+    app.register_blueprint(shotguns_bp, url_prefix='')
 
     with app.app_context():
         db.create_all()
         Role.initialize_roles()
-        #Statistic.initialize_stats()
 
     return app
 
