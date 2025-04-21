@@ -67,6 +67,17 @@
     margin-right: 0.5rem;
     margin-bottom: 0.5rem;
   }
+  .select-search-container {
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .select-search-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
 </style>
 {% endblock %}
 
@@ -183,13 +194,14 @@
               </div>
             </div>
 
-
-
             <div id="usersSection" class="assignment-section active-section">
               <div class="row">
                 <div class="col-12">
                   <label>Sélectionner les utilisateurs</label>
                   <div class="mb-3">
+                    <div class="select-search-container">
+                      <input type="text" id="userSearchInput" class="select-search-input" placeholder="Rechercher un utilisateur...">
+                    </div>
                     <select class="form-control" id="userSelect" multiple>
                       {% for member in members %}
                       <option value="{{ member }}">{{ member }}</option>
@@ -207,6 +219,9 @@
                 <div class="col-12">
                   <label>Sélectionner des équipes</label>
                   <div class="mb-3">
+                    <div class="select-search-container">
+                      <input type="text" id="roleSearchInput" class="select-search-input" placeholder="Rechercher une équipe...">
+                    </div>
                     <select class="form-control" id="roleSelect" multiple>
                       <option value="Team Bureau">Team Bureau</option>
                       <option value="Team Partenariat">Team Partenariat</option>
@@ -261,7 +276,6 @@
 </div>
 
 <script>
-
   document.addEventListener('DOMContentLoaded', function() {
     // Handle assignment type selection
     const assignToUsers = document.getElementById('assignToUsers');
@@ -274,6 +288,38 @@
     const selectedUsersDiv = document.getElementById('selectedUsers');
     const roleSelect = document.getElementById('roleSelect');
     const selectedRolesDiv = document.getElementById('selectedRoles');
+    const userSearchInput = document.getElementById('userSearchInput');
+    const roleSearchInput = document.getElementById('roleSearchInput');
+
+    // Search functionality for users
+    userSearchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      const options = userSelect.options;
+
+      for (let i = 0; i < options.length; i++) {
+        const optionText = options[i].text.toLowerCase();
+        if (optionText.includes(searchTerm)) {
+          options[i].style.display = '';
+        } else {
+          options[i].style.display = 'none';
+        }
+      }
+    });
+
+    // Search functionality for roles
+    roleSearchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      const options = roleSelect.options;
+
+      for (let i = 0; i < options.length; i++) {
+        const optionText = options[i].text.toLowerCase();
+        if (optionText.includes(searchTerm)) {
+          options[i].style.display = '';
+        } else {
+          options[i].style.display = 'none';
+        }
+      }
+    });
 
     // Update selected users display when selection changes
     userSelect.addEventListener('change', function() {
@@ -346,11 +392,11 @@
 
     // Set default dates
     const now = new Date();
-    const tomorrow = new Date(now);
-    tomorrow.setDate(tomorrow.getDate() + 1);
+    const oneHourLater = new Date(now);
+    oneHourLater.setHours(now.getHours() + 1);
 
     document.getElementById('startDate').value = formatDateTime(now);
-    document.getElementById('dueDate').value = formatDateTime(tomorrow);
+    document.getElementById('dueDate').value = formatDateTime(oneHourLater);
 
     // Form submission
     const taskForm = document.getElementById('taskForm');
@@ -363,9 +409,6 @@
       const dueDate = document.getElementById('dueDate').value;
       const assignmentType = document.querySelector('input[name="assignmentType"]:checked').value;
       const priority = document.querySelector('input[name="priority"]:checked').value;
-
-
-
 
       // Validation
       if (!subject || !startDate || !dueDate) {
@@ -424,7 +467,6 @@
         priority: priority,
         ...assignmentData
       };
-
 
       // Submit task data
       const submitBtn = document.getElementById('submitBtn');
