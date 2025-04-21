@@ -47,6 +47,8 @@ jobs:
           K3_CELL_VALUE=${{ secrets.K3_CELL_VALUE }}
           IN_MAINTENANCE=${{ secrets.IN_MAINTENANCE }}
           DEVELOP=${{ secrets.DEVELOP }}
+          FILES_API_KEY=${{ secrets.FILES_API_KEY }}
+          FILES_API_URL=${{ secrets.FILES_API_URL }}
           EOL"
 
       - name: Stop containers
