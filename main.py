@@ -12,6 +12,7 @@ from routes.finances import finances_bp
 from routes.locations import locations_bp
 from routes.stats import stats_bp
 from routes.shotguns import shotguns_bp
+from routes.files import files_bp
 
 from db import db
 from models.role import Role
@@ -63,6 +64,7 @@ def create_app():
     app.register_blueprint(locations_bp, url_prefix='')
     app.register_blueprint(stats_bp, url_prefix='')
     app.register_blueprint(shotguns_bp, url_prefix='')
+    app.register_blueprint(files_bp, url_prefix='')
 
     with app.app_context():
         db.create_all()
