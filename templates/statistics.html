@@ -142,6 +142,40 @@
             background-color: #f8f9fa;
             border-radius: 10px;
         }
+        .order-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        .order-label {
+            flex: 0 0 auto;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+        .order-input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            width: 60px;
+            text-align: center;
+        }
+        .stat-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .stat-order-badge {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 20px;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
     </style>
 {% endblock %}
 
@@ -158,6 +192,9 @@
                     {% if stat.is_text %}card-text
                     {% else %}card-{{ loop.index % 5 + 1 }}
                     {% endif %}">
+                    <div class="stat-card-header">
+                        <div class="stat-order-badge">Ordre: {{ stat.display_order }}</div>
+                    </div>
                     <div class="stat-value" id="stat-{{ stat.id }}-value">{{ stat.value }}</div>
                     <div class="stat-label">{{ stat.label }}</div>
 
@@ -177,6 +214,12 @@
                     <div class="stat-input-group">
                         <input type="text" class="stat-input" id="stat-{{ stat.id }}-input" placeholder="Valeur">
                         <button class="btn-set" onclick="setStat({{ stat.id }}, document.getElementById('stat-{{ stat.id }}-input').value)">DÉFINIR</button>
+                    </div>
+
+                    <div class="order-controls">
+                        <span class="order-label">Position:</span>
+                        <input type="number" class="order-input" id="stat-{{ stat.id }}-order" value="{{ stat.display_order }}" min="1">
+                        <button class="btn-set" onclick="setStatOrder({{ stat.id }}, document.getElementById('stat-{{ stat.id }}-order').value)">ORDRE</button>
                     </div>
                 </div>
             {% endfor %}
@@ -200,6 +243,11 @@
                                     <label for="newStatValue" class="form-label">Valeur initiale</label>
                                     <input type="text" class="form-control" id="newStatValue" required>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="newStatOrder" class="form-label">Ordre d'affichage</label>
+                                    <input type="number" class="form-control" id="newStatOrder" value="999" min="1">
+                                    <div class="form-text">Position dans la liste (1 = premier)</div>
+                                </div>
                                 <div class="mb-3 form-check">
                                     <input type="checkbox" class="form-check-input" id="isTextStat">
                                     <label class="form-check-label" for="isTextStat">Statistique textuelle</label>
@@ -216,7 +264,6 @@
 
     <script>
         function incrementStat(id, amount) {
-            // Vérifier si amount est un nombre valide
             if (isNaN(amount) || amount === '') {
                 alert('Veuillez entrer un nombre valide');
                 return;
@@ -280,6 +327,41 @@
             });
         }
 
+        function setStatOrder(id, order) {
+            if (order === '' || isNaN(order) || parseInt(order) < 1) {
+                alert('Veuillez entrer un nombre valide (minimum 1)');
+                return;
+            }
+
+            fetch('/api/statistics/set-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: id,
+                    order: parseInt(order)
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the display order badge
+                    const orderBadge = document.querySelector(`#stat-${id}-value`).closest('.stat-card').querySelector('.stat-order-badge');
+                    orderBadge.textContent = `Ordre: ${order}`;
+
+                    // Optional: reload the page to reflect the new order
+                    // window.location.reload();
+                } else {
+                    alert('Erreur: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Une erreur est survenue');
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // Formulaire pour ajouter une nouvelle statistique
             const newStatForm = document.getElementById('newStatForm');
@@ -290,6 +372,7 @@
                 const label = document.getElementById('newStatLabel').value.trim();
                 const value = document.getElementById('newStatValue').value.trim();
                 const isText = document.getElementById('isTextStat').checked;
+                const displayOrder = parseInt(document.getElementById('newStatOrder').value.trim() || 999);
 
                 // Créer la nouvelle statistique via l'API
                 fetch('/api/statistics/create', {
@@ -300,7 +383,8 @@
                     body: JSON.stringify({
                         label: label,
                         value: value,
-                        is_text: isText
+                        is_text: isText,
+                        display_order: displayOrder
                     })
                 })
                 .then(response => response.json())

@@ -43,7 +43,6 @@ def increment_statistic():
     if not success:
         return jsonify({'error': 'Failed to increment statistic'}), 500
 
-    # Récupérer la statistique mise à jour
     stat = Statistic.get_by_id(stat_id)
     if not stat:
         return jsonify({'error': 'Statistic not found'}), 404
@@ -67,7 +66,34 @@ def set_statistic():
     if not success:
         return jsonify({'error': 'Failed to set statistic'}), 500
 
-    # Récupérer la statistique mise à jour
+    stat = Statistic.get_by_id(stat_id)
+    if not stat:
+        return jsonify({'error': 'Statistic not found'}), 404
+
+    return jsonify({'success': True, 'statistic': stat.to_dict()})
+
+
+@stats_bp.route('/api/statistics/set-order', methods=['POST'])
+def set_statistic_order():
+    if is_not_connected():
+        return jsonify({'error': 'Not connected'}), 401
+
+    data = request.json
+    stat_id = data.get('id')
+    order = data.get('order')
+
+    if not stat_id or order is None:
+        return jsonify({'error': 'ID and order required'}), 400
+
+    try:
+        order = int(order)
+    except ValueError:
+        return jsonify({'error': 'Order must be a number'}), 400
+
+    success = Statistic.set_display_order(stat_id, order)
+    if not success:
+        return jsonify({'error': 'Failed to set statistic order'}), 500
+
     stat = Statistic.get_by_id(stat_id)
     if not stat:
         return jsonify({'error': 'Statistic not found'}), 404
@@ -84,20 +110,17 @@ def create_statistic():
     label = data.get('label')
     value = data.get('value')
     is_text = data.get('is_text', False)
+    display_order = data.get('display_order', 999)
 
     if not label or value is None:
         return jsonify({'error': 'Label and value are required'}), 400
 
-    # Vérifier si le libellé existe déjà
     existing_stat = Statistic.get_by_label(label)
     if existing_stat:
         return jsonify({'error': 'A statistic with this label already exists'}), 400
 
-    # Créer une nouvelle statistique
     try:
-        stat = Statistic(value=value, label=label, is_text=is_text)
-        db.session.add(stat)
-        db.session.commit()
+        stat = Statistic.create(value=value, label=label, is_text=is_text, display_order=display_order)
         return jsonify({'success': True, 'statistic': stat.to_dict()})
     except Exception as e:
         db.session.rollback()
@@ -115,7 +138,6 @@ def delete_statistic():
     if not stat_id:
         return jsonify({'error': 'Statistic ID required'}), 400
 
-    # Trouver et supprimer la statistique
     success = Statistic.delete(stat_id)
     if not success:
         return jsonify({'error': 'Statistic not found or could not be deleted'}), 404

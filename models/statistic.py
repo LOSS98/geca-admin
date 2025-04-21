@@ -9,12 +9,14 @@ class Statistic(db.Model):
     label = db.Column(db.String(100), nullable=False, unique=True)
     is_text = db.Column(db.Boolean, default=False)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    display_order = db.Column(db.Integer, default=999)
 
-    def __init__(self, value, label, is_text=False):
+    def __init__(self, value, label, is_text=False, display_order=999):
         self.value = str(value)
         self.label = label
         self.is_text = is_text
         self.updated_at = datetime.now()
+        self.display_order = display_order
 
     def to_dict(self):
         return {
@@ -22,30 +24,24 @@ class Statistic(db.Model):
             'value': self.value,
             'label': self.label,
             'is_text': self.is_text,
+            'display_order': self.display_order,
             'updated_at': self.updated_at.isoformat() if self.updated_at else None
         }
 
     @staticmethod
     def get_all():
-        """Récupère toutes les statistiques de la base de données"""
-        return Statistic.query.order_by(Statistic.id.asc()).all()
+        return Statistic.query.order_by(Statistic.display_order.asc(), Statistic.id.asc()).all()
 
     @staticmethod
     def get_by_id(id):
-        """Récupère une statistique par son ID"""
         return Statistic.query.get(id)
 
     @staticmethod
     def get_by_label(label):
-        """Récupère une statistique par son libellé"""
         return Statistic.query.filter_by(label=label).first()
 
     @staticmethod
     def increment(id, amount=1):
-        """Incrémente la valeur d'une statistique du montant spécifié
-
-        Accepte également des valeurs négatives pour décrémenter
-        """
         stat = Statistic.get_by_id(id)
         if not stat or stat.is_text:
             return False
@@ -58,12 +54,10 @@ class Statistic(db.Model):
             db.session.commit()
             return True
         except ValueError:
-            # Si la valeur n'est pas un nombre, ne rien faire
             return False
 
     @staticmethod
     def set_value(id, value):
-        """Définit la valeur d'une statistique à la valeur spécifiée"""
         stat = Statistic.get_by_id(id)
         if not stat:
             return False
@@ -74,10 +68,22 @@ class Statistic(db.Model):
         return True
 
     @staticmethod
-    def create(value, label, is_text=False):
-        """Crée une nouvelle statistique"""
+    def set_display_order(id, order):
+        stat = Statistic.get_by_id(id)
+        if not stat:
+            return False
+
         try:
-            stat = Statistic(value=value, label=label, is_text=is_text)
+            stat.display_order = int(order)
+            db.session.commit()
+            return True
+        except ValueError:
+            return False
+
+    @staticmethod
+    def create(value, label, is_text=False, display_order=999):
+        try:
+            stat = Statistic(value=value, label=label, is_text=is_text, display_order=display_order)
             db.session.add(stat)
             db.session.commit()
             return stat
@@ -87,7 +93,6 @@ class Statistic(db.Model):
 
     @staticmethod
     def delete(id):
-        """Supprime une statistique par son ID"""
         stat = Statistic.get_by_id(id)
         if not stat:
             return False
@@ -102,13 +107,12 @@ class Statistic(db.Model):
 
     @staticmethod
     def initialize_stats():
-        """Initialise les statistiques par défaut dans la base de données"""
         default_stats = [
-            {'value': '0', 'label': 'Crêpes commandées', 'is_text': False},
-            {'value': '0', 'label': 'Trajets en taxi', 'is_text': False},
-            {'value': '368', 'label': 'Appels au standard', 'is_text': False},
-            {'value': '10', 'label': 'Nombre d\'accidents', 'is_text': False},
-            {'value': 'khalil', 'label': 'Le plus d\'appel au standard', 'is_text': True}
+            {'value': '0', 'label': 'Crêpes commandées', 'is_text': False, 'display_order': 1},
+            {'value': '0', 'label': 'Trajets en taxi', 'is_text': False, 'display_order': 2},
+            {'value': '0', 'label': 'Appels au standard', 'is_text': False, 'display_order': 3},
+            {'value': '0', 'label': 'Nombre d\'accidents', 'is_text': False, 'display_order': 4},
+            {'value': '-', 'label': 'Le plus d\'appel au standard', 'is_text': True, 'display_order': 5}
         ]
 
         for stat_data in default_stats:
@@ -117,7 +121,8 @@ class Statistic(db.Model):
                 stat = Statistic(
                     value=stat_data['value'],
                     label=stat_data['label'],
-                    is_text=stat_data['is_text']
+                    is_text=stat_data['is_text'],
+                    display_order=stat_data.get('display_order', 999)
                 )
                 db.session.add(stat)
 
