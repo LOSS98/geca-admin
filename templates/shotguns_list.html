@@ -1,5 +1,32 @@
 {% extends "layout.html" %}
 
+{% block head %}
+<style>
+    .shotgun-card {
+        transition: all 0.3s;
+    }
+    .shotgun-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    .shotgun-image {
+        height: 150px;
+        object-fit: cover;
+        width: 100%;
+        border-radius: 10px 10px 0 0;
+    }
+    .shotgun-no-image {
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+        color: #6c757d;
+        border-radius: 10px 10px 0 0;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="container-fluid py-4">
     <div class="row">
@@ -30,69 +57,60 @@
                         {{ success }}
                     </div>
                     {% endif %}
+
                     {% if shotguns %}
-                    <div class="table-responsive p-0">
-                        <table class="table align-items-center mb-0">
-                            <thead>
-                                <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Titre</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Places</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Statut</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for shotgun in shotguns %}
-                                <tr>
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">{{ shotgun.title }}</h6>
-                                                <p class="text-xs text-secondary mb-0">
-                                                    Créé par: {{ shotgun.creator.fname }} {{ shotgun.creator.lname }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="text-xs font-weight-bold mb-0">
-                                            {% if shotgun.event_date %}
-                                            {{ shotgun.event_date.strftime('%d/%m/%Y %H:%M') }}
-                                            {% else %}
-                                            Non définie
-                                            {% endif %}
-                                        </p>
-                                    </td>
-                                    <td>
-                                        <p class="text-xs font-weight-bold mb-0">
-                                            {{ shotgun.participants|length }}
-                                            {% if shotgun.max_participants %}
-                                            / {{ shotgun.max_participants }}
-                                            {% endif %}
-                                        </p>
-                                    </td>
-                                    <td>
+                    <div class="row mx-2 mt-4">
+                        {% for shotgun in shotguns %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card shotgun-card">
+                                {% if shotgun.image_path %}
+                                <img src="https://public.losbarryachis.fr/shared/{{ shotgun.image_path }}" class="shotgun-image" alt="{{ shotgun.title }}">
+                                {% else %}
+                                <div class="shotgun-no-image">
+                                    <i class="fa fa-image fa-3x"></i>
+                                </div>
+                                {% endif %}
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h5 class="card-title">{{ shotgun.title }}</h5>
                                         {% if shotgun.is_published %}
                                         <span class="badge badge-sm bg-gradient-success">Publié</span>
                                         {% else %}
                                         <span class="badge badge-sm bg-gradient-secondary">Brouillon</span>
                                         {% endif %}
-                                    </td>
-                                    <td class="align-middle">
-                                        <a href="{{ url_for('shotguns.view_shotgun', shotgun_id=shotgun.id) }}" class="btn btn-sm btn-info" data-toggle="tooltip" data-original-title="Voir">
+                                    </div>
+
+                                    <p class="card-text text-sm text-muted mb-2">
+                                        {% if shotgun.event_date %}
+                                        <i class="fa fa-calendar me-1"></i> {{ shotgun.event_date.strftime('%d/%m/%Y %H:%M') }}
+                                        {% else %}
+                                        <i class="fa fa-calendar me-1"></i> Date non définie
+                                        {% endif %}
+                                    </p>
+
+                                    <p class="card-text text-sm mb-3">
+                                        <i class="fa fa-users me-1"></i> {{ shotgun.participants|length }}
+                                        {% if shotgun.max_participants %}
+                                        / {{ shotgun.max_participants }} participants
+                                        {% else %}
+                                        participants
+                                        {% endif %}
+                                    </p>
+
+                                    <div class="d-flex justify-content-between">
+                                        <a href="{{ url_for('shotguns.view_shotgun', shotgun_id=shotgun.id) }}" class="btn btn-sm btn-info">
                                             <i class="fa fa-eye"></i> Voir
                                         </a>
                                         {% if is_admin %}
-                                        <a href="{{ url_for('shotguns.edit_shotgun', shotgun_id=shotgun.id) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" data-original-title="Modifier">
+                                        <a href="{{ url_for('shotguns.edit_shotgun', shotgun_id=shotgun.id) }}" class="btn btn-sm btn-primary">
                                             <i class="fa fa-edit"></i> Modifier
                                         </a>
                                         {% endif %}
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
                     {% else %}
                     <div class="text-center py-5">

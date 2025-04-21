@@ -264,6 +264,7 @@
                     <input type="text" class="form-control" id="new-name">
                     <input type="hidden" id="old-path">
                 </div>
+                <div id="rename-error" class="alert alert-danger mt-3" style="display: none;"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
@@ -305,6 +306,7 @@
         setupRenameHandler();
         setupSearchHandler();
         updateBreadcrumbs(currentDirectory);
+        setupDeleteHandler();
 
         function loadFiles(directory) {
             document.getElementById('loading').style.display = 'block';
@@ -348,7 +350,7 @@
                 .catch(error => {
                     console.error('Error loading files:', error);
                     document.getElementById('loading').style.display = 'none';
-                    alert('Erreur lors du chargement des fichiers: ' + error.message);
+                    showNotification('Erreur lors du chargement des fichiers: ' + error.message, 'error');
                 });
         }
 
@@ -489,6 +491,7 @@
 
             return col;
         }
+
         function copyToClipboard(text, fileName) {
             navigator.clipboard.writeText(text)
                 .then(() => {
@@ -558,7 +561,6 @@
             }, 3000);
         }
 
-
         function showPreview(path, name) {
             const extension = name.split('.').pop().toLowerCase();
             const previewContentContainer = document.getElementById('preview-content');
@@ -621,29 +623,23 @@
             modal.show();
         }
 
-
         function showDeleteModal(path, name) {
             fileToDelete = path;
             document.getElementById('delete-file-name').textContent = name;
             const modal = new bootstrap.Modal(document.getElementById('delete-modal'));
             modal.show();
-
         }
 
         function deleteFile(path) {
             fetch(`/api/files/delete/${encodeURIComponent(path)}`, {
                 method: 'DELETE'
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Error ${response.status}: ${response.statusText}`);
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    alert(`Erreur lors de la suppression: ${data.error}`);
+                    showNotification(`Erreur lors de la suppression: ${data.error}`, 'error');
                 } else {
+                    showNotification('Fichier supprimé avec succès', 'success');
                     loadFiles(currentDirectory);
                 }
                 const deleteModal = bootstrap.Modal.getInstance(document.getElementById('delete-modal'));
@@ -653,7 +649,7 @@
             })
             .catch(error => {
                 console.error('Error deleting file:', error);
-                alert('Erreur lors de la suppression du fichier: ' + error.message);
+                showNotification('Erreur lors de la suppression du fichier: ' + error.message, 'error');
             });
         }
 
@@ -710,7 +706,7 @@
                     .catch(error => {
                         console.error('Error uploading files:', error);
                         progressContainer.classList.add('d-none');
-                        alert('Erreur lors du téléversement des fichiers: ' + error.message);
+                        showNotification('Erreur lors du téléversement des fichiers: ' + error.message, 'error');
                     });
             }
 
@@ -789,9 +785,13 @@
             confirmRenameBtn.addEventListener('click', function() {
                 const oldPath = document.getElementById('old-path').value;
                 const newName = document.getElementById('new-name').value.trim();
+                const renameError = document.getElementById('rename-error');
+
+                renameError.style.display = 'none';
 
                 if (!newName) {
-                    alert('Veuillez entrer un nom valide');
+                    renameError.textContent = 'Veuillez entrer un nom valide';
+                    renameError.style.display = 'block';
                     return;
                 }
 
@@ -805,25 +805,23 @@
                         new_name: newName
                     })
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Error ${response.status}: ${response.statusText}`);
-                    }
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
                     const modal = bootstrap.Modal.getInstance(document.getElementById('rename-modal'));
-                    modal.hide();
 
                     if (data.error) {
-                        alert(data.error);
+                        renameError.textContent = data.error;
+                        renameError.style.display = 'block';
                     } else {
+                        modal.hide();
+                        showNotification('Fichier renommé avec succès', 'success');
                         loadFiles(currentDirectory);
                     }
                 })
                 .catch(error => {
                     console.error('Error renaming file:', error);
-                    alert('Erreur lors du renommage du fichier: ' + error.message);
+                    renameError.textContent = 'Erreur lors du renommage du fichier: ' + error.message;
+                    renameError.style.display = 'block';
                 });
             });
         }
@@ -831,6 +829,7 @@
         function showRenameModal(path, name) {
             document.getElementById('new-name').value = name;
             document.getElementById('old-path').value = path;
+            document.getElementById('rename-error').style.display = 'none';
 
             const modal = new bootstrap.Modal(document.getElementById('rename-modal'));
             modal.show();
@@ -838,15 +837,9 @@
 
         function setupSearchHandler() {
             const searchInput = document.getElementById('search-input');
-            const clearSearchBtn = document.getElementById('clear-search');
 
             searchInput.addEventListener('input', function() {
                 filterFiles(this.value.trim().toLowerCase());
-            });
-
-            clearSearchBtn.addEventListener('click', function() {
-                searchInput.value = '';
-                filterFiles('');
             });
         }
 
@@ -877,18 +870,17 @@
                 filesContainer.style.display = 'flex';
             }
         }
+
         function setupDeleteHandler() {
             const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
 
-            // Nous utilisons une seule fois l'écouteur d'événement
-            confirmDeleteBtn.onclick = function() {
+            confirmDeleteBtn.addEventListener('click', function() {
                 if (fileToDelete) {
                     deleteFile(fileToDelete);
+                    fileToDelete = null;
                 }
-            };
+            });
         }
-
-        setupDeleteHandler();
     });
 </script>
 {% endblock %}

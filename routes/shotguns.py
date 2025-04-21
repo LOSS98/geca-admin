@@ -4,6 +4,7 @@ import os
 import pandas as pd
 import numpy as np
 import io
+import shutil
 
 from models.shotgun import Shotgun, ShotgunParticipant
 from models.user import User
@@ -42,6 +43,13 @@ def shotguns_list():
     else:
         shotguns = Shotgun.get_published()
 
+    # Vérifier les images pour chaque shotgun
+    for shotgun in shotguns:
+        shotgun_id = shotgun.id
+        shotgun_image_path = check_shotgun_image(shotgun_id)
+        if shotgun_image_path:
+            shotgun.image_path = shotgun_image_path
+
     return render_template(
         'shotguns_list.html',
         error=error_message,
@@ -67,6 +75,7 @@ def create_shotgun():
         max_participants = request.form.get('max_participants')
         event_date_str = request.form.get('event_date')
         is_published = 'is_published' in request.form
+        image_path = request.form.get('image_path', '')  # Récupérer le chemin de l'image
 
         if not title:
             flash("Le titre est obligatoire.")
@@ -100,6 +109,11 @@ def create_shotgun():
 
         shotgun.save_to_db()
 
+        # Gérer l'image si elle existe
+        if image_path:
+            shotgun.image_path = image_path
+            db.session.commit()
+
         flash("Shotgun créé avec succès!")
         return redirect(url_for('shotguns.edit_shotgun', shotgun_id=shotgun.id))
 
@@ -121,6 +135,9 @@ def view_shotgun(shotgun_id):
         return redirect(url_for('shotguns.shotguns_list'))
 
     participants = ShotgunParticipant.get_by_shotgun(shotgun_id)
+
+    # Vérifier si le shotgun a une image
+    shotgun.image_path = check_shotgun_image(shotgun_id)
 
     return render_template(
         'shotgun_view.html',
@@ -160,6 +177,7 @@ def edit_shotgun(shotgun_id):
             max_participants = request.form.get('max_participants')
             event_date_str = request.form.get('event_date')
             is_published = 'is_published' in request.form
+            image_path = request.form.get('image_path', '')  # Récupérer le chemin de l'image
 
             if not title:
                 flash("Le titre est obligatoire.")
@@ -187,7 +205,8 @@ def edit_shotgun(shotgun_id):
                 'description': description,
                 'max_participants': max_participants,
                 'event_date': event_date,
-                'is_published': is_published
+                'is_published': is_published,
+                'image_path': image_path  # Mettre à jour le chemin de l'image
             })
 
             flash("Shotgun mis à jour avec succès!")
@@ -196,6 +215,9 @@ def edit_shotgun(shotgun_id):
 
     participants = ShotgunParticipant.get_by_shotgun(shotgun_id)
     participants_data = [p.to_dict() for p in participants]
+
+    # Vérifier si le shotgun a une image
+    shotgun.image_path = check_shotgun_image(shotgun_id)
 
     return render_template(
         'shotgun_edit.html',
@@ -240,6 +262,9 @@ def delete_shotgun(shotgun_id):
         return jsonify({'error': 'Shotgun non trouvé'}), 404
 
     try:
+        # Si le shotgun a une image, la supprimer
+        delete_shotgun_images(shotgun_id)
+
         shotgun.delete_from_db()
         return jsonify({'success': True, 'message': 'Shotgun supprimé avec succès'})
     except Exception as e:
@@ -393,7 +418,7 @@ def import_excel(shotgun_id):
 
             if remaining_slots <= 0:
                 return jsonify({
-                                   'error': f'Impossible d\'importer: le shotgun a atteint sa capacité maximale ({shotgun.max_participants} participants)'}), 400
+                    'error': f'Impossible d\'importer: le shotgun a atteint sa capacité maximale ({shotgun.max_participants} participants)'}), 400
 
         mapped_columns = {
             'nom': 'lname',
@@ -459,3 +484,43 @@ def import_excel(shotgun_id):
         db.session.rollback()
         print(f"Error importing Excel: {str(e)}")
         return jsonify({'error': str(e)}), 500
+
+
+def check_shotgun_image(shotgun_id):
+    """
+    Vérifie si une image existe pour le shotgun et retourne son chemin
+    """
+    # Chemins possibles à vérifier basés sur les extensions courantes
+    image_dir = os.getenv("FILES_DIR", "/var/www/public.losbarryachis.fr/public/shared/shotguns")
+    shotgun_image_dir = os.path.join(image_dir, "shotguns")
+
+    # Créer le dossier shotguns s'il n'existe pas
+    os.makedirs(shotgun_image_dir, exist_ok=True)
+
+    # Vérifier les extensions courantes
+    for ext in ['jpg', 'jpeg', 'png', 'gif']:
+        image_path = f"shotguns/{shotgun_id}.{ext}"
+        full_path = os.path.join(image_dir, image_path)
+
+        if os.path.exists(full_path):
+            return image_path
+
+    return None
+
+
+def delete_shotgun_images(shotgun_id):
+    """
+    Supprime toutes les images associées à un shotgun
+    """
+    image_dir = os.getenv("FILES_DIR", "/var/www/public.losbarryachis.fr/public/shared/shotguns")
+    shotgun_image_dir = os.path.join(image_dir, "shotguns")
+
+    # Vérifier les extensions courantes
+    for ext in ['jpg', 'jpeg', 'png', 'gif']:
+        image_path = os.path.join(shotgun_image_dir, f"{shotgun_id}.{ext}")
+
+        if os.path.exists(image_path):
+            try:
+                os.remove(image_path)
+            except Exception as e:
+                print(f"Erreur lors de la suppression de l'image {image_path}: {e}")

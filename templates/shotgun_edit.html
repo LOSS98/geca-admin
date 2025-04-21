@@ -6,6 +6,48 @@
     .participant-row:hover {
         background-color: rgba(0, 0, 0, 0.05);
     }
+    .shotgun-image-container {
+        position: relative;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto 20px auto;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .shotgun-image {
+        width: 100%;
+        display: block;
+    }
+    .shotgun-image-placeholder {
+        width: 100%;
+        height: 200px;
+        background-color: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
+    }
+    .image-actions {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        transition: all 0.3s;
+        opacity: 0;
+    }
+    .shotgun-image-container:hover .image-actions {
+        opacity: 1;
+    }
+    .error-message {
+        color: #dc3545;
+        margin-top: 5px;
+        font-size: 0.875rem;
+    }
 </style>
 {% endblock %}
 
@@ -43,10 +85,35 @@
                         {{ success }}
                     </div>
                     {% endif %}
-                    
+
+                    <!-- Image du shotgun -->
+                    <div class="row mb-4">
+                        <div class="col-md-12 text-center">
+                            <h5 class="mb-3">Image du shotgun</h5>
+                            <div class="shotgun-image-container" id="shotgun-image-container">
+                                <div class="shotgun-image-placeholder" id="shotgun-image-placeholder">
+                                    <i class="fa fa-image fa-3x"></i>
+                                </div>
+                                <img class="shotgun-image" id="shotgun-image" style="display: none;">
+                                <div class="image-actions">
+                                    <button type="button" class="btn btn-sm btn-primary me-2" id="upload-image-btn">
+                                        <i class="fa fa-upload"></i> Changer
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger" id="delete-image-btn" style="display: none;">
+                                        <i class="fa fa-trash"></i> Supprimer
+                                    </button>
+                                </div>
+                            </div>
+                            <input type="file" id="shotgun-image-input" class="d-none" accept="image/*">
+                            <input type="hidden" id="shotgun-image-path" value="">
+                            <div class="error-message" id="image-error" style="display: none;"></div>
+                        </div>
+                    </div>
+
                     <!-- Formulaire de modification du shotgun -->
                     <form method="POST" action="{{ url_for('shotguns.edit_shotgun', shotgun_id=shotgun.id) }}">
                         <input type="hidden" name="update_shotgun" value="1">
+                        <input type="hidden" name="image_path" id="form-image-path" value="">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -57,8 +124,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="event_date" class="form-control-label">Date de l'événement</label>
-                                    <input class="form-control" type="datetime-local" id="event_date" name="event_date" 
-                                           value="{{ shotgun.event_date if shotgun.event_date else '' }}">
+                                    <input class="form-control" type="datetime-local" id="event_date" name="event_date"
+                                           value="{{ shotgun.event_date.isoformat() if shotgun.event_date else '' }}">
                                 </div>
                             </div>
                         </div>
@@ -70,13 +137,13 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="max_participants" class="form-control-label">Nombre maximum de participants</label>
-                                    <input class="form-control" type="number" id="max_participants" name="max_participants" min="1" 
+                                    <input class="form-control" type="number" id="max_participants" name="max_participants" min="1"
                                            value="{{ shotgun.max_participants or '' }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-check form-switch mt-4">
-                                    <input class="form-check-input" type="checkbox" id="is_published" name="is_published" 
+                                    <input class="form-check-input" type="checkbox" id="is_published" name="is_published"
                                            {% if shotgun.is_published %}checked{% endif %}>
                                     <label class="form-check-label" for="is_published">Publié</label>
                                 </div>
@@ -86,9 +153,9 @@
                             <button type="submit" class="btn btn-primary">Mettre à jour le shotgun</button>
                         </div>
                     </form>
-                    
+
                     <hr class="my-4">
-                    
+
                     <!-- Gestion des participants -->
                     <div class="row mt-4">
                         <div class="col-md-12">
@@ -103,7 +170,7 @@
                                     </button>
                                 </div>
                             </div>
-                            
+
                             <div class="table-responsive">
                                 <table class="table table-hover align-items-center mb-0">
                                     <thead>
@@ -170,7 +237,7 @@
                                         {% endfor %}
                                     </tbody>
                                 </table>
-                                
+
                                 {% if not participants %}
                                 <div class="text-center py-3">
                                     <p class="text-muted">Aucun participant inscrit pour le moment.</p>
@@ -218,7 +285,7 @@
                         <label for="participant-phone" class="form-control-label">Téléphone</label>
                         <input class="form-control" type="tel" id="participant-phone">
                     </div>
-                                        <div class="form-group">
+                    <div class="form-group">
                         <label for="participant-study-year" class="form-control-label">Année d'étude</label>
                         <input class="form-control" type="text" id="participant-study-year" list="study-year-options">
                         <datalist id="study-year-options">
@@ -315,6 +382,11 @@
         console.log('Document loaded and script running');
         const shotgunId = {{ shotgun.id }};
         let participantsData = {{ participants|tojson }};
+        let currentImagePath = ""; // Stocke le chemin de l'image actuelle
+
+        // Vérifier s'il y a déjà une image pour ce shotgun
+        checkExistingShotgunImage();
+
         // Gestion de la suppression du shotgun
         document.getElementById('delete-shotgun-btn').addEventListener('click', function() {
             Swal.fire({
@@ -332,19 +404,53 @@
                 }
             });
         });
-        
+
+        // Gestion de l'upload d'image
+        document.getElementById('upload-image-btn').addEventListener('click', function() {
+            document.getElementById('shotgun-image-input').click();
+        });
+
+        document.getElementById('shotgun-image-input').addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                uploadShotgunImage(this.files[0]);
+            }
+        });
+
+        // Gestion de la suppression d'image
+        document.getElementById('delete-image-btn').addEventListener('click', function() {
+            Swal.fire({
+                title: 'Supprimer l\'image ?',
+                text: "Êtes-vous sûr de vouloir supprimer l'image du shotgun ?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Oui, supprimer',
+                cancelButtonText: 'Annuler'
+            }).then((result) => {
+                if (result.isConfirmed && currentImagePath) {
+                    deleteShotgunImage(currentImagePath);
+                }
+            });
+        });
+
+        // Mise à jour du formulaire avant soumission
+        document.querySelector('form').addEventListener('submit', function() {
+            document.getElementById('form-image-path').value = currentImagePath || '';
+        });
+
         // Gestion de l'ajout de participant
         document.getElementById('add-participant-btn').addEventListener('click', function() {
             // Réinitialiser le formulaire
             document.getElementById('participant-form').reset();
             document.getElementById('participant-id').value = '';
             document.getElementById('participant-modal-label').textContent = 'Ajouter un participant';
-            
+
             // Afficher le modal
             const modal = new bootstrap.Modal(document.getElementById('participant-modal'));
             modal.show();
         });
-        
+
         // Gestion de l'édition de participant
         document.querySelectorAll('.edit-participant').forEach(button => {
             button.addEventListener('click', function() {
@@ -352,12 +458,12 @@
                 editParticipant(participantId);
             });
         });
-        
+
         // Gestion de la suppression de participant
         document.querySelectorAll('.delete-participant').forEach(button => {
             button.addEventListener('click', function() {
                 const participantId = this.getAttribute('data-id');
-                
+
                 Swal.fire({
                     title: 'Êtes-vous sûr ?',
                     text: "Cette action est irréversible !",
@@ -374,29 +480,223 @@
                 });
             });
         });
-        
+
         // Gestion de l'enregistrement d'un participant
         document.getElementById('save-participant-btn').addEventListener('click', function() {
             saveParticipant();
         });
-        
+
         // Gestion de l'import Excel
         document.getElementById('import-excel-btn').addEventListener('click', function() {
             // Réinitialiser le formulaire
             document.getElementById('excel-import-form').reset();
-            
+
             // Afficher le modal
             const modal = new bootstrap.Modal(document.getElementById('excel-import-modal'));
             modal.show();
         });
-        
+
         // Gestion de la confirmation d'import Excel
         document.getElementById('import-excel-confirm-btn').addEventListener('click', function() {
             importExcel();
         });
-        
+
+        // Fonction pour vérifier s'il existe déjà une image pour ce shotgun
+        function checkExistingShotgunImage() {
+            // Vérifier dans un dossier dédié aux images de shotgun
+            const imagePath = `shotguns/${shotgunId}.jpg`; // Convention de nommage
+
+            fetch(`/api/files?directory=shotguns`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.data && data.data.length > 0) {
+                        // Chercher l'image correspondant à ce shotgun
+                        const shotgunImage = data.data.find(item =>
+                            item.is_file && item.name.startsWith(`${shotgunId}.`)
+                        );
+
+                        if (shotgunImage) {
+                            displayShotgunImage(`shotguns/${shotgunImage.name}`);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking for existing image:', error);
+                });
+        }
+
+        // Fonction pour afficher l'image du shotgun
+        function displayShotgunImage(imagePath) {
+            const imageElement = document.getElementById('shotgun-image');
+            const placeholderElement = document.getElementById('shotgun-image-placeholder');
+            const deleteButton = document.getElementById('delete-image-btn');
+
+            imageElement.src = `https://public.losbarryachis.fr/shared/${imagePath}`;
+            imageElement.onload = function() {
+                // L'image a bien été chargée
+                imageElement.style.display = 'block';
+                placeholderElement.style.display = 'none';
+                deleteButton.style.display = 'inline-block';
+                currentImagePath = imagePath;
+                document.getElementById('form-image-path').value = imagePath;
+            };
+
+            imageElement.onerror = function() {
+                // Erreur lors du chargement de l'image
+                imageElement.style.display = 'none';
+                placeholderElement.style.display = 'flex';
+                deleteButton.style.display = 'none';
+                currentImagePath = "";
+                document.getElementById('form-image-path').value = "";
+            };
+        }
+
+        // Fonction pour uploader l'image du shotgun
+        function uploadShotgunImage(file) {
+            // Vérifier le type de fichier
+            const fileType = file.type;
+            if (!fileType.startsWith('image/')) {
+                document.getElementById('image-error').textContent = "Le fichier doit être une image (jpg, png, gif)";
+                document.getElementById('image-error').style.display = 'block';
+                return;
+            }
+
+            // Obtenir l'extension du fichier
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+
+            // Créer un nom de fichier basé sur l'ID du shotgun
+            const fileName = `${shotgunId}.${fileExtension}`;
+
+            // Préparer les données pour l'upload
+            const formData = new FormData();
+            formData.append('file', file, fileName);
+            formData.append('directory', 'shotguns');
+
+            // Afficher un indicateur de chargement
+            Swal.fire({
+                title: 'Téléversement...',
+                text: 'Téléversement de l\'image en cours',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Envoyer la requête d'upload
+            fetch('/api/files/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                Swal.close();
+
+                if (data.error) {
+                    document.getElementById('image-error').textContent = data.error;
+                    document.getElementById('image-error').style.display = 'block';
+                } else {
+                    // Supprimer l'ancienne image si elle existe et est différente
+                    if (currentImagePath && currentImagePath !== `shotguns/${fileName}`) {
+                        deleteShotgunImage(currentImagePath, false);
+                    }
+
+                    // Afficher la nouvelle image
+                    displayShotgunImage(`shotguns/${fileName}`);
+                    document.getElementById('image-error').style.display = 'none';
+
+                    // Afficher un message de succès
+                    Swal.fire({
+                        title: 'Succès!',
+                        text: 'L\'image a été téléversée avec succès',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.close();
+                console.error('Error uploading image:', error);
+                document.getElementById('image-error').textContent = "Erreur lors du téléversement de l'image";
+                document.getElementById('image-error').style.display = 'block';
+            });
+        }
+
+        // Fonction pour supprimer l'image du shotgun
+        function deleteShotgunImage(imagePath, showConfirmation = true) {
+            if (!imagePath) return;
+
+            // Afficher un indicateur de chargement
+            if (showConfirmation) {
+                Swal.fire({
+                    title: 'Suppression...',
+                    text: 'Suppression de l\'image en cours',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            }
+
+            fetch(`/api/files/delete/${encodeURIComponent(imagePath)}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (showConfirmation) {
+                    Swal.close();
+                }
+
+                if (data.error && showConfirmation) {
+                    Swal.fire({
+                        title: 'Erreur',
+                        text: data.error,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    // Réinitialiser l'affichage de l'image
+                    const imageElement = document.getElementById('shotgun-image');
+                    const placeholderElement = document.getElementById('shotgun-image-placeholder');
+                    const deleteButton = document.getElementById('delete-image-btn');
+
+                    imageElement.style.display = 'none';
+                    placeholderElement.style.display = 'flex';
+                    deleteButton.style.display = 'none';
+                    currentImagePath = "";
+                    document.getElementById('form-image-path').value = "";
+
+                    // Afficher un message de succès
+                    if (showConfirmation) {
+                        Swal.fire({
+                            title: 'Supprimée!',
+                            text: 'L\'image a été supprimée avec succès',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                }
+            })
+            .catch(error => {
+                if (showConfirmation) {
+                    Swal.close();
+                    console.error('Error deleting image:', error);
+                    Swal.fire({
+                        title: 'Erreur',
+                        text: "Erreur lors de la suppression de l'image",
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        }
+
         // Fonction pour supprimer le shotgun
         function deleteShotgun() {
+            // Si le shotgun a une image, on la supprime également
+            if (currentImagePath) {
+                deleteShotgunImage(currentImagePath, false);
+            }
+
             fetch(`/shotguns/${shotgunId}/delete`, {
                 method: 'POST',
                 headers: {
@@ -433,25 +733,25 @@
                 });
             });
         }
-        
+
         // Fonction pour éditer un participant
         function editParticipant(participantId) {
             const participant = participantsData.find(p => p.id == participantId);
             if (!participant) return;
-            
+
             document.getElementById('participant-id').value = participant.id;
             document.getElementById('participant-fname').value = participant.fname;
             document.getElementById('participant-lname').value = participant.lname;
             document.getElementById('participant-email').value = participant.email || '';
             document.getElementById('participant-phone').value = participant.phone || '';
             document.getElementById('participant-study-year').value = participant.study_year || '';
-            
+
             document.getElementById('participant-modal-label').textContent = 'Modifier un participant';
-            
+
             const modal = new bootstrap.Modal(document.getElementById('participant-modal'));
             modal.show();
         }
-        
+
         // Fonction pour sauvegarder un participant
         function saveParticipant() {
             const participantId = document.getElementById('participant-id').value;
@@ -460,7 +760,7 @@
             const email = document.getElementById('participant-email').value;
             const phone = document.getElementById('participant-phone').value;
             const studyYear = document.getElementById('participant-study-year').value;
-            
+
             if (!fname || !lname) {
                 Swal.fire({
                     title: 'Erreur',
@@ -470,7 +770,7 @@
                 });
                 return;
             }
-            
+
             const participantData = {
                 fname: fname,
                 lname: lname,
@@ -478,15 +778,15 @@
                 phone: phone || null,
                 study_year: studyYear || null
             };
-            
+
             let url = `/shotguns/${shotgunId}/participants`;
             let method = 'POST';
-            
+
             if (participantId) {
                 url += `/${participantId}`;
                 method = 'PUT';
             }
-            
+
             fetch(url, {
                 method: method,
                 headers: {
@@ -498,7 +798,7 @@
             .then(data => {
                 if (data.success) {
                     bootstrap.Modal.getInstance(document.getElementById('participant-modal')).hide();
-                    
+
                     Swal.fire({
                         title: 'Succès',
                         text: participantId ? 'Participant modifié avec succès.' : 'Participant ajouté avec succès.',
@@ -526,7 +826,7 @@
                 });
             });
         }
-        
+
         // Fonction pour supprimer un participant
         function deleteParticipant(participantId) {
             fetch(`/shotguns/${shotgunId}/participants/${participantId}`, {
@@ -562,7 +862,7 @@
                 });
             });
         }
-        
+
         // Fonction pour importer depuis Excel
         function importExcel() {
             const fileInput = document.getElementById('excel-file');

@@ -13,12 +13,13 @@ class Shotgun(db.Model):
     event_date = db.Column(db.DateTime, nullable=True)
     is_published = db.Column(db.Boolean, default=False)
     created_by = db.Column(db.String(120), db.ForeignKey('users.email'), nullable=False)
+    image_path = db.Column(db.String(255), nullable=True)
 
     creator = db.relationship('User', backref=db.backref('created_shotguns', lazy=True))
     participants = db.relationship('ShotgunParticipant', backref='shotgun', lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, title, description=None, max_participants=None, event_date=None, is_published=False,
-                 created_by=None):
+                 created_by=None, image_path=None):
         self.title = title
         self.description = description
         self.max_participants = max_participants
@@ -26,6 +27,7 @@ class Shotgun(db.Model):
         self.is_published = is_published
         self.created_by = created_by
         self.created_at = datetime.now()
+        self.image_path = image_path
 
     def to_dict(self):
         return {
@@ -37,7 +39,8 @@ class Shotgun(db.Model):
             'event_date': self.event_date.isoformat() if self.event_date else None,
             'is_published': self.is_published,
             'created_by': self.created_by,
-            'participants_count': len(self.participants)
+            'participants_count': len(self.participants),
+            'image_path': self.image_path
         }
 
     def save_to_db(self):
