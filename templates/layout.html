@@ -19,20 +19,7 @@
     <link href="{{ url_for('static', filename='/assets/css/style-svg.css')}}" rel="stylesheet"/>
 
     <link id="pagestyle" href="{{ url_for('static', filename='/assets/css/style-general.css')}}" rel="stylesheet"/>
-{#<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>#}
-{#<script>#}
-{#  window.OneSignalDeferred = window.OneSignalDeferred || [];#}
-{#  OneSignalDeferred.push(async function(OneSignal) {#}
-{#    await OneSignal.init({#}
-{#      appId: "7533bc3d-3e43-43bc-b39f-eefbc3851783",#}
-{#      safari_web_id: "web.onesignal.auto.3145fc89-5d6b-4727-99ef-e9ab80472582",#}
-{#      notifyButton: {#}
-{#        enable: true,#}
-{#      },#}
-{#    });#}
-{#  });#}
-{#</script>#}
-        <script>
+    <script>
         window.onload = function () {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
@@ -125,7 +112,6 @@ document.addEventListener('DOMContentLoaded', function() {
 function copyToClipboard(text) {
     navigator.clipboard.writeText(text)
         .then(() => {
-            // Afficher un message de confirmation
             const tooltip = document.getElementById("copyTooltip");
             tooltip.style.visibility = "visible";
             setTimeout(() => {
@@ -252,7 +238,6 @@ function copyToClipboard(text) {
                 </a>
             </li>
             <li class="nav-item">
-{#                <a id="navbar" class="nav-link" href="/users-map" onclick="alert('Stalker, la localisation fonctionne, mais sera accessible pendant la semaine des campagnes.')">#}
             <a id="navbar" class="nav-link" href="/users-map">
                 <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa fa-map text-lg opacity-10" aria-hidden="true" style="color: red;"></i>
@@ -292,9 +277,6 @@ function copyToClipboard(text) {
             </nav>
 
             <ul class="navbar-nav  justify-content-end">
-{#                <li class="nav-item d-flex align-items-center">#}
-{#                    <button id="requestLocationBtn" class="btn btn-primary">Localisation</button>#}
-{#                </li>#}
                 <li class="nav-item d-flex align-items-center">
                     <a href="/disconnect" class="nav-link text-body font-weight-bold px-0">
                         <i class="fa fa-power-off me-sm-1"></i>
@@ -314,145 +296,127 @@ function copyToClipboard(text) {
         </div>
         </div>
     </nav>
-<!-- Modal de maintenance -->
-{% if in_maintenance %}
-<div class="modal fade" id="maintenanceModal" tabindex="-1" aria-labelledby="maintenanceModalLabel" aria-hidden="true" data-bs-backdrop="static">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title text-white" id="maintenanceModalLabel">
-          <i class="fa fa-exclamation-triangle me-2"></i> Mode Maintenance
-        </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="text-center mb-3">
-          <i class="fa fa-cogs fa-4x text-danger"></i>
+
+    <!-- Modal de maintenance -->
+    {% if in_maintenance %}
+    <div class="modal fade" id="maintenanceModal" tabindex="-1" aria-labelledby="maintenanceModalLabel" aria-hidden="true" data-bs-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title text-white" id="maintenanceModalLabel">
+              <i class="fa fa-exclamation-triangle me-2"></i> Mode Maintenance
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="text-center mb-3">
+              <i class="fa fa-cogs fa-4x text-danger"></i>
+            </div>
+            <p class="lead text-center">Le site est actuellement en maintenance !</p>
+            <div class="alert alert-warning text-white">
+              <p><strong>Attention :</strong> L'utilisation du site pendant cette période peut entraîner des incohérences dans les données.</p>
+              <p>Veuillez limiter votre utilisation.</p>
+            </div>
+            <p class="text-center">En cas d'urgence, veuillez contacter <strong>Khalilos</strong>.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">J'ai compris</button>
+          </div>
         </div>
-        <p class="lead text-center">Le site est actuellement en maintenance !</p>
-        <div class="alert alert-warning text-white">
-          <p><strong>Attention :</strong> L'utilisation du site pendant cette période peut entraîner des incohérences dans les données.</p>
-          <p>Veuillez limiter votre utilisation.</p>
-        </div>
-        <p class="text-center">En cas d'urgence, veuillez contacter <strong>Khalilos</strong>.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">J'ai compris</button>
       </div>
     </div>
-  </div>
-</div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var maintenanceModal = new bootstrap.Modal(document.getElementById('maintenanceModal'));
-    maintenanceModal.show();
-  });
-</script>
-{% endif %}
-{% block content %}
-{% endblock %}
-<footer class="footer pt-3  ">
-            <div class="container-fluid">
-                <div class="row align-items-center justify-content-lg-between">
-                    <div class="col-lg-6 mb-lg-0 mb-4">
-                        <div class="copyright text-center text-sm text-muted text-lg-start">
-                            ©
-                            <script>
-                                document.write(new Date().getFullYear())
-                            </script>
-                            ,
-                            Fait avec <i class="fa fa-heart"></i> par le Khalilos
-                        </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var maintenanceModal = new bootstrap.Modal(document.getElementById('maintenanceModal'));
+        maintenanceModal.show();
+      });
+    </script>
+    {% endif %}
+
+    <!-- Modal du Standard -->
+    <div class="modal fade" id="standardModal" tabindex="-1" aria-labelledby="standardModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: #dc3545;">
+            <h5 class="modal-title text-white" id="standardModalLabel">
+              <i class="fa fa-phone me-2"></i> Standard
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <div class="d-flex align-items-center">
+                <label class="form-label me-3 mb-0" style="width: 100px;">Compte 1:</label>
+                <input type="text" class="form-control me-2" value="breuillerjulian@gmail.com" readonly>
+                <button class="btn btn-sm btn-outline-danger" onclick="copyToClipboard('breuillerjulian@gmail.com')">
+                  <i class="fa fa-copy"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="d-flex align-items-center">
+                <label class="form-label me-3 mb-0" style="width: 100px;">Compte 2:</label>
+                <input type="text" class="form-control me-2" value="delarosaperezismael@gmail.com" readonly>
+                <button class="btn btn-sm btn-outline-danger" onclick="copyToClipboard('delarosaperezismael@gmail.com')">
+                  <i class="fa fa-copy"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="d-flex align-items-center">
+                <label class="form-label me-3 mb-0" style="width: 100px;">Compte 3:</label>
+                <input type="text" class="form-control me-2" value="delarosaperezismael@gmail.com" readonly>
+                <button class="btn btn-sm btn-outline-danger" onclick="copyToClipboard('delarosaperezismael@gmail.com')">
+                  <i class="fa fa-copy"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <div class="d-flex align-items-center">
+                <label class="form-label me-3 mb-0" style="width: 100px;">Mot de passe:</label>
+                <div class="alert alert-danger w-100 py-2 mb-0 text-white">
+                  Pour des raisons de sécurité évidentes, le mot de passe doit être connu par cœur par tout le monde et non partagé sur les outils en ligne.
+                </div>
+              </div>
+            </div>
+
+            <div id="copyTooltip" style="visibility: hidden;" class="alert alert-success py-2">
+              Copié dans le presse-papiers!
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a href="https://app.quicktalk.com/users" target="_blank" class="btn btn-danger">
+              <i class="fa fa-external-link-alt me-1"></i> ALLER SUR QUICKTALK
+            </a>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">FERMER</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+    <footer class="footer pt-3  ">
+        <div class="container-fluid">
+            <div class="row align-items-center justify-content-lg-between">
+                <div class="col-lg-6 mb-lg-0 mb-4">
+                    <div class="copyright text-center text-sm text-muted text-lg-start">
+                        ©
+                        <script>
+                            document.write(new Date().getFullYear())
+                        </script>
+                        ,
+                        Fait avec <i class="fa fa-heart"></i> par le Khalilos
                     </div>
                 </div>
             </div>
-        </footer>
-    </div>
+        </div>
+    </footer>
 </main>
-<div class="modal fade" id="standardModal" tabindex="-1" aria-labelledby="standardModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header bg-primary">
-        <h5 class="modal-title text-white" id="standardModalLabel">
-          <i class="fa fa-phone me-2"></i> Standard
-        </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="mb-4">
-          <h6 class="fw-bold">Compte 1:</h6>
-          <div class="d-flex align-items-center mb-2">
-            <input type="text" class="form-control me-2" value="breuillerjulian@gmail.com" readonly>
-            <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('breuillerjulian@gmail.com')">
-              <i class="fa fa-copy"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="mb-4">
-          <h6 class="fw-bold">Compte 2:</h6>
-          <div class="d-flex align-items-center mb-2">
-            <input type="text" class="form-control me-2" value="delarosaperezismael@gmail.com" readonly>
-            <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('delarosaperezismael@gmail.com')">
-              <i class="fa fa-copy"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="mb-4">
-          <h6 class="fw-bold">Compte 3:</h6>
-          <div class="d-flex align-items-center mb-2">
-            <input type="text" class="form-control me-2" value="delarosaperezismael@gmail.com" readonly>
-            <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('delarosaperezismael@gmail.com')">
-              <i class="fa fa-copy"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="mb-4">
-          <h6 class="fw-bold">Mot de passe:</h6>
-          <div class="d-flex align-items-center mb-2">
-            <input type="password" class="form-control me-2" value="motDePasseSecret" id="passwordField" readonly>
-            <button class="btn btn-sm btn-outline-primary me-1" onclick="togglePassword()">
-              <i class="fa fa-eye" id="toggleIcon"></i>
-            </button>
-            <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('motDePasseSecret')">
-              <i class="fa fa-copy"></i>
-            </button>
-          </div>
-        </div>
-
-        <div id="copyTooltip" style="visibility: hidden;" class="alert alert-success py-2">
-          Copié dans le presse-papiers!
-        </div>
-      </div>
-      <div class="modal-footer">
-        <a href="https://app.quicktalk.com/users" target="_blank" class="btn btn-primary">
-          <i class="fa fa-external-link-alt me-1"></i> Aller sur QuickTalk
-        </a>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-function togglePassword() {
-    const passwordField = document.getElementById('passwordField');
-    const toggleIcon = document.getElementById('toggleIcon');
-
-    if (passwordField.type === 'password') {
-        passwordField.type = 'text';
-        toggleIcon.classList.remove('fa-eye');
-        toggleIcon.classList.add('fa-eye-slash');
-    } else {
-        passwordField.type = 'password';
-        toggleIcon.classList.remove('fa-eye-slash');
-        toggleIcon.classList.add('fa-eye');
-    }
-}
-</script>
 <script src="{{ url_for('static', filename='/assets/js/core/popper.min.js')}}"></script>
 <script src="{{ url_for('static', filename='/assets/js/core/bootstrap.min.js')}}"></script>
 <script src="{{ url_for('static', filename='/assets/js/plugins/perfect-scrollbar.min.js')}}"></script>
@@ -460,7 +424,6 @@ function togglePassword() {
 <script src="{{ url_for('static', filename='/assets/js/plugins/chartjs.min.js')}}"></script>
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 <script src="{{ url_for('static', filename='/assets/js/js-general.min.js')}}"></script>
-</body>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     // Get the current pathname
@@ -492,5 +455,5 @@ document.addEventListener("DOMContentLoaded", function() {
             });
     }, 300000);
 </script>
+</body>
 </html>
-
