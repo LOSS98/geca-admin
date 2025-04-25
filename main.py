@@ -13,6 +13,7 @@ from routes.locations import locations_bp
 from routes.stats import stats_bp
 from routes.shotguns import shotguns_bp
 from routes.files import files_bp
+import pytz
 
 from db import db
 from models.role import Role
@@ -32,6 +33,7 @@ def create_app():
 
     app = Flask(__name__, static_folder='static')
     app.config['IN_MAINTENANCE'] = os.getenv('IN_MAINTENANCE', '0') == '1'
+    app.config['TIMEZONE'] = 'Europe/Paris'
 
     @app.context_processor
     def inject_maintenance():
