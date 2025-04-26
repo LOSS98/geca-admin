@@ -35,6 +35,7 @@ def create_app():
     app.config['IN_MAINTENANCE'] = os.getenv('IN_MAINTENANCE', '0') == '1'
     app.config['TIMEZONE'] = 'Europe/Paris'
 
+
     @app.context_processor
     def inject_maintenance():
         return dict(in_maintenance=app.config['IN_MAINTENANCE'])

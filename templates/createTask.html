@@ -390,13 +390,25 @@
       });
     });
 
-    // Set default dates
     const now = new Date();
+
+    function formatDateTimeParis(date) {
+      const parisDate = new Date(date.toLocaleString('en-US', { timeZone: 'Europe/Paris' }));
+
+      const year = parisDate.getFullYear();
+      const month = String(parisDate.getMonth() + 1).padStart(2, '0');
+      const day = String(parisDate.getDate()).padStart(2, '0');
+      const hours = String(parisDate.getHours()).padStart(2, '0');
+      const minutes = String(parisDate.getMinutes()).padStart(2, '0');
+
+      return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+
     const oneHourLater = new Date(now);
     oneHourLater.setHours(now.getHours() + 1);
 
-    document.getElementById('startDate').value = formatDateTime(now);
-    document.getElementById('dueDate').value = formatDateTime(oneHourLater);
+    document.getElementById('startDate').value = formatDateTimeParis(now);
+    document.getElementById('dueDate').value = formatDateTimeParis(oneHourLater);
 
     // Form submission
     const taskForm = document.getElementById('taskForm');
