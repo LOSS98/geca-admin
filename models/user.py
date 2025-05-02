@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from services.notifications import notification_service
 from db import db
 
-# Création d'une table d'association user_roles
+
 user_roles = db.Table('user_roles',
                       db.Column('user_email', db.String(120), db.ForeignKey('users.email'), primary_key=True),
                       db.Column('role_name', db.String(50), db.ForeignKey('roles.name'), primary_key=True)
@@ -25,10 +25,10 @@ class User(db.Model):
     blocked = db.Column(db.Boolean, default=False)
     is_admin = db.Column(db.Boolean, default=False)
 
-    # Relation avec les rôles
+
     roles = db.relationship('Role', secondary=user_roles, backref=db.backref('users', lazy='dynamic'))
 
-    # Self-referencing relationship
+
     manager_email = db.Column(db.String(120), db.ForeignKey('users.email'), nullable=True)
     manager = db.relationship('User', remote_side=[email], backref='subordinates')
 
@@ -48,7 +48,7 @@ class User(db.Model):
         self.blocked = blocked
         self.is_admin = is_admin
 
-    # Méthodes de gestion des rôles
+
     def add_role(self, role_name):
         """Ajoute un rôle à l'utilisateur s'il n'existe pas déjà"""
         from models.role import Role
@@ -77,7 +77,7 @@ class User(db.Model):
         """Renvoie la liste des noms de rôles de l'utilisateur"""
         return [role.name for role in self.roles]
 
-    # Getters and setters with database updates
+
     def get_fname(self):
         return self.fname
 

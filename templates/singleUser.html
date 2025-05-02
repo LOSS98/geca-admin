@@ -133,13 +133,13 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle role form submission
+
     const roleForm = document.getElementById('roleForm');
     const addRoleBtn = document.getElementById('addRoleBtn');
     const roleError = document.getElementById('roleError');
     const userRolesDiv = document.getElementById('userRoles');
 
-    // Fonction pour mettre à jour l'affichage des rôles
+
     function updateRolesDisplay(roles) {
         userRolesDiv.innerHTML = '';
 
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Ajout d'un nouveau rôle
+
     roleForm.addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -169,11 +169,11 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Disable button and show loading state
+
         addRoleBtn.disabled = true;
         addRoleBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Ajout...';
 
-        // Make API call to add role
+
         fetch('/api/addUserRole', {
             method: 'POST',
             headers: {
@@ -184,31 +184,31 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Show success message
+
                 roleError.textContent = 'Équipe ajoutée avec succès !';
                 roleError.classList.remove('text-danger');
                 roleError.classList.add('text-success');
                 roleError.style.display = 'block';
 
-                // Update roles display
+
                 updateRolesDisplay(data.roles);
 
-                // Reset select
+
                 document.getElementById('roleSelect').value = '';
 
-                // Hide message after 3 seconds
+
                 setTimeout(() => {
                     roleError.style.display = 'none';
                 }, 3000);
             } else {
-                // Show error message
+
                 roleError.textContent = data.error || 'Une erreur est survenue';
                 roleError.classList.remove('text-success');
                 roleError.classList.add('text-danger');
                 roleError.style.display = 'block';
             }
 
-            // Re-enable button
+
             addRoleBtn.disabled = false;
             addRoleBtn.innerHTML = 'Ajouter l\'équipe';
         })
@@ -219,20 +219,20 @@ document.addEventListener('DOMContentLoaded', function() {
             roleError.classList.add('text-danger');
             roleError.style.display = 'block';
 
-            // Re-enable button
+
             addRoleBtn.disabled = false;
             addRoleBtn.innerHTML = 'Ajouter l\'équipe';
         });
     });
 });
 
-// Fonction pour supprimer un rôle
+
 function removeRole(role) {
     if (!confirm(`Êtes-vous sûr de vouloir quitter l'équipe "${role}" ?`)) {
         return;
     }
 
-    // Make API call to remove role
+
     fetch('/api/removeUserRole', {
         method: 'POST',
         headers: {
@@ -243,31 +243,31 @@ function removeRole(role) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Remove role badge from display
+
             const badge = document.querySelector(`.role-badge[data-role="${role}"]`);
             if (badge) {
                 badge.remove();
             }
 
-            // Check if there are no more roles
+
             const userRolesDiv = document.getElementById('userRoles');
             if (userRolesDiv.children.length === 0) {
                 userRolesDiv.innerHTML = '<p class="text-muted">Vous n\'êtes membre d\'aucune équipe pour le moment.</p>';
             }
 
-            // Show success message
+
             const roleError = document.getElementById('roleError');
             roleError.textContent = 'Équipe supprimée avec succès !';
             roleError.classList.remove('text-danger');
             roleError.classList.add('text-success');
             roleError.style.display = 'block';
 
-            // Hide message after 3 seconds
+
             setTimeout(() => {
                 roleError.style.display = 'none';
             }, 3000);
         } else {
-            // Show error message
+
             alert(data.error || 'Une erreur est survenue lors de la suppression de l\'équipe');
         }
     })

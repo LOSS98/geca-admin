@@ -52,14 +52,14 @@ class Comment(db.Model):
                 print(f"Total assignees: {len(task.assignees)}")
                 print(f"Current user email: {self.user_email}")
 
-            # Get assignees excluding the commenter
+
             assigned_users = [f"{user.fname} {user.lname}" for user in task.assignees if
                               user.email != self.user_email]
 
             if DEBUG:
                 print(f"Assignees to notify: {assigned_users}")
 
-            # If no assignees found, notify the task creator
+
             if not assigned_users:
                 from models.user import User
                 creator = User.query.filter_by(email=task.assigned_by).first()

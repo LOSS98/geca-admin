@@ -97,7 +97,7 @@
   .time-low {
     color: #2ecc71;
   }
-/* Ajoutez ou modifiez ceci dans la section <style> */
+
 .comments-badge {
     cursor: pointer;
     font-size: 0.75rem;
@@ -113,7 +113,7 @@
     white-space: nowrap;
 }
 
-/* Styles pour mobile */
+
 @media (max-width: 768px) {
     .comments-badge {
         font-size: 0.7rem;
@@ -124,13 +124,13 @@
         margin-right: 0.2rem;
     }
 
-    /* Ajustement de l'affichage des cartes */
+
     .task-card .card-title {
         font-size: 0.95rem;
         margin-bottom: 0.25rem;
     }
 
-    /* Ajustez les badges pour qu'ils s'affichent mieux en mobile */
+
     .task-card .badges-container {
         display: flex;
         flex-wrap: wrap;
@@ -299,7 +299,7 @@
 </div>
 
 <script>
-  // State and priority translations
+
   const stateTranslations = {
     'assigned': 'Assignée',
     'disputed': 'Contestée',
@@ -315,13 +315,13 @@
     'low': 'Faible'
   };
 
-  // Global variables
+
   let allTasks = [];
   const userEmail = "{{ user_info.email }}";
   const userRole = "{{ user_role }}";
   let isAdmin = Array.isArray(userRole) ? userRole.includes('admin') : userRole === 'admin';
 
-  // Filter settings
+
   const settings = {
     stateFilter: 'all',
     priorityFilter: 'all',
@@ -330,7 +330,7 @@
     searchQuery: ''
   };
 
-  // Helper functions
+
   function getStateBadgeClass(state) {
     switch (state) {
       case 'assigned': return 'badge-assigned';
@@ -375,7 +375,7 @@
     return `<span class="priority-badge priority-badge-${priority}">${priorityText}</span>`;
   }
 
-  // Search, filter, and sort functions
+
   function searchTasks(tasks, query) {
     if (!query || query.trim() === '') return tasks;
 
@@ -427,15 +427,15 @@
     });
   }
 
-  // Create task card with comments badge
+
   function createTaskCard(task) {
-    // Get task state badge
+
     const stateBadgeHtml = `<span class="task-badge ${getStateBadgeClass(task.state)}">${stateTranslations[task.state]}</span>`;
 
-    // Get task priority badge
+
     const priorityBadgeHtml = getPriorityBadge(task.priority);
 
-    // Format time info
+
     let timeInfoHTML = '';
     if (task.time_info) {
       const timeInfoClass = getTimeInfoClass(task.time_info);
@@ -446,14 +446,14 @@
       `;
     }
 
-    // Comments badge
+
     const commentsBadge = `
       <a href="#" class="comments-badge" onclick="openCommentsModal(event, ${task.id})">
         <i class="fa fa-comments"> </i> ${task.comments_count || 0} commentaire(s)
       </a>
     `;
 
-    // Assignees list
+
     const assigneesText = task.assignees.length > 0
       ? `<div class="mb-1 text-muted small">Assignée à: ${task.assignees.join(', ')}</div>`
       : '<div class="mb-1 text-muted small">Aucun assigné</div>';
@@ -481,11 +481,11 @@
     `;
   }
 
-  // Render tasks
+
   function renderTasks() {
     const container = document.getElementById('all-tasks-container');
 
-    // Apply filters, search, and sorting
+
     let filteredTasks = filterTasks(allTasks, settings.stateFilter, settings.priorityFilter);
 
     if (settings.searchQuery) {
@@ -494,7 +494,7 @@
 
     filteredTasks = sortTasks(filteredTasks, settings.sortBy, settings.sortDirection);
 
-    // Render tasks
+
     if (filteredTasks.length === 0) {
       container.innerHTML = `
         <div class="no-tasks">
@@ -506,7 +506,7 @@
     }
   }
 
-  // Fetch all tasks
+
   function fetchAllTasks() {
     document.getElementById('all-tasks-container').innerHTML = `
       <div class="loading-spinner">
@@ -532,20 +532,20 @@
       });
   }
 
-  // Comments functions
+
   function openCommentsModal(event, taskId) {
     event.preventDefault();
 
     const task = allTasks.find(t => t.id === taskId);
     if (!task) return;
 
-    // Set task ID in the form
+
     document.getElementById('commentTaskId').value = taskId;
 
-    // Update modal title
+
     document.getElementById('commentsModalLabel').textContent = `Commentaires - ${task.subject}`;
 
-    // Clear and show loading spinner
+
     const commentsContainer = document.getElementById('commentsContainer');
     commentsContainer.innerHTML = `
       <div class="loading-spinner">
@@ -555,11 +555,11 @@
       </div>
     `;
 
-    // Show modal
+
     const commentsModal = new bootstrap.Modal(document.getElementById('commentsModal'));
     commentsModal.show();
 
-    // Fetch comments
+
     fetchTaskComments(taskId);
   }
 
@@ -594,7 +594,7 @@
     let commentsHtml = `<div class="comments-list">`;
 
     comments.forEach(comment => {
-      // Check if user can delete this comment
+
       const canDelete = comment.user_email === userEmail || isAdmin;
 
       commentsHtml += `
@@ -644,16 +644,16 @@
     })
     .then(response => response.json())
     .then(data => {
-      // Clear form
+
       document.getElementById('commentContent').value = '';
 
-      // Refresh comments
+
       fetchTaskComments(taskId);
 
-      // Update comment count in the tasks list
+
       updateCommentCount(taskId);
 
-      // Re-enable button
+
       btn.disabled = false;
       btn.innerHTML = originalText;
     })
@@ -661,7 +661,7 @@
       console.error('Error adding comment:', error);
       alert('Une erreur est survenue lors de l\'ajout du commentaire.');
 
-      // Re-enable button
+
       btn.disabled = false;
       btn.innerHTML = originalText;
     });
@@ -681,13 +681,13 @@ function deleteComment(commentId) {
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        // Trouver et supprimer le commentaire du DOM
+
         const commentElement = document.querySelector(`.comment[data-comment-id="${commentId}"]`);
         if (commentElement) {
           commentElement.remove();
         }
 
-        // Vérifier s'il reste des commentaires
+
         const commentsContainer = document.getElementById('commentsContainer');
         if (commentsContainer.querySelectorAll('.comment').length === 0) {
           commentsContainer.innerHTML = `
@@ -697,7 +697,7 @@ function deleteComment(commentId) {
           `;
         }
 
-        // Mettre à jour le nombre de commentaires dans la liste des tâches
+
         const taskId = document.getElementById('commentTaskId').value;
         updateCommentCount(taskId);
       } else {
@@ -711,17 +711,17 @@ function deleteComment(commentId) {
   }
 
   function updateCommentCount(taskId) {
-    // Récupérer le nombre actuel de commentaires
+
     fetch(`/api/tasks/${taskId}/comments`)
       .then(response => response.json())
       .then(comments => {
-        // Mettre à jour le badge dans la liste des tâches
+
         const commentsBadge = document.querySelector(`.task-card[data-task-id="${taskId}"] .comments-badge`);
         if (commentsBadge) {
           commentsBadge.innerHTML = `<i class="fa fa-comments"></i> ${comments.length} commentaire(s)`;
         }
 
-        // Mettre à jour aussi dans les données locales
+
         const taskIndex = allTasks.findIndex(t => t.id === parseInt(taskId));
         if (taskIndex !== -1) {
           allTasks[taskIndex].comments_count = comments.length;
@@ -732,21 +732,21 @@ function deleteComment(commentId) {
       });
   }
 
-  // Event listeners
+
   document.addEventListener('DOMContentLoaded', function() {
-    // Fetch all tasks
+
     fetchAllTasks();
 
-    // Comment form submission
+
     document.getElementById('commentForm').addEventListener('submit', addComment);
 
-    // Search input
+
     document.getElementById('searchInput').addEventListener('input', function() {
       settings.searchQuery = this.value.trim();
       renderTasks();
     });
 
-    // State filter options
+
     document.querySelectorAll('.filter-option').forEach(option => {
       option.addEventListener('click', function(e) {
         e.preventDefault();
@@ -755,7 +755,7 @@ function deleteComment(commentId) {
       });
     });
 
-    // Priority filter options
+
     document.querySelectorAll('.priority-filter-option').forEach(option => {
       option.addEventListener('click', function(e) {
         e.preventDefault();
@@ -764,7 +764,7 @@ function deleteComment(commentId) {
       });
     });
 
-    // Sort options
+
     document.querySelectorAll('.sort-option').forEach(option => {
       option.addEventListener('click', function(e) {
         e.preventDefault();

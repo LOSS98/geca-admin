@@ -60,7 +60,7 @@ def adding_expense():
             return redirect(url_for('finances.add_expense', error=error_message))
 
         try:
-            # expense.save_to_db()
+
             print(expense.add_to_sheet(connector))
             expense.notify()
             return redirect(url_for('finances.add_expense', error="Dépense ajoutée avec succès"))
@@ -122,7 +122,7 @@ def adding_income():
             return redirect(url_for('finances.add_income', error=error_message))
 
         try:
-            # income.save_to_db()
+
             income.add_to_sheet(connector)
             income.notify()
             return redirect(url_for('finances.add_income', error="Recette ajoutée avec succès"))
@@ -209,8 +209,8 @@ def adding_internal_transfer():
             return redirect(url_for('finances.add_internal_transfer', error=error_expense))
 
         try:
-            # expense.save_to_db()
-            # income.save_to_db()
+
+
             expense.add_to_sheet(connector)
             income.add_to_sheet(connector)
             notification_service.notify_internal_transfer(expense, income)
@@ -221,59 +221,58 @@ def adding_internal_transfer():
     return redirect(url_for('finances.add_internal_transfer'))
 
 
-# @finances_bp.route('/incomes')
-# def incomes_list():
-#     if is_not_connected():
-#         return redirect(url_for('auth.login'))
-#     error_message = None
-#     if 'error' in request.args:
-#         error_message = request.args.get('error')
-#     return render_template('viewIncomes.html', error=error_message, user_info=session['user_info'])
 
 
 
-# @finances_bp.route('/askForMoney')
-# def ask_for_money():
-#     if is_not_connected():
-#         return redirect(url_for('auth.login'))
-#     error_message = None
-#     if 'error' in request.args:
-#         error_message = request.args.get('error')
-#     session_credentials = session['credentials']
-#     connector = GoogleAPIConnector(Config.CREDENTIALS_PATH)
-#     connector.authenticate(session_credentials)
-#     return render_template('askForMoney.html', error=error_message, user_info=session['user_info'],
-#                            members=connector.get_members())
 
 
-# @finances_bp.route('/askingForMoney', methods=['GET', 'POST'])
-# def asking_for_money():
-#     if is_not_connected():
-#         return redirect(url_for('auth.login'))
-#     if request.method == 'POST':
-#         if request.form['toBeGivenBy'] and request.form['beneficiary'] and request.form['reason'] and request.form[
-#             'amount'] and request.form['description']:
-#             session_credentials = session['credentials']
-#             connector = GoogleAPIConnector(Config.CREDENTIALS_PATH)
-#             connector.authenticate(session_credentials)
-#             members = connector.get_members()
-#
-#             from services.ask_money import AskMoney
-#             moneyask = AskMoney({
-#                 'toBeGivenBy': request.form['toBeGivenBy'],
-#                 'beneficiary': request.form['beneficiary'],
-#                 'reason': request.form['reason'],
-#                 'amount': request.form['amount'],
-#                 'description': request.form['description'],
-#                 'askedBy': session['user_info']['email'],
-#                 'members': members
-#             })
-#
-#             is_valid, Error = moneyask.validate_data()
-#             if is_valid:
-#                 moneyask.askForMoney(connector)
-#             else:
-#                 return redirect(url_for('finances.ask_for_money', error=Error))
-#         else:
-#             return redirect(url_for('finances.ask_for_money', error="Veuillez remplir tous les champs"))
-#         return redirect(url_for('finances.ask_for_money', error="Demande ajoutée avec succès"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

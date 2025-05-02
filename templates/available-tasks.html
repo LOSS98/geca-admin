@@ -2,7 +2,7 @@
 
 {% block head %}
     <style>
-        /* Styles pour les commentaires */
+
         .comments-container {
             max-height: 250px;
             overflow-y: auto;
@@ -69,7 +69,7 @@
             margin-right: 0.5rem;
         }
 
-        /* Styles pour les priorités */
+
         .priority-high {
             border-left: 5px solid #e74c3c;
         }
@@ -101,7 +101,7 @@
             color: white;
         }
 
-        /* Styles pour les informations de temps */
+
         .time-info {
             font-size: 0.85rem;
             margin-top: 0.5rem;
@@ -148,7 +148,7 @@
             color: #777;
         }
 
-        /* Styles pour les informations sur la tâche libérée */
+
         .previously-assigned {
             margin-top: 0.5rem;
             font-size: 0.85rem;
@@ -251,14 +251,14 @@
     </div>
 
     <script>
-        // Task priority translations
+
         const priorityTranslations = {
             'high': 'Haute',
             'medium': 'Moyenne',
             'low': 'Faible'
         };
 
-        // Format date
+
         function formatDate(dateString) {
             const date = new Date(dateString);
             return date.toLocaleString('fr-FR', {
@@ -270,7 +270,7 @@
             });
         }
 
-        // Get time info class
+
         function getTimeInfoClass(timeInfo) {
             if (!timeInfo) return '';
 
@@ -287,23 +287,23 @@
             return '';
         }
 
-        // Get priority badge
+
         function getPriorityBadge(priority) {
             const priorityText = priorityTranslations[priority] || 'Moyenne';
             return `<span class="priority-badge priority-badge-${priority}">${priorityText}</span>`;
         }
 
-        // Handle taking a task
+
         function handleTakeTask(event, taskId) {
             event.preventDefault();
 
-            // Disable the button to prevent double clicks
+
             const button = event.target.closest('button');
             const originalText = button.innerHTML;
             button.disabled = true;
             button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> En cours...';
 
-            // Make API call
+
             fetch(`/api/tasks/${taskId}/take`, {
                 method: 'POST',
                 headers: {
@@ -314,14 +314,14 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Refresh tasks after successful action
+
                         fetchAvailableTasks();
-                        // Show success message
+
                         alert('Tâche prise avec succès ! Elle apparaîtra dans votre liste de tâches.');
                     } else {
                         const errorMessage = data.error ? data.error : 'Une erreur inconnue est survenue';
                         alert(`Erreur: ${errorMessage}`);
-                        // Restore button
+
                         button.disabled = false;
                         button.innerHTML = originalText;
                     }
@@ -329,17 +329,17 @@
                 .catch(error => {
                     console.error('Error:', error);
                     alert(`Une erreur est survenue: ${error.message}`);
-                    // Restore button
+
                     button.disabled = false;
                     button.innerHTML = originalText;
                 });
         }
 
-        // Create available task card HTML
+
         function createAvailableTaskCard(task) {
             console.log("Creating card for available task:", task);
 
-            // Format time info
+
             let timeInfoHTML = '';
             if (task.time_info) {
                 const timeInfoClass = getTimeInfoClass(task.time_info);
@@ -350,7 +350,7 @@
       `;
             }
 
-            // Ajouter badge "Tâche libérée" pour les tâches qui étaient assignées puis libérées
+
             let statusBadgeHtml = '';
             let previouslyAssignedHtml = '';
             if (task.previous_assignees && task.previous_assignees.length > 0) {
@@ -362,7 +362,7 @@
       `;
             }
 
-            // Add role badges for the task
+
             let rolesBadgesHtml = '';
             if (task.target_roles && task.target_roles.length > 0) {
                 rolesBadgesHtml = task.target_roles.map(role =>
@@ -372,7 +372,7 @@
                 rolesBadgesHtml = `<span class="role-badge">Ouverte à tous</span>`;
             }
 
-            // Afficher le créateur de la tâche
+
             const creatorInfo = `<div class="text-muted small mb-2">Créée par: ${task.assigned_by}</div>`;
             const commentsBadge = `
     <a href="#" class="comments-badge" onclick="openTaskCommentsModal(event, ${task.id})">
@@ -404,7 +404,7 @@
     `;
         }
 
-        // Fetch available tasks from API
+
         let currentPriorityFilter = 'all';
         let allAvailableTasks = [];
 
@@ -429,7 +429,7 @@
             </div>
           `;
                     } else {
-                        // Filter by priority if needed
+
                         let filteredTasks = tasks;
                         if (currentPriorityFilter !== 'all') {
                             filteredTasks = filteredTasks.filter(task => task.priority === currentPriorityFilter);
@@ -442,19 +442,19 @@
               </div>
             `;
                         } else {
-                            // Trier les tâches par priorité et date d'échéance
+
                             filteredTasks.sort((a, b) => {
-                                // D'abord par priorité (high > medium > low)
+
                                 const priorityOrder = { 'high': 3, 'medium': 2, 'low': 1 };
                                 const priorityDiff = priorityOrder[b.priority] - priorityOrder[a.priority];
 
                                 if (priorityDiff !== 0) return priorityDiff;
 
-                                // Ensuite par date d'échéance (la plus proche d'abord)
+
                                 return new Date(a.due_date) - new Date(b.due_date);
                             });
 
-                            // Placer les tâches libérées en premier
+
                             filteredTasks.sort((a, b) => {
                                 const aHasHistory = a.previous_assignees && a.previous_assignees.length > 0;
                                 const bHasHistory = b.previous_assignees && b.previous_assignees.length > 0;
@@ -464,7 +464,7 @@
                                 return 0;
                             });
 
-                            // Create HTML for each task card
+
                             const tasksHTML = filteredTasks.map(task => createAvailableTaskCard(task)).join('');
                             tasksContainer.innerHTML = tasksHTML;
                         }
@@ -485,13 +485,13 @@
   const task = allAvailableTasks.find(t => t.id === taskId);
   if (!task) return;
 
-  // Mettre à jour le titre du modal
+
   document.getElementById('taskCommentsModalLabel').textContent = `Commentaires - ${task.subject}`;
 
-  // Stocker l'ID de la tâche dans le formulaire
+
   document.getElementById('taskCommentTaskId').value = taskId;
 
-  // Réinitialiser le contenu
+
   document.getElementById('taskCommentsContainer').innerHTML = `
     <div class="loading-spinner">
       <div class="spinner-border text-primary" role="status">
@@ -500,11 +500,11 @@
     </div>
   `;
 
-  // Afficher le modal
+
   const commentsModal = new bootstrap.Modal(document.getElementById('taskCommentsModal'));
   commentsModal.show();
 
-  // Charger les commentaires
+
   loadTaskComments(taskId);
 }
 
@@ -582,16 +582,16 @@ function submitTaskComment(event) {
   })
   .then(response => response.json())
   .then(data => {
-    // Réinitialiser le formulaire
+
     document.getElementById('taskCommentContent').value = '';
 
-    // Recharger les commentaires
+
     loadTaskComments(taskId);
 
-    // Mettre à jour le badge de commentaires dans la liste
+
     updateTaskCommentCount(taskId);
 
-    // Réactiver le bouton
+
     btn.disabled = false;
     btn.innerHTML = originalText;
   })
@@ -599,7 +599,7 @@ function submitTaskComment(event) {
     console.error('Error adding comment:', error);
     alert('Une erreur est survenue lors de l\'ajout du commentaire.');
 
-    // Réactiver le bouton
+
     btn.disabled = false;
     btn.innerHTML = originalText;
   });
@@ -621,13 +621,13 @@ function deleteTaskComment(commentId) {
     if (data.success) {
       const taskId = document.getElementById('taskCommentTaskId').value;
 
-      // Supprimer le commentaire du DOM
+
       const commentElement = document.querySelector(`.comment[data-comment-id="${commentId}"]`);
       if (commentElement) {
         commentElement.remove();
       }
 
-      // Vérifier s'il reste des commentaires
+
       if (document.querySelectorAll('.comment').length === 0) {
         document.getElementById('taskCommentsContainer').innerHTML = `
           <div class="text-muted text-center py-2">
@@ -636,7 +636,7 @@ function deleteTaskComment(commentId) {
         `;
       }
 
-      // Mettre à jour le badge de commentaires dans la liste
+
       updateTaskCommentCount(taskId);
     } else {
       alert('Erreur: ' + (data.error || 'Une erreur est survenue'));
@@ -652,13 +652,13 @@ function updateTaskCommentCount(taskId) {
   fetch(`/api/tasks/${taskId}/comments`)
     .then(response => response.json())
     .then(comments => {
-      // Mettre à jour le badge dans la liste des tâches
+
       const commentsBadge = document.querySelector(`.task-card[data-task-id="${taskId}"] .comments-badge`);
       if (commentsBadge) {
         commentsBadge.innerHTML = `<i class="fa fa-comments"> </i> ${comments.length} commentaire(s)`;
       }
 
-      // Mettre à jour aussi dans les données locales
+
       const taskIndex = allAvailableTasks.findIndex(t => t.id === parseInt(taskId));
       if (taskIndex !== -1) {
         allAvailableTasks[taskIndex].comments_count = comments.length;
@@ -669,21 +669,21 @@ function updateTaskCommentCount(taskId) {
     });
 }
 
-// Ajouter event listener pour le formulaire de commentaire
+
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('taskCommentForm').addEventListener('submit', submitTaskComment);
 
-  // Autres event listeners existants...
+
 });
 
-        // Initial fetch
+
 
         fetchAvailableTasks();
 
-        // Set up automatic refresh every 30 seconds
-        //setInterval(fetchAvailableTasks, 30000);
 
-        // Set up filter options for task priority
+
+
+
         document.querySelectorAll('.priority-filter-option').forEach(option => {
             option.addEventListener('click', function(e) {
                 e.preventDefault();

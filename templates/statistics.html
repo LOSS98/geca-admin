@@ -346,12 +346,12 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Update the display order badge
+
                     const orderBadge = document.querySelector(`#stat-${id}-value`).closest('.stat-card').querySelector('.stat-order-badge');
                     orderBadge.textContent = `Ordre: ${order}`;
 
-                    // Optional: reload the page to reflect the new order
-                    // window.location.reload();
+
+
                 } else {
                     alert('Erreur: ' + data.error);
                 }
@@ -363,7 +363,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Formulaire pour ajouter une nouvelle statistique
+
             const newStatForm = document.getElementById('newStatForm');
 
             newStatForm.addEventListener('submit', function(e) {
@@ -374,7 +374,7 @@
                 const isText = document.getElementById('isTextStat').checked;
                 const displayOrder = parseInt(document.getElementById('newStatOrder').value.trim() || 999);
 
-                // Créer la nouvelle statistique via l'API
+
                 fetch('/api/statistics/create', {
                     method: 'POST',
                     headers: {
@@ -390,7 +390,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Recharger la page pour afficher la nouvelle statistique
+
                         window.location.reload();
                     } else {
                         alert('Erreur: ' + data.error);

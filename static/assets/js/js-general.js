@@ -1,23 +1,23 @@
-// =========================================================
-// Custom UI Dashboard - v1.0.7
-// =========================================================
 
-// Product Page: https://www.creative-tim.com/product/soft-ui-dashboard
-// Copyright 2023 Custom UI (https://www.creative-tim.com)
-// Licensed under MIT (https://github.com/creativetimofficial/soft-ui-dashboard/blob/main/LICENSE)
 
-// Coded by www.creative-tim.com
 
-// =========================================================
 
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+
+
+
+
+
+
+
+
 
 "use strict";
 (function() {
   var isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
 
   if (isWindows) {
-    // if we are on windows OS we activate the perfectScrollbar function
+
     if (document.getElementsByClassName('main-content')[0]) {
       var mainpanel = document.querySelector('.main-content');
       var ps = new PerfectScrollbar(mainpanel);
@@ -40,17 +40,17 @@
   };
 })();
 
-// Verify navbar blur on scroll
+
 navbarBlurOnScroll('navbarBlur');
 
 
-// initialization of Tooltips
+
 var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
 var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl)
 })
 
-// Fixed Plugin
+
 
 if (document.querySelector('.fixed-plugin')) {
   var fixedPlugin = document.querySelector('.fixed-plugin');
@@ -101,7 +101,7 @@ if (document.querySelector('.fixed-plugin')) {
 
 }
 
-// Tabs navigation
+
 
 var total = document.querySelectorAll('.nav-pills');
 
@@ -124,9 +124,9 @@ total.forEach(function(item, i) {
 
   item.onmouseover = function(event) {
     let target = getEventTarget(event);
-    let li = target.closest('li'); // get reference
+    let li = target.closest('li');
     if (li) {
-      let nodes = Array.from(li.closest('ul').children); // get array
+      let nodes = Array.from(li.closest('ul').children);
       let index = nodes.indexOf(li) + 1;
       item.querySelector('li:nth-child(' + index + ') .nav-link').onclick = function() {
         moving_div = item.querySelector('.moving-tab');
@@ -150,7 +150,7 @@ total.forEach(function(item, i) {
 });
 
 
-// Tabs navigation resize
+
 
 window.addEventListener('resize', function(event) {
   total.forEach(function(item, i) {
@@ -170,7 +170,7 @@ window.addEventListener('resize', function(event) {
     let li = item.querySelector(".nav-link.active").parentElement;
 
     if (li) {
-      let nodes = Array.from(li.closest('ul').children); // get array
+      let nodes = Array.from(li.closest('ul').children);
       let index = nodes.indexOf(li) + 1;
 
       let sum = 0;
@@ -213,10 +213,10 @@ function getEventTarget(e) {
   return e.target || e.srcElement;
 }
 
-// End tabs navigation
 
 
-//Set Sidebar Color
+
+
 function sidebarColor(a) {
   var parent = a.parentElement.children;
   var color = a.getAttribute("data-color");
@@ -248,7 +248,7 @@ function sidebarColor(a) {
 
 }
 
-// Set Navbar Fixed
+
 function navbarFixed(el) {
   let classes = ['position-sticky', 'blur', 'shadow-blur', 'mt-4', 'left-auto', 'top-1', 'z-index-sticky'];
   const navbar = document.getElementById('navbarBlur');
@@ -266,7 +266,7 @@ function navbarFixed(el) {
   }
 };
 
-// Navbar blur on scroll
+
 
 function navbarBlurOnScroll(id) {
   const navbar = document.getElementById(id);
@@ -330,11 +330,11 @@ function navbarBlurOnScroll(id) {
 }
 
 
-// Debounce Function
-// Returns a function, that, as long as it continues to be invoked, will not
-// be triggered. The function will be called after it stops being called for
-// N milliseconds. If `immediate` is passed, trigger the function on the
-// leading edge, instead of the trailing.
+
+
+
+
+
 function debounce(func, wait, immediate) {
   var timeout;
   return function() {
@@ -351,7 +351,7 @@ function debounce(func, wait, immediate) {
   };
 };
 
-//Set Sidebar Type
+
 function sidebarType(a) {
   var parent = a.parentElement.children;
   var color = a.getAttribute("data-class");
@@ -379,7 +379,7 @@ function sidebarType(a) {
 }
 
 
-// Toggle Sidenav
+
 const iconNavbarSidenav = document.getElementById('iconNavbarSidenav');
 const iconSidenav = document.getElementById('iconSidenav');
 const sidenav = document.getElementById('sidenav-main');
@@ -410,7 +410,7 @@ function toggleSidenav() {
   }
 }
 
-// Resize navbar color depends on configurator active type of sidenav
+
 
 let referenceButtons = document.querySelector('[data-class]');
 
@@ -429,7 +429,7 @@ function navbarColorOnResize() {
   }
 }
 
-// Deactivate sidenav type buttons on resize and small screens
+
 window.addEventListener("resize", sidenavTypeOnResize);
 window.addEventListener("load", sidenavTypeOnResize);
 

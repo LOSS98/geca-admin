@@ -30,7 +30,7 @@ def save_location():
     if is_not_connected():
         return jsonify({'error': 'Not connected'}), 401
 
-    data = request.json  # Receive JSON data from client
+    data = request.json
     latitude = data.get('latitude')
     longitude = data.get('longitude')
     email = session['user_info']['email']

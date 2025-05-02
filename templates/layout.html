@@ -59,7 +59,7 @@
     </script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Vérifier si la géolocalisation est autorisée
+    
     if (!navigator.geolocation) {
         console.error("La géolocalisation n'est pas supportée par ce navigateur.");
         return;
@@ -67,24 +67,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
     navigator.geolocation.getCurrentPosition(
         function(position) {
-            // La géolocalisation est autorisée
+            
             console.log(`Latitude: ${position.coords.latitude}`);
             console.log(`Longitude: ${position.coords.longitude}`);
         },
         function(error) {
-            // La géolocalisation n'est pas autorisée
+            
             console.error("Erreur de géolocalisation:", error.message);
             document.getElementById('requestLocationBtn').style.display = 'block';
         }
     );
 
-    // Ajouter un événement au bouton pour demander la localisation
+    
     document.getElementById('requestLocationBtn').addEventListener('click', function() {
         navigator.geolocation.getCurrentPosition(
             function(position) {
                 console.log(`Latitude: ${position.coords.latitude}`);
                 console.log(`Longitude: ${position.coords.longitude}`);
-                // Envoyer les coordonnées au serveur
+                
                 fetch('/save-location', {
                     method: 'POST',
                     headers: {
@@ -426,17 +426,17 @@ function copyToClipboard(text) {
 <script src="{{ url_for('static', filename='/assets/js/js-general.min.js')}}"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    // Get the current pathname
+    
     var path = window.location.pathname;
 
-    // Find links in the navbar
+    
     var links = document.querySelectorAll('#navbar a');
 
-    // Loop through each link in the navbar
+    
     links.forEach(function(link) {
-        // Check if the link's href matches the current path
+        
         if(link.getAttribute('href') === path) {
-            // Add the active class
+            
             link.classList.add('active');
         }
     });

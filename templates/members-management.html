@@ -170,7 +170,7 @@
   }
 }
 
-/* Pour les très petits écrans */
+
 @media (max-width: 320px) {
   .member-actions .btn {
     font-size: 0.75rem;
@@ -344,17 +344,17 @@
 </div>
 
 <script>
-  // Objets pour stocker les données en cache
+
   let allMembers = [];
   let memberTasks = {};
 
-  // États de filtrage et de tri
+
   let searchQuery = '';
 
-  // État du modal
+
   let currentUserEmail = '';
 
-  // Formatage des dates
+
   function formatDate(dateString) {
     if (!dateString) return 'Jamais';
 
@@ -368,7 +368,7 @@
     });
   }
 
-  // Déterminer la classe pour l'info de localisation
+
   function getDateClass(dateString) {
     if (!dateString) return '';
 
@@ -382,7 +382,7 @@
 
 
 
-  // Créer une carte de membre
+
   function createMemberCard(member) {
     const userInitials = member.fname.charAt(0) + member.lname.charAt(0);
     const locationDate = formatDate(member.location_date);
@@ -460,7 +460,7 @@
     `;
   }
 
-  // Formatage des tâches
+
   function formatTaskCard(task) {
     const stateBadges = {
       'assigned': '<span class="badge bg-primary">Assignée</span>',
@@ -496,7 +496,7 @@
     `;
   }
 
-  // Filtrer les membres
+
   function filterMembers() {
     if (!searchQuery) {
       return allMembers;
@@ -504,11 +504,11 @@
 
     const query = searchQuery.toLowerCase();
     return allMembers.filter(member => {
-      // Recherche dans nom, prénom, email
+
       const nameMatch = `${member.lname} ${member.fname}`.toLowerCase().includes(query);
       const emailMatch = member.email.toLowerCase().includes(query);
 
-      // Recherche dans les rôles
+
       const roleMatch = member.roles.some(role =>
         role.toLowerCase().includes(query)
       );
@@ -517,7 +517,7 @@
     });
   }
 
-  // Afficher les membres
+
   function displayMembers() {
     const membersList = document.getElementById('membersList');
     const filteredMembers = filterMembers();
@@ -534,7 +534,7 @@
     const membersHTML = filteredMembers.map(member => createMemberCard(member)).join('');
     membersList.innerHTML = membersHTML;
 
-    // Attacher les événements
+
     document.querySelectorAll('.manage-roles-btn').forEach(btn => {
       btn.addEventListener('click', function() {
         openRoleModal(this.dataset.email, this.dataset.name);
@@ -548,7 +548,7 @@
     });
   }
 
-  // Charger les membres
+
   function fetchMembers() {
     const membersList = document.getElementById('membersList');
     membersList.innerHTML = `
@@ -575,17 +575,17 @@
       });
   }
 
-  // Ouvrir le modal de gestion des rôles
+
   function openRoleModal(email, name) {
     currentUserEmail = email;
     document.getElementById('userEmailForRole').value = email;
     document.getElementById('userNameInModal').textContent = name;
 
-    // Trouver le membre
+
     const member = allMembers.find(m => m.email === email);
     if (!member) return;
 
-    // Afficher les rôles actuels
+
     const currentRolesDiv = document.getElementById('currentRoles');
     if (member.roles.length === 0) {
       currentRolesDiv.innerHTML = '<p class="text-muted">Aucun rôle attribué</p>';
@@ -594,7 +594,7 @@
         `<span class="role-badge">${role} <span class="remove-role" data-role="${role}">✕</span></span>`
       ).join('');
 
-      // Attacher les événements de suppression
+
       document.querySelectorAll('.remove-role').forEach(elem => {
         elem.addEventListener('click', function() {
           removeRole(email, this.dataset.role);
@@ -602,12 +602,12 @@
       });
     }
 
-    // Afficher le modal
+
     const roleModal = new bootstrap.Modal(document.getElementById('roleModal'));
     roleModal.show();
   }
 
-  // Supprimer un rôle
+
   function removeRole(email, role) {
     if (!confirm(`Êtes-vous sûr de vouloir supprimer le rôle "${role}" pour cet utilisateur ?`)) {
       return;
@@ -626,16 +626,16 @@
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        // Mettre à jour les données locales
+
         const member = allMembers.find(m => m.email === email);
         if (member) {
           member.roles = member.roles.filter(r => r !== role);
         }
 
-        // Mettre à jour l'affichage du modal
+
         openRoleModal(email, member ? `${member.lname} ${member.fname}` : 'Utilisateur');
 
-        // Mettre à jour l'affichage des membres
+
         displayMembers();
       } else {
         alert(data.error || 'Une erreur est survenue');
@@ -647,7 +647,7 @@
     });
   }
 
-  // Ajouter un rôle
+
   function addRole(email, role) {
     fetch('/api/members/add-role', {
       method: 'POST',
@@ -662,7 +662,7 @@
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        // Mettre à jour les données locales
+
         const member = allMembers.find(m => m.email === email);
         if (member) {
           if (!member.roles.includes(role)) {
@@ -670,13 +670,13 @@
           }
         }
 
-        // Mettre à jour l'affichage du modal
+
         openRoleModal(email, member ? `${member.lname} ${member.fname}` : 'Utilisateur');
 
-        // Mettre à jour l'affichage des membres
+
         displayMembers();
 
-        // Réinitialiser le select
+
         document.getElementById('roleSelect').value = '';
       } else {
         alert(data.error || 'Une erreur est survenue');
@@ -688,12 +688,12 @@
     });
   }
 
-  // Ouvrir le modal des tâches
+
   function openTasksModal(email, name) {
-    // Mettre à jour le titre du modal
+
     document.getElementById('tasksModalLabel').textContent = `Tâches de ${name}`;
 
-    // Réinitialiser les conteneurs de tâches
+
     document.getElementById('assignedTasksList').innerHTML = `
       <div class="loading-spinner">
         <div class="spinner-border text-primary spinner-border-sm" role="status">
@@ -712,9 +712,9 @@
       </div>
     `;
 
-    // Charger les tâches si elles ne sont pas déjà en cache
+
     if (!memberTasks[email]) {
-      // Charger les tâches assignées
+
       fetch(`/api/members/${email}/assigned-tasks`)
         .then(response => response.json())
         .then(data => {
@@ -731,7 +731,7 @@
           `;
         });
 
-      // Charger les tâches créées
+
       fetch(`/api/members/${email}/created-tasks`)
         .then(response => response.json())
         .then(data => {
@@ -748,17 +748,17 @@
           `;
         });
     } else {
-      // Utiliser les données en cache
+
       displayMemberTasks(email, 'assigned');
       displayMemberTasks(email, 'created');
     }
 
-    // Afficher le modal
+
     const tasksModal = new bootstrap.Modal(document.getElementById('tasksModal'));
     tasksModal.show();
   }
 
-  // Afficher les tâches d'un membre
+
   function displayMemberTasks(email, type) {
     if (!memberTasks[email] || !memberTasks[email][type]) return;
 
@@ -790,13 +790,13 @@
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        // Mettre à jour les données locales
+
         const member = allMembers.find(m => m.email === email);
         if (member) {
           member.blocked = 'True';
         }
 
-        // Mettre à jour l'affichage des membres
+
         displayMembers();
       } else {
         alert(data.error || 'Une erreur est survenue');
@@ -825,13 +825,13 @@
     .then(response => response.json())
     .then(data => {
       if (data.success) {
-        // Mettre à jour les données locales
+
         const member = allMembers.find(m => m.email === email);
         if (member) {
           member.blocked = 'False';
         }
 
-        // Mettre à jour l'affichage des membres
+
         displayMembers();
       } else {
         alert(data.error || 'Une erreur est survenue');
@@ -843,22 +843,22 @@
     });
   }
 
-  // Attacher les événements
+
   document.addEventListener('DOMContentLoaded', function() {
-    // Charger les membres au chargement
+
     fetchMembers();
 
-    // Attacher l'événement de recherche
+
     const searchInput = document.getElementById('searchInput');
     searchInput.addEventListener('input', function() {
       searchQuery = this.value.trim();
       displayMembers();
     });
 
-    // Attacher l'événement de rafraîchissement
+
     document.getElementById('refreshBtn').addEventListener('click', fetchMembers);
 
-    // Attacher l'événement d'ajout de rôle
+
     document.getElementById('addRoleBtn').addEventListener('click', function() {
       const role = document.getElementById('roleSelect').value;
       const email = document.getElementById('userEmailForRole').value;

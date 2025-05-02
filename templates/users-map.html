@@ -23,22 +23,22 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
         .minutes-5 {
-            background-color: #2ecc71; /* Vert vif - moins de 5 minutes */
+            background-color: #2ecc71;
         }
         .minutes-10 {
-            background-color: #27ae60; /* Vert foncé - moins de 10 minutes */
+            background-color: #27ae60;
         }
         .minutes-30 {
-            background-color: #3498db; /* Bleu - moins de 30 minutes */
+            background-color: #3498db;
         }
         .hours-1 {
-            background-color: #f39c12; /* Orange - moins de 1 heure */
+            background-color: #f39c12;
         }
         .hours-2 {
-            background-color: #e67e22; /* Orange foncé - moins de 2 heures */
+            background-color: #e67e22;
         }
         .hours-more {
-            background-color: #e74c3c; /* Rouge - plus de 2 heures */
+            background-color: #e74c3c;
         }
     </style>
 {% endblock %}
@@ -100,33 +100,33 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Initialiser la carte centrée sur la France
+
         var map = L.map('map').setView([46.603354, 1.888334], 6);
 
-        // Ajouter les tuiles OpenStreetMap
+
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        // Récupérer les données des utilisateurs via API
+
         fetch('/api/users-locations')
             .then(response => response.json())
             .then(users => {
                 if (users.length === 0) {
-                    // Afficher un message si aucun utilisateur n'a de localisation
+
                     const mapContainer = document.getElementById('map');
                     mapContainer.innerHTML = '<div class="text-center p-5"><h4>Aucune donnée de localisation disponible</h4></div>';
                     return;
                 }
 
-                // Créer des limites pour ajuster la vue
+
                 var bounds = L.latLngBounds();
 
-                // Ajouter un marqueur pour chaque utilisateur
+
                 users.forEach(user => {
                     if (user.lat && user.long) {
-                        // Déterminer la classe de couleur basée sur l'âge de la localisation
+
                         let markerClass = 'hours-more';
                         let locationAge = '';
 
@@ -161,7 +161,7 @@
                             }
                         }
 
-                        // Créer un marqueur personnalisé
+
                         const markerIcon = L.divIcon({
                             className: `user-marker ${markerClass}`,
                             html: `<i class="fa fa-user"></i>`,
@@ -169,7 +169,7 @@
                             iconAnchor: [15, 15]
                         });
 
-                        // Format de la date pour l'affichage
+
                         let dateStr = 'Date inconnue';
                         if (user.location_date) {
                             const date = new Date(user.location_date);
@@ -182,7 +182,7 @@
                             });
                         }
 
-                        // Ajouter le marqueur à la carte
+
                         const marker = L.marker([user.lat, user.long], {icon: markerIcon})
                             .addTo(map)
                             .bindTooltip(`
@@ -199,17 +199,17 @@
                                 opacity: 0.9
                             });
 
-                        // Étendre les limites pour inclure ce marqueur
+
                         bounds.extend([user.lat, user.long]);
                     }
                 });
 
-                // Ajuster la vue pour montrer tous les marqueurs
+
                 if (!bounds.isValid()) {
-                    map.setView([46.603354, 1.888334], 6); // Vue par défaut (France)
+                    map.setView([46.603354, 1.888334], 6);
                 } else {
                     map.fitBounds(bounds, {
-                        padding: [50, 50] // Ajouter du padding pour que tout soit visible
+                        padding: [50, 50]
                     });
                 }
             })

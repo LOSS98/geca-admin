@@ -24,7 +24,7 @@
     flex: 1;
   }
 
-  /* Styles pour les niveaux de priorité */
+
   .priority-option {
     padding: 10px;
     border: 1px solid #ddd;
@@ -277,7 +277,7 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Handle assignment type selection
+
     const assignToUsers = document.getElementById('assignToUsers');
     const assignToRole = document.getElementById('assignToRole');
     const assignToAll = document.getElementById('assignToAll');
@@ -291,7 +291,7 @@
     const userSearchInput = document.getElementById('userSearchInput');
     const roleSearchInput = document.getElementById('roleSearchInput');
 
-    // Search functionality for users
+
     userSearchInput.addEventListener('input', function() {
       const searchTerm = this.value.toLowerCase();
       const options = userSelect.options;
@@ -306,7 +306,7 @@
       }
     });
 
-    // Search functionality for roles
+
     roleSearchInput.addEventListener('input', function() {
       const searchTerm = this.value.toLowerCase();
       const options = roleSelect.options;
@@ -321,7 +321,7 @@
       }
     });
 
-    // Update selected users display when selection changes
+
     userSelect.addEventListener('change', function() {
       const selectedOptions = Array.from(this.selectedOptions);
       const selectedUsersHTML = selectedOptions.map(option =>
@@ -331,7 +331,7 @@
       selectedUsersDiv.innerHTML = selectedUsersHTML || '<em>Aucun utilisateur sélectionné</em>';
     });
 
-    // Update selected roles display when selection changes
+
     roleSelect.addEventListener('change', function() {
       const selectedOptions = Array.from(this.selectedOptions);
       const selectedRolesHTML = selectedOptions.map(option =>
@@ -374,17 +374,17 @@
       }
     });
 
-    // Priority selection
+
     const priorityOptions = document.querySelectorAll('.priority-option');
     priorityOptions.forEach(option => {
       option.addEventListener('click', function() {
-        // Remove active class from all options
+
         priorityOptions.forEach(opt => opt.classList.remove('active'));
 
-        // Add active class to clicked option
+
         this.classList.add('active');
 
-        // Update hidden input
+
         const priorityValue = this.dataset.priority;
         document.querySelector(`input[name="priority"][value="${priorityValue}"]`).checked = true;
       });
@@ -410,7 +410,7 @@
     document.getElementById('startDate').value = formatDateTimeParis(now);
     document.getElementById('dueDate').value = formatDateTimeParis(oneHourLater);
 
-    // Form submission
+
     const taskForm = document.getElementById('taskForm');
     taskForm.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -422,7 +422,7 @@
       const assignmentType = document.querySelector('input[name="assignmentType"]:checked').value;
       const priority = document.querySelector('input[name="priority"]:checked').value;
 
-      // Validation
+
       if (!subject || !startDate || !dueDate) {
         showError('Veuillez remplir tous les champs obligatoires.');
         return;
@@ -433,7 +433,7 @@
         return;
       }
 
-      // Prepare data based on assignment type
+
       let assignmentData = {};
       if (assignmentType === 'users') {
         const userSelect = document.getElementById('userSelect');
@@ -463,14 +463,14 @@
           assignment_type: 'role',
           target_roles: selectedRoles
         };
-      } else { // assignment to all
+      } else {
         assignmentData = {
           assignment_type: 'all',
           target_roles: []
         };
       }
 
-      // Prepare task data
+
       const taskData = {
         subject: subject,
         description: description,
@@ -480,7 +480,7 @@
         ...assignmentData
       };
 
-      // Submit task data
+
       const submitBtn = document.getElementById('submitBtn');
       const originalText = submitBtn.innerText;
       submitBtn.disabled = true;
@@ -511,7 +511,7 @@
       });
     });
 
-    // Helper functions
+
     function showError(message) {
       const errorElement = document.getElementById('formError');
       errorElement.textContent = message;

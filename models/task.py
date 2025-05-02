@@ -457,14 +457,14 @@ class Task(db.Model):
             if user and user not in self.assignees:
                 self.assignees.append(user)
 
-        # Assurez-vous que les changements sont enregistrés dans la base de données
+
         db.session.add(self)
         db.session.commit()
 
-        # Optionnel: Notifier les utilisateurs de l'assignation
+
         self.notify_assignment()
 
-        # Log pour le débogage
+
         print(f"Task {self.id} assigned to users: {[user.email for user in self.assignees]}")
         return True
 
@@ -623,7 +623,7 @@ class Task(db.Model):
             db.session.commit()
             self.notify_validation_rejected()
 
-    # Méthodes de notification
+
     def notify_assignment(self):
         """Notify all assignees about the new task"""
         phones = []
@@ -1024,14 +1024,14 @@ class Task(db.Model):
         current_time = datetime.now().strftime("%d/%m/%Y à %H:%M")
         actor_name = self._get_user_full_name(actor_email)
 
-        # Récupérer les informations de temps pour les inclure dans les notifications
+
         time_info_str = self.format_time_remaining()
 
-        # Récupérer l'icône de priorité
+
         priority_icon = self.get_priority_icon()
         priority_text = TaskPriority.get_display_name(self.priority)
 
-        # Construire le message complet
+
         message = f"{priority_icon} La tâche *'{self.subject}'* "
 
         if message_type == "assignment":
@@ -1071,21 +1071,21 @@ class Task(db.Model):
         else:
             message += f"a été mise à jour par {actor_name} le {current_time}"
 
-        # Ajouter les détails de la tâche
+
         message += f"\n*Détail de la tâche :*\n{self.description or 'Pas de description fournie'}"
 
-        # Ajouter l'information de priorité
+
         message += f"\n\n*Priorité:* {priority_text}"
 
-        # Ajouter l'information de temps si ce n'est pas une tâche terminée ou supprimée
+
         if message_type not in ["task_completed", "task_deleted", "task_validated"]:
             message += f"\n*{time_info_str}*"
 
-        # Ajouter la date d'échéance
+
         due_date_str = self.due_date.strftime("%d/%m/%Y à %H:%M") if self.due_date else "Non définie"
         message += f"\n\n*Date d'échéance:* {due_date_str}"
 
-        # Ajouter des informations supplémentaires si fournies
+
         if additional_info:
             message += f"\n\n{additional_info}"
 
@@ -1100,7 +1100,7 @@ class Task(db.Model):
             print(f"User with email {user_email} not found")
             return []
 
-        # Utiliser une requête directe avec un join pour s'assurer de récupérer toutes les tâches
+
         tasks = Task.query.join(
             task_user_association,
             Task.id == task_user_association.c.task_id
@@ -1109,10 +1109,10 @@ class Task(db.Model):
             Task.state != TaskState.DELETED
         ).all()
 
-        # Log pour le débogage
+
         print(f"Found {len(tasks)} tasks for user {user_email}")
 
-        # Alternative si la méthode ci-dessus ne fonctionne pas correctement
+
         if not tasks:
             print("Using alternative method to find tasks")
             tasks = []

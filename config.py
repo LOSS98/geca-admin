@@ -1,9 +1,11 @@
-# config.py
+
 import os
 from datetime import timedelta
+from dotenv import load_dotenv
 
 
 class Config:
+    load_dotenv()
     SECRET_KEY = os.getenv('SECRET_KEY', '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')
 
     SESSION_TYPE = 'filesystem'
@@ -20,6 +22,6 @@ class Config:
     ]
     CREDENTIALS_PATH = './credentials.json'
 
-    SQLALCHEMY_DATABASE_URI = os.getenv('DB_URI', 'postgresql://khalil:Kh4lil9870720406*@51.38.83.204:1125/postgres_geca_db')
+    SQLALCHEMY_DATABASE_URI = os.getenv('DB_URI')
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False

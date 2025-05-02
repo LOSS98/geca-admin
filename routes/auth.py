@@ -1,4 +1,4 @@
-# auth/routes.py
+
 import os
 from datetime import timedelta, datetime
 from flask import Blueprint, render_template, request, session, redirect, url_for, flash, jsonify
@@ -20,7 +20,7 @@ auth_bp = Blueprint('auth', __name__)
 
 def is_credentials_valid(credentials):
     try:
-        # Vérifier si tous les champs nécessaires sont présents
+
         required_fields = ['token', 'refresh_token', 'token_uri', 'client_id', 'client_secret']
         if not all(field in credentials for field in required_fields):
             print("Champs manquants dans les credentials:", credentials.keys())
@@ -32,7 +32,7 @@ def is_credentials_valid(credentials):
             if creds.expired and creds.refresh_token:
                 try:
                     creds.refresh(Request())
-                    # Mise à jour des credentials dans la session
+
                     session['credentials'] = credentials_to_dict(creds)
                 except Exception as e:
                     print(f"Erreur lors du rafraîchissement du token: {e}")
@@ -40,7 +40,7 @@ def is_credentials_valid(credentials):
             else:
                 return False
 
-        # Test simple avec l'API OAuth2
+
         service = googleapiclient.discovery.build('oauth2', 'v2', credentials=creds)
         user_info = service.userinfo().get().execute()
         user_email = user_info['email']
@@ -81,7 +81,7 @@ def login():
         authorization_url, state = flow.authorization_url(
             access_type='offline',
             include_granted_scopes='true',
-            prompt='consent'  # Force consent screen to always get refresh_token
+            prompt='consent'
         )
 
         session['state'] = state
@@ -106,9 +106,9 @@ def callback():
     credentials = flow.credentials
     session['credentials'] = credentials_to_dict(credentials)
 
-    # Définir la durée de la session
+
     session.permanent = True
-    # Durée de 2 heures
+
     session.permanent_session_lifetime = timedelta(hours=2)
 
     connector = GoogleAPIConnector(Config.CREDENTIALS_PATH)

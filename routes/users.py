@@ -230,7 +230,7 @@ def get_members_management():
         members_data = []
         i = 0
         for user in users:
-            if True : #user.fname in ('Mikael', 'Khalil'):
+            if True :
                 task_count = len(Task.get_tasks_for_user(user.email))
 
                 members_data.append({
