@@ -2,7 +2,7 @@
 
 A Flask-based administrative web application developed for "Los Barryachis" BDE (Bureau Des Étudiants) 2025 campaign at INSA Hauts-de-France. This platform serves as the central management system for the campaign team to coordinate activities, manage tasks, and organize events.
 
-![Los Barryachis Logo]([https://public.losbarryachis.fr/shared/shotguns/insahdf.webp](https://scontent-cdg4-3.cdninstagram.com/v/t51.2885-19/491443873_17848131525452154_2583769738917651108_n.jpg?_nc_ht=scontent-cdg4-3.cdninstagram.com&_nc_cat=106&_nc_oc=Q6cZ2QG4CVqPzfV1DzJF5oCLGq4HvocS8XBN9oZTRhu0tbISAAFDJBngTiVOWIQFvoCyLj__4PIGJVi0hhPwhEzLSi4t&_nc_ohc=21sl6x6OeLkQ7kNvwHahG2s&_nc_gid=MDGrUDS7t4tI2rNqSQ1V4w&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfGFxmP2FHsSV1T8AvgEdp1j5g3mh_r5V2MbHM5zYlncBw&oe=681A60AA&_nc_sid=7a9f4b))
+![Los Barryachis Logo](https://scontent-cdg4-3.cdninstagram.com/v/t51.2885-19/491443873_17848131525452154_2583769738917651108_n.jpg?_nc_ht=scontent-cdg4-3.cdninstagram.com&_nc_cat=106&_nc_oc=Q6cZ2QG4CVqPzfV1DzJF5oCLGq4HvocS8XBN9oZTRhu0tbISAAFDJBngTiVOWIQFvoCyLj__4PIGJVi0hhPwhEzLSi4t&_nc_ohc=21sl6x6OeLkQ7kNvwHahG2s&_nc_gid=MDGrUDS7t4tI2rNqSQ1V4w&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfGFxmP2FHsSV1T8AvgEdp1j5g3mh_r5V2MbHM5zYlncBw&oe=681A60AA&_nc_sid=7a9f4b)
 
 ## 📋 Overview
 
